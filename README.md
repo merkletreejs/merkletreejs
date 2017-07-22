@@ -12,6 +12,7 @@ npm install m-tree
 
 # Documentation
 
+
 ## Classes
 
 <dl>
@@ -72,9 +73,15 @@ const tree = new MerkleTree(leaves, sha256)
 <a name="MerkleTree+getLeaves"></a>
 
 ### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns array of leaves of Merkle Tree.
+Returns leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
+**Returns**: <code>Array</code> - - array of leaves
+
+| Param |
+| --- |
+|  |
+
 **Example**
 ```js
 const leaves = tree.getLeaves()
@@ -191,9 +198,15 @@ const tree = new MerkleTree(leaves, sha256)
 <a name="MerkleTree+getLeaves"></a>
 
 ### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns array of leaves of Merkle Tree.
+Returns leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
+**Returns**: <code>Array</code> - - array of leaves
+
+| Param |
+| --- |
+|  |
+
 **Example**
 ```js
 const leaves = tree.getLeaves()

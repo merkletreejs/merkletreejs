@@ -88,8 +88,9 @@ class MerkleTree {
 
   /**
    * getLeaves
-   * @desc Returns array of leaves of Merkle Tree.
-   * @return {Array}
+   * @desc Returns leaves of Merkle Tree.
+   * @param
+   * @return {Array} - array of leaves
    * @example
    * const leaves = tree.getLeaves()
    */
