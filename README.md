@@ -72,10 +72,9 @@ const tree = new MerkleTree(leaves, sha256)
 <a name="MerkleTree+getLeaves"></a>
 
 ### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns leaves of Merkle Tree.
+Returns array of leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of leaves
 **Example**
 ```js
 const leaves = tree.getLeaves()
@@ -151,10 +150,6 @@ const verified = tree.verify(proof, leaves[2], root)
 Class reprensenting a Merkle Tree
 
 **Kind**: global namespace
-**Example**
-```js
-const tree = new MerkleTree(leaves, sha256)
-```
 
 * [MerkleTree](#MerkleTree) : <code>object</code>
     * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
@@ -196,10 +191,9 @@ const tree = new MerkleTree(leaves, sha256)
 <a name="MerkleTree+getLeaves"></a>
 
 ### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns leaves of Merkle Tree.
+Returns array of leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of leaves
 **Example**
 ```js
 const leaves = tree.getLeaves()

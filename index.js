@@ -3,8 +3,6 @@ const reverse = require('buffer-reverse')
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
- * @example
- * const tree = new MerkleTree(leaves, sha256)
  */
 class MerkleTree {
   /**
@@ -90,8 +88,8 @@ class MerkleTree {
 
   /**
    * getLeaves
-   * @desc Returns leaves of Merkle Tree.
-   * @return {Array} - array of leaves
+   * @desc Returns array of leaves of Merkle Tree.
+   * @return {Array}
    * @example
    * const leaves = tree.getLeaves()
    */
