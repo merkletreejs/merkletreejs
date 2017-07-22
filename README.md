@@ -4,6 +4,8 @@
 
 <img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree.png?raw=true" width="500">
 
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" width="500">
+
 # Install
 
 ```bash
