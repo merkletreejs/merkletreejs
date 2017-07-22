@@ -2,9 +2,13 @@
 
 > Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify via proofs in JavaScript.
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree.png?raw=true" width="500">
+Diagram of Merkle Tree
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" width="420">
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree.png?raw=true" alt="Merkle Tree" width="500">
+
+Diagram of Merkle Tree Proof
+
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" alt="Merkle Tree Proof" width="420">
 
 # Install
 
