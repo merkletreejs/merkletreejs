@@ -33,7 +33,7 @@ npm install m-tree
 **Kind**: global class
 
 * [MerkleTree](#MerkleTree)
-    * [new MerkleTree(leaves, hashAlgo, options)](#new_MerkleTree_new)
+    * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
     * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array</code>
     * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
@@ -42,7 +42,7 @@ npm install m-tree
 
 <a name="new_MerkleTree_new"></a>
 
-### new MerkleTree(leaves, hashAlgo, options)
+### new MerkleTree(leaves, hashAlgorithm, options)
 Constructs a Merkle Tree.
 All nodes and leaves are stored as Buffers.
 Lonely leaf nodes are promoted to the next level up without being hashed again.
@@ -51,9 +51,9 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 | Param | Type | Description |
 | --- | --- | --- |
 | leaves | <code>Array</code> | Array of hashed leaves. Each leaf must be a Buffer. |
-| hashAlgo | <code>function</code> | Algorithm used for hashing leaves and nodes |
+| hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, generates the Merkle Tree with the Bitcoin Merkle Tree implementation. Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
+| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
 
 **Example**
 ```js
@@ -157,7 +157,7 @@ const tree = new MerkleTree(leaves, sha256)
 ```
 
 * [MerkleTree](#MerkleTree) : <code>object</code>
-    * [new MerkleTree(leaves, hashAlgo, options)](#new_MerkleTree_new)
+    * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
     * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array</code>
     * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
@@ -166,7 +166,7 @@ const tree = new MerkleTree(leaves, sha256)
 
 <a name="new_MerkleTree_new"></a>
 
-### new MerkleTree(leaves, hashAlgo, options)
+### new MerkleTree(leaves, hashAlgorithm, options)
 Constructs a Merkle Tree.
 All nodes and leaves are stored as Buffers.
 Lonely leaf nodes are promoted to the next level up without being hashed again.
@@ -175,9 +175,9 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 | Param | Type | Description |
 | --- | --- | --- |
 | leaves | <code>Array</code> | Array of hashed leaves. Each leaf must be a Buffer. |
-| hashAlgo | <code>function</code> | Algorithm used for hashing leaves and nodes |
+| hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, generates the Merkle Tree with the Bitcoin Merkle Tree implementation. Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
+| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
 
 **Example**
 ```js
@@ -281,16 +281,20 @@ This implementation is vulnerable to a forgery attack (for an unbalanced merkle 
 
 # Test
 
-``bash
+```bash
 npm test
 ```
 
 # Credits/Resources
 
 - [Bitcoin mining the hard way: the algorithms, protocols, and bytes](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html)
+
 - [Raiden Merkle Tree Implemenation](https://github.com/raiden-network/raiden/blob/f9cf12571891cdf54feb4667cd2fffcb3d5daa89/raiden/mtree.py)
+
 - [Bitcoin Talk - Merkle Trees](https://bitcointalk.org/index.php?topic=403231.msg9054025#msg9054025)
+
 - [How Log Proofs Work](https://www.certificate-transparency.org/log-proofs-work)
+
 - [Why aren't Solidity sha3 hashes not matching what other sha3 libraries produce?](https://ethereum.stackexchange.com/questions/559/why-arent-solidity-sha3-hashes-not-matching-what-other-sha3-libraries-produce)
 
 # License

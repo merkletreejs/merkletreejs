@@ -12,10 +12,10 @@ class MerkleTree {
    * All nodes and leaves are stored as Buffers.
    * Lonely leaf nodes are promoted to the next level up without being hashed again.
    * @param {Array} leaves - Array of hashed leaves. Each leaf must be a Buffer.
-   * @param {Function} hashAlgo - Algorithm used for hashing leaves and nodes
+   * @param {Function} hashAlgorithm - Algorithm used for hashing leaves and nodes
    * @param {Object} options - Additional options
-   * @param {Boolean} options.isBitcoinTree - If set to `true`, generates the Merkle
-   * Tree with the Bitcoin Merkle Tree implementation. Enable it when you need
+   * @param {Boolean} options.isBitcoinTree - If set to `true`, constructs the Merkle
+   * Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need
    * to replicate Bitcoin constructed Merkle Trees.
    * @example
    * const MerkleTree = require('m-tree')
@@ -30,8 +30,8 @@ class MerkleTree {
    *
    * const tree = new MerkleTree(leaves, sha256)
    */
-  constructor(leaves, hashAlgo, options={}) {
-    this.hashAlgo = hashAlgo
+  constructor(leaves, hashAlgorithm, options={}) {
+    this.hashAlgo = hashAlgorithm
     this.leaves = leaves
     this.layers = [leaves]
     this.isBitcoinTree = !!options.isBitcoinTree
