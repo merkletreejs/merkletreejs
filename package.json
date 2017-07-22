@@ -1,0 +1,51 @@
+{
+  "name": "m-tree",
+  "version": "0.0.1",
+  "description": "merkle-tree Filter algorithm in JavaScript.",
+  "main": "index.js",
+  "directories": {
+    "test": "tape test/*"
+  },
+  "scripts": {
+    "test": "./node_modules/tape/bin/tape test/*.js",
+    "docs:md": "jsdoc2md index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miguelmota/merkle-tree"
+  },
+  "keywords": [
+    "merkle",
+    "tree",
+    "hash",
+    "algorithm",
+    "crypto",
+    "bitcoin",
+    "ethereum",
+    "proof"
+  ],
+  "author": {
+    "name": "Miguel Mota",
+    "email": "hello@miguelmota.com",
+    "url": "https://miguelmota.com/"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/miguelmota/merkle-tree/blob/master/LICENSE.md"
+  },
+  "bugs": {
+    "url": "https://github.com/miguelmota/merkle-tree/issues"
+  },
+  "homepage": "https://github.com/miguelmota/merkle-tree",
+  "devDependencies": {
+    "crypto": "0.0.3",
+    "ethereumjs-util": "^5.1.2",
+    "tape": "^3.6.1"
+  },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
+  "dependencies": {
+    "buffer-reverse": "^1.0.1"
+  }
+}
