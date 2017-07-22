@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "./node_modules/tape/bin/tape test/*.js",
-    "docs:md": "jsdoc2md index.js"
+    "docs:md": "node jsdoc.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "crypto": "0.0.3",
     "ethereumjs-util": "^5.1.2",
+    "jsdoc-to-markdown": "^3.0.0",
     "tape": "^3.6.1"
   },
   "engines": {

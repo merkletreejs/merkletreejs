@@ -9,7 +9,7 @@ class MerkleTree {
    * @desc Constructs a Merkle Tree.
    * All nodes and leaves are stored as Buffers.
    * Lonely leaf nodes are promoted to the next level up without being hashed again.
-   * @param {Array} leaves - Array of hashed leaves. Each leaf must be a Buffer.
+   * @param {Buffer[]} leaves - Array of hashed leaves. Each leaf must be a Buffer.
    * @param {Function} hashAlgorithm - Algorithm used for hashing leaves and nodes
    * @param {Object} options - Additional options
    * @param {Boolean} options.isBitcoinTree - If set to `true`, constructs the Merkle
@@ -88,9 +88,8 @@ class MerkleTree {
 
   /**
    * getLeaves
-   * @desc Returns leaves of Merkle Tree.
-   * @param
-   * @return {Array} - array of leaves
+   * @desc Returns array of leaves of Merkle Tree.
+   * @return {Buffer[]}
    * @example
    * const leaves = tree.getLeaves()
    */
@@ -100,8 +99,8 @@ class MerkleTree {
 
   /**
    * getLayers
-   * @desc Returns all layers of Merkle Tree, including leaves and root.
-   * @return {Array} - array of layers
+   * @desc Returns array of all layers of Merkle Tree, including leaves and root.
+   * @return {Buffer[]}
    * @example
    * const layers = tree.getLayers()
    */
@@ -111,8 +110,8 @@ class MerkleTree {
 
   /**
    * getRoot
-   * @desc Returns the Merkle root hash.
-   * @return {Buffer} - Merkle root hash
+   * @desc Returns the Merkle root hash as a Buffer.
+   * @return {Buffer}
    * @example
    * const root = tree.getRoot()
    */
@@ -126,7 +125,7 @@ class MerkleTree {
    * @param {Buffer} leaf - Target leaf
    * @param {Number} [index] - Target leaf index in leaves array.
    * Use if there are leaves containing duplicate data in order to distinguish it.
-   * @return {Array} - Array of Buffer hashes.
+   * @return {Buffer[]} - Array of Buffer hashes.
    * @example
    * const proof = tree.getProof(leaves[2])
    *
@@ -175,7 +174,7 @@ class MerkleTree {
    * verify
    * @desc Returns true if the proof path (array of hashes) can connect the target node
    * to the Merkle root.
-   * @param {Array} proof - Array of proof Buffer hashes that should connect
+   * @param {Buffer[]} proof - Array of proof Buffer hashes that should connect
    * target node to Merkle root.
    * @param {Buffer} targetNode - Target node Buffer
    * @param {Buffer} root - Merkle root Buffer

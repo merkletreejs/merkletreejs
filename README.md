@@ -10,9 +10,6 @@
 npm install m-tree
 ```
 
-# Documentation
-
-
 ## Classes
 
 <dl>
@@ -35,11 +32,14 @@ npm install m-tree
 
 * [MerkleTree](#MerkleTree)
     * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
-    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array</code>
-    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array</code>
+    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
+    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array</code>
+    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
+
+
+* * *
 
 <a name="new_MerkleTree_new"></a>
 
@@ -51,7 +51,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| leaves | <code>Array</code> | Array of hashed leaves. Each leaf must be a Buffer. |
+| leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
 | hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
 | options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
@@ -70,51 +70,55 @@ const leaves = ['a', 'b', 'c'].map(x => sha3(x))
 
 const tree = new MerkleTree(leaves, sha256)
 ```
+
+* * *
+
 <a name="MerkleTree+getLeaves"></a>
 
-### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns leaves of Merkle Tree.
+### merkleTree.getLeaves() ⇒ <code>Array.&lt;Buffer&gt;</code>
+Returns array of leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of leaves
-
-| Param |
-| --- |
-|  |
-
 **Example**
 ```js
 const leaves = tree.getLeaves()
 ```
+
+* * *
+
 <a name="MerkleTree+getLayers"></a>
 
-### merkleTree.getLayers() ⇒ <code>Array</code>
-Returns all layers of Merkle Tree, including leaves and root.
+### merkleTree.getLayers() ⇒ <code>Array.&lt;Buffer&gt;</code>
+Returns array of all layers of Merkle Tree, including leaves and root.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of layers
 **Example**
 ```js
 const layers = tree.getLayers()
 ```
+
+* * *
+
 <a name="MerkleTree+getRoot"></a>
 
 ### merkleTree.getRoot() ⇒ <code>Buffer</code>
-Returns the Merkle root hash.
+Returns the Merkle root hash as a Buffer.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Buffer</code> - - Merkle root hash
 **Example**
 ```js
 const root = tree.getRoot()
 ```
+
+* * *
+
 <a name="MerkleTree+getProof"></a>
 
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array</code>
+### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Buffer&gt;</code>
 Returns the proof for a target leaf.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - Array of Buffer hashes.
+**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of Buffer hashes.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -131,6 +135,9 @@ const leaves = ['a', 'b', 'a'].map(x => sha3(x))
 const tree = new MerkleTree(leaves, sha3)
 const proof = tree.getProof(leaves[2], 2)
 ```
+
+* * *
+
 <a name="MerkleTree+verify"></a>
 
 ### merkleTree.verify(proof, targetNode, root) ⇒ <code>Boolean</code>
@@ -141,7 +148,7 @@ to the Merkle root.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| proof | <code>Array</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
+| proof | <code>Array.&lt;Buffer&gt;</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
 | targetNode | <code>Buffer</code> | Target node Buffer |
 | root | <code>Buffer</code> | Merkle root Buffer |
 
@@ -151,6 +158,9 @@ const root = tree.getRoot()
 const proof = tree.getProof(leaves[2])
 const verified = tree.verify(proof, leaves[2], root)
 ```
+
+* * *
+
 <a name="MerkleTree"></a>
 
 ## MerkleTree : <code>object</code>
@@ -160,11 +170,14 @@ Class reprensenting a Merkle Tree
 
 * [MerkleTree](#MerkleTree) : <code>object</code>
     * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
-    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array</code>
-    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array</code>
+    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
+    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array</code>
+    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
+
+
+* * *
 
 <a name="new_MerkleTree_new"></a>
 
@@ -176,7 +189,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| leaves | <code>Array</code> | Array of hashed leaves. Each leaf must be a Buffer. |
+| leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
 | hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
 | options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
@@ -195,51 +208,55 @@ const leaves = ['a', 'b', 'c'].map(x => sha3(x))
 
 const tree = new MerkleTree(leaves, sha256)
 ```
+
+* * *
+
 <a name="MerkleTree+getLeaves"></a>
 
-### merkleTree.getLeaves() ⇒ <code>Array</code>
-Returns leaves of Merkle Tree.
+### merkleTree.getLeaves() ⇒ <code>Array.&lt;Buffer&gt;</code>
+Returns array of leaves of Merkle Tree.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of leaves
-
-| Param |
-| --- |
-|  |
-
 **Example**
 ```js
 const leaves = tree.getLeaves()
 ```
+
+* * *
+
 <a name="MerkleTree+getLayers"></a>
 
-### merkleTree.getLayers() ⇒ <code>Array</code>
-Returns all layers of Merkle Tree, including leaves and root.
+### merkleTree.getLayers() ⇒ <code>Array.&lt;Buffer&gt;</code>
+Returns array of all layers of Merkle Tree, including leaves and root.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - array of layers
 **Example**
 ```js
 const layers = tree.getLayers()
 ```
+
+* * *
+
 <a name="MerkleTree+getRoot"></a>
 
 ### merkleTree.getRoot() ⇒ <code>Buffer</code>
-Returns the Merkle root hash.
+Returns the Merkle root hash as a Buffer.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Buffer</code> - - Merkle root hash
 **Example**
 ```js
 const root = tree.getRoot()
 ```
+
+* * *
+
 <a name="MerkleTree+getProof"></a>
 
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array</code>
+### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Buffer&gt;</code>
 Returns the proof for a target leaf.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array</code> - - Array of Buffer hashes.
+**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of Buffer hashes.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -256,6 +273,9 @@ const leaves = ['a', 'b', 'a'].map(x => sha3(x))
 const tree = new MerkleTree(leaves, sha3)
 const proof = tree.getProof(leaves[2], 2)
 ```
+
+* * *
+
 <a name="MerkleTree+verify"></a>
 
 ### merkleTree.verify(proof, targetNode, root) ⇒ <code>Boolean</code>
@@ -266,7 +286,7 @@ to the Merkle root.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| proof | <code>Array</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
+| proof | <code>Array.&lt;Buffer&gt;</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
 | targetNode | <code>Buffer</code> | Target node Buffer |
 | root | <code>Buffer</code> | Merkle root Buffer |
 
@@ -276,6 +296,10 @@ const root = tree.getRoot()
 const proof = tree.getProof(leaves[2])
 const verified = tree.verify(proof, leaves[2], root)
 ```
+
+* * *
+
+
 
 <!--
  merkle-lib
@@ -292,15 +316,15 @@ This implementation is vulnerable to a forgery attack (for an unbalanced merkle 
 npm test
 ```
 
-# Credits/Resources
+# Resources
 
 - [Bitcoin mining the hard way: the algorithms, protocols, and bytes](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html)
-
-- [Raiden Merkle Tree Implemenation](https://github.com/raiden-network/raiden/blob/f9cf12571891cdf54feb4667cd2fffcb3d5daa89/raiden/mtree.py)
 
 - [Bitcoin Talk - Merkle Trees](https://bitcointalk.org/index.php?topic=403231.msg9054025#msg9054025)
 
 - [How Log Proofs Work](https://www.certificate-transparency.org/log-proofs-work)
+
+- [Raiden Merkle Tree Implemenation](https://github.com/raiden-network/raiden/blob/f9cf12571891cdf54feb4667cd2fffcb3d5daa89/raiden/mtree.py)
 
 - [Why aren't Solidity sha3 hashes not matching what other sha3 libraries produce?](https://ethereum.stackexchange.com/questions/559/why-arent-solidity-sha3-hashes-not-matching-what-other-sha3-libraries-produce)
 
