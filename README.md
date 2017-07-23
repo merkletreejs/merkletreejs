@@ -305,22 +305,17 @@ const verified = tree.verify(proof, leaves[2], root)
 
 * * *
 
-
-
-<!--
- merkle-lib
-Warnings
-
-This implementation is vulnerable to a forgery attack (as a second pre-image attack), see these[1][2] crypto.stackexchange questions for an explanation. To avoid this vulnerability, you should pre-hash your leaves using a different hash function than the function provided such that H(x) != H'(x).
-
-This implementation is vulnerable to a forgery attack (for an unbalanced merkle tree), wherein, in an unbalanced merkle tree, the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same root hash. To avoid this vulnerability [in this implementation], do not accept unbalanced merkle trees in your application.
--->
-
 # Test
 
 ```bash
 npm test
 ```
+
+# Notes
+
+As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing algorithm function for leaves and nodes so that `H(x) != H'(x)`.
+
+As is, this implementation is also vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this.
 
 # Resources
 
@@ -333,6 +328,8 @@ npm test
 - [Raiden Merkle Tree Implemenation](https://github.com/raiden-network/raiden/blob/f9cf12571891cdf54feb4667cd2fffcb3d5daa89/raiden/mtree.py)
 
 - [Why aren't Solidity sha3 hashes not matching what other sha3 libraries produce?](https://ethereum.stackexchange.com/questions/559/why-arent-solidity-sha3-hashes-not-matching-what-other-sha3-libraries-produce)
+
+- [What is the purpose of using different hash functions for the leaves and internals of a hash tree?](https://crypto.stackexchange.com/questions/2106/what-is-the-purpose-of-using-different-hash-functions-for-the-leaves-and-interna)
 
 # License
 

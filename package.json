@@ -1,6 +1,6 @@
 {
   "name": "m-tree",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "merkle-tree Filter algorithm in JavaScript.",
   "main": "index.js",
   "directories": {
