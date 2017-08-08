@@ -16,7 +16,7 @@ Diagram of Invalid Merkle Tree Proofs
 
 Diagram of Bitcoin Merkle Tree
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-bitcoin.png?raw=true" alt="Merkle Tree Proof" width="420">
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-bitcoin.png?raw=true" alt="Merkle Tree Proof" width="420">
 
 # Install
 
