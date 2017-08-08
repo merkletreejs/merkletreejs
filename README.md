@@ -1,6 +1,6 @@
 # Merkle Tree
 
-> Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify via proofs in JavaScript.
+> Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify proofs in JavaScript.
 
 Diagram of Merkle Tree
 
@@ -9,6 +9,10 @@ Diagram of Merkle Tree
 Diagram of Merkle Tree Proof
 
 <img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" alt="Merkle Tree Proof" width="420">
+
+Diagram of Invalid Merkle Tree Proofs
+
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-fail.png?raw=true" alt="Merkle Tree Proof" width="420">
 
 # Install
 

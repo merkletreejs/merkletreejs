@@ -1,7 +1,7 @@
 {
   "name": "m-tree",
-  "version": "0.0.3",
-  "description": "merkle-tree Filter algorithm in JavaScript.",
+  "version": "0.0.4",
+  "description": "Construct Merkle Trees and verify proofs",
   "main": "index.js",
   "directories": {
     "test": "tape test/*"
