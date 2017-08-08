@@ -14,6 +14,10 @@ Diagram of Invalid Merkle Tree Proofs
 
 <img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-fail.png?raw=true" alt="Merkle Tree Proof" width="420">
 
+Diagram of Bitcoin Merkle Tree
+
+<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-bitcoin.png?raw=true" alt="Merkle Tree Proof" width="420">
+
 # Install
 
 ```bash
@@ -64,7 +68,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 | leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
 | hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
+| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. |
 
 **Example**
 ```js
@@ -202,7 +206,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 | leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
 | hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
 | options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. |
+| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. |
 
 **Example**
 ```js
@@ -334,6 +338,10 @@ Also, as is, this implementation is vulnerable to a forgery attack for an unbala
 - [Why aren't Solidity sha3 hashes not matching what other sha3 libraries produce?](https://ethereum.stackexchange.com/questions/559/why-arent-solidity-sha3-hashes-not-matching-what-other-sha3-libraries-produce)
 
 - [What is the purpose of using different hash functions for the leaves and internals of a hash tree?](https://crypto.stackexchange.com/questions/2106/what-is-the-purpose-of-using-different-hash-functions-for-the-leaves-and-interna)
+
+- [Why is the full Merkle path needed to verify a transaction?](https://bitcoin.stackexchange.com/questions/50674/why-is-the-full-merkle-path-needed-to-verify-a-transaction)
+
+- [Where is Double hashing performed in Bitcoin?](https://bitcoin.stackexchange.com/questions/8443/where-is-double-hashing-performed-in-bitcoin)
 
 # License
 

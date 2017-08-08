@@ -14,7 +14,7 @@ class MerkleTree {
    * @param {Object} options - Additional options
    * @param {Boolean} options.isBitcoinTree - If set to `true`, constructs the Merkle
    * Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need
-   * to replicate Bitcoin constructed Merkle Trees.
+   * to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
    * @example
    * const MerkleTree = require('m-tree')
    * const crypto = require('crypto')
