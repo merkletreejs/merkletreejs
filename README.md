@@ -1,6 +1,10 @@
-<p align="center">
+<h1 align="center">
+  <br />
   <img src="https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png" alt="Merkle Tree" width="600" />
-</p>
+  <br />
+  <br />
+  <br />
+</h1>
 
 > Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify proofs in JavaScript.
 
