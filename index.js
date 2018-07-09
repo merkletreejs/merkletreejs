@@ -151,12 +151,13 @@ class MerkleTree {
       return []
     }
 
-    for (let i = 0; i < this.layers.length; i++) {
+    for (let i = 0; i < this.layers.length -1; i++) {
       const layer = this.layers[i]
       const isRightNode = index % 2
-      const pairIndex = (isRightNode ? index - 1 : index + 1)
+      const pairIndex = (isRightNode ? index - 1 : index)
 
       if (pairIndex < layer.length) {
+
         proof.push({
           position: isRightNode ? 'left': 'right',
           data: layer[pairIndex]
