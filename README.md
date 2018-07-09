@@ -27,7 +27,7 @@ Diagram of Bitcoin Merkle Tree
 # Install
 
 ```bash
-npm install m-tree
+npm install merkletreejs
 ```
 
 ## Classes
@@ -78,7 +78,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 **Example**
 ```js
-const MerkleTree = require('m-tree')
+const MerkleTree = require('merkletreejs')
 const crypto = require('crypto')
 
 function sha256(data) {
@@ -216,7 +216,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 **Example**
 ```js
-const MerkleTree = require('m-tree')
+const MerkleTree = require('merkletreejs')
 const crypto = require('crypto')
 
 function sha256(data) {
