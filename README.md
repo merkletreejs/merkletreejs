@@ -86,7 +86,7 @@ function sha256(data) {
   return crypto.createHash('sha256').update(data).digest()
 }
 
-const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+const leaves = ['a', 'b', 'c'].map(x => sha256(x))
 
 const tree = new MerkleTree(leaves, sha256)
 ```
@@ -151,8 +151,8 @@ const proof = tree.getProof(leaves[2])
 ```
 **Example**
 ```js
-const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-const tree = new MerkleTree(leaves, sha3)
+const leaves = ['a', 'b', 'a'].map(x => sha256(x))
+const tree = new MerkleTree(leaves, sha256)
 const proof = tree.getProof(leaves[2], 2)
 ```
 
@@ -224,7 +224,7 @@ function sha256(data) {
   return crypto.createHash('sha256').update(data).digest()
 }
 
-const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+const leaves = ['a', 'b', 'c'].map(x => sha256(x))
 
 const tree = new MerkleTree(leaves, sha256)
 ```
@@ -289,8 +289,8 @@ const proof = tree.getProof(leaves[2])
 ```
 **Example**
 ```js
-const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-const tree = new MerkleTree(leaves, sha3)
+const leaves = ['a', 'b', 'a'].map(x => sha256(x))
+const tree = new MerkleTree(leaves, sha256)
 const proof = tree.getProof(leaves[2], 2)
 ```
 
