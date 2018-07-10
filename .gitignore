@@ -101,3 +101,6 @@ tmp
 #######################
 .VimballRecord
 .netrwhist
+
+# Debug files to ignore #
+example.js
