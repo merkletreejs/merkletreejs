@@ -16,7 +16,7 @@ class MerkleTree {
    * Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need
    * to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
    * @example
-   * const MerkleTree = require('merkletreejs')
+   * const MerkleTree = require('m-tree')
    * const crypto = require('crypto')
    *
    * function sha256(data) {
@@ -151,13 +151,12 @@ class MerkleTree {
       return []
     }
 
-    for (let i = 0; i < this.layers.length -1; i++) {
+    for (let i = 0; i < this.layers.length - 1; i++) {
       const layer = this.layers[i]
       const isRightNode = index % 2
       const pairIndex = (isRightNode ? index - 1 : index)
 
       if (pairIndex < layer.length) {
-
         proof.push({
           position: isRightNode ? 'left': 'right',
           data: layer[pairIndex]
