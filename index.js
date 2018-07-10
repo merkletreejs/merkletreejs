@@ -151,14 +151,14 @@ class MerkleTree {
       return []
     }
 
-    if (this.isBitcoinTree) {
+    if (this.isBitcoinTree && index === (this.leaves.length - 1)) {
 
       // Proof Generation for Bitcoin Trees
 
       for (let i = 0; i < this.layers.length - 1; i++) {
         const layer = this.layers[i]
         const isRightNode = index % 2
-        const pairIndex = (isRightNode ? index - 1 : index)
+        const pairIndex = (isRightNode ? index - 1: index)
 
         if (pairIndex < layer.length) {
           proof.push({
@@ -237,6 +237,7 @@ class MerkleTree {
 
         hash = this.hashAlgo(Buffer.concat(buffers))
         hash = reverse(this.hashAlgo(hash))
+
       } else {
         buffers.push(hash)
 
