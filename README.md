@@ -331,6 +331,8 @@ As is, this implemenation is vulnerable to a [second pre-image attack](https://e
 
 Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this.
 
+More info [here](https://bitcointalk.org/?topic=102395).
+
 # Resources
 
 - [Bitcoin mining the hard way: the algorithms, protocols, and bytes](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html)
