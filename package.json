@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miguelmota/merkle-tree"
+    "url": "https://github.com/miguelmota/merkletreejs"
   },
   "keywords": [
     "merkle",
@@ -28,12 +28,12 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/miguelmota/merkle-tree/blob/master/LICENSE.md"
+    "url": "https://github.com/miguelmota/merkletreejs/blob/master/LICENSE.md"
   },
   "bugs": {
-    "url": "https://github.com/miguelmota/merkle-tree/issues"
+    "url": "https://github.com/miguelmota/merkletreejs/issues"
   },
-  "homepage": "https://github.com/miguelmota/merkle-tree",
+  "homepage": "https://github.com/miguelmota/merkletreejs",
   "devDependencies": {
     "crypto": "0.0.3",
     "ethereumjs-util": "^5.1.2",

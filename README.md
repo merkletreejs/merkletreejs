@@ -10,19 +10,19 @@
 
 Diagram of Merkle Tree
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree.png?raw=true" alt="Merkle Tree" width="500">
+<img src="https://user-images.githubusercontent.com/168240/43616375-15330c32-9671-11e8-9057-6e61c312c856.png" alt="Merkle Tree" width="500">
 
 Diagram of Merkle Tree Proof
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" alt="Merkle Tree Proof" width="420">
+<img src="https://user-images.githubusercontent.com/168240/43616387-27ec860a-9671-11e8-9f3f-0b871a6581a6.png" alt="Merkle Tree Proof" width="420">
 
 Diagram of Invalid Merkle Tree Proofs
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-fail.png?raw=true" alt="Merkle Tree Proof" width="420">
+<img src="https://user-images.githubusercontent.com/168240/43616398-33e20584-9671-11e8-9f62-9f48ce412898.png" alt="Merkle Tree Proof" width="420">
 
 Diagram of Bitcoin Merkle Tree
 
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-bitcoin.png?raw=true" alt="Merkle Tree Proof" width="420">
+<img src="(https://user-images.githubusercontent.com/168240/43616417-46d3293e-9671-11e8-81c3-8cdf7f8ddd77.png)" alt="Merkle Tree Proof" width="420">
 
 # Install
 
