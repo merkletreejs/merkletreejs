@@ -1,28 +1,6 @@
-<h1 align="center">
-  <br />
-  <img src="https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png" alt="Merkle Tree" width="600" />
-  <br />
-  <br />
-  <br />
-</h1>
+![](https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png)
 
 > Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify proofs in JavaScript.
-
-Diagram of Merkle Tree
-
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree.png?raw=true" alt="Merkle Tree" width="500">
-
-Diagram of Merkle Tree Proof
-
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof.png?raw=true" alt="Merkle Tree Proof" width="420">
-
-Diagram of Invalid Merkle Tree Proofs
-
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-proof-fail.png?raw=true" alt="Merkle Tree Proof" width="420">
-
-Diagram of Bitcoin Merkle Tree
-
-<img src="https://github.com/miguelmota/merkle-tree/blob/master/diagrams/merkle-tree-bitcoin.png?raw=true" alt="Merkle Tree Proof" width="420">
 
 # Install
 

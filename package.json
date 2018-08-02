@@ -1,49 +1,23 @@
 {
   "name": "merkletreejs",
-  "version": "0.0.6",
-  "description": "Construct Merkle Trees and verify proofs",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/*.js",
-    "docs:md": "node jsdoc.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "markdown2html": "markdownb -f markdown -h -s style.css README.md"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miguelmota/merkle-tree"
+    "url": "git+https://github.com/miguelmota/merkle-tree.git"
   },
-  "keywords": [
-    "merkle",
-    "tree",
-    "hash",
-    "algorithm",
-    "crypto",
-    "bitcoin",
-    "ethereum",
-    "proof"
-  ],
-  "author": {
-    "name": "Miguel Mota",
-    "email": "hello@miguelmota.com",
-    "url": "https://miguelmota.com/"
-  },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/miguelmota/merkle-tree/blob/master/LICENSE.md"
-  },
+  "author": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/miguelmota/merkle-tree/issues"
   },
-  "homepage": "https://github.com/miguelmota/merkle-tree",
-  "devDependencies": {
-    "crypto": "0.0.3",
-    "ethereumjs-util": "^5.1.2",
-    "jsdoc-to-markdown": "^3.0.0",
-    "tape": "^3.6.1"
-  },
-  "engines": {
-    "node": ">= 7.6.0"
-  },
+  "homepage": "https://github.com/miguelmota/merkle-tree#readme",
   "dependencies": {
-    "buffer-reverse": "^1.0.1"
+    "markdown-to-html": "0.0.13"
   }
 }
