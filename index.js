@@ -1,4 +1,5 @@
 const reverse = require('buffer-reverse')
+const CryptoJS = require('crypto-js')
 
 /**
  * Class reprensenting a Merkle Tree
@@ -29,7 +30,7 @@ class MerkleTree {
    * const tree = new MerkleTree(leaves, sha256)
    */
   constructor(leaves, hashAlgorithm, options={}) {
-    this.hashAlgo = hashAlgorithm
+    this.hashAlgo = bufferify(hashAlgorithm)
     this.leaves = leaves
     this.layers = [leaves]
     this.isBitcoinTree = !!options.isBitcoinTree
@@ -248,6 +249,18 @@ class MerkleTree {
     }
 
     return Buffer.compare(hash, root) === 0
+  }
+}
+
+function bufferify (f) {
+  return function (x) {
+    const v = f(x)
+    if (Buffer.isBuffer(v)) {
+      return v
+    }
+
+    // crypto-js support
+    return Buffer.from(f(CryptoJS.enc.Hex.parse(x.toString('hex'))).toString(CryptoJS.enc.Hex), 'hex')
   }
 }
 

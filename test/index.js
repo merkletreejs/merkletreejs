@@ -1,6 +1,7 @@
 const test = require('tape')
 const {sha3} = require('ethereumjs-util')
 const crypto = require('crypto')
+const SHA256 = require('crypto-js/sha256')
 
 const MerkleTree = require('../')
 
@@ -14,6 +15,17 @@ test('sha256', t => {
   const leaves = ['a', 'b', 'c'].map(x => sha3(x))
 
   const tree = new MerkleTree(leaves, sha256)
+
+  const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('crypto-js - sha256', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+
+  const tree = new MerkleTree(leaves, SHA256)
 
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
   t.equal(tree.getRoot().toString('hex'), root)
