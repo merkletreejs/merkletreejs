@@ -39,52 +39,53 @@ class MerkleTree {
   }
 
   createHashes(nodes) {
-    if (nodes.length === 1) {
-      return false
-    }
 
-    const layerIndex = this.layers.length
+    while (nodes.length !== 1) {
 
-    this.layers.push([])
+      const layerIndex = this.layers.length
 
-    for (let i = 0; i < nodes.length - 1; i += 2) {
-      const left = nodes[i]
-      const right = nodes[i+1]
-      let data = null
+      this.layers.push([])
 
-      if (this.isBitcoinTree) {
-        data = Buffer.concat([reverse(left), reverse(right)])
-      } else {
-        data = Buffer.concat([left, right])
+      for (let i = 0; i < nodes.length - 1; i += 2) {
+        const left = nodes[i]
+        const right = nodes[i+1]
+        let data = null
+
+        if (this.isBitcoinTree) {
+          data = Buffer.concat([reverse(left), reverse(right)])
+        } else {
+          data = Buffer.concat([left, right])
+        }
+
+        let hash = this.hashAlgo(data)
+
+        // double hash if bitcoin tree
+        if (this.isBitcoinTree) {
+          hash = reverse(this.hashAlgo(hash))
+        }
+
+        this.layers[layerIndex].push(hash)
       }
 
-      let hash = this.hashAlgo(data)
+      // is odd number of nodes
+      if (nodes.length % 2 === 1) {
+        let data = nodes[nodes.length-1]
+        let hash = data
 
-      // double hash if bitcoin tree
-      if (this.isBitcoinTree) {
-        hash = reverse(this.hashAlgo(hash))
+        // is bitcoin tree
+        if (this.isBitcoinTree) {
+          // Bitcoin method of duplicating the odd ending nodes
+          data = Buffer.concat([reverse(data), reverse(data)])
+          hash = this.hashAlgo(data)
+          hash = reverse(this.hashAlgo(hash))
+        }
+
+        this.layers[layerIndex].push(hash)
       }
 
-      this.layers[layerIndex].push(hash)
+      nodes = this.layers[layerIndex]
     }
 
-    // is odd number of nodes
-    if (nodes.length % 2 === 1) {
-      let data = nodes[nodes.length-1]
-      let hash = data
-
-      // is bitcoin tree
-      if (this.isBitcoinTree) {
-        // Bitcoin method of duplicating the odd ending nodes
-        data = Buffer.concat([reverse(data), reverse(data)])
-        hash = this.hashAlgo(data)
-        hash = reverse(this.hashAlgo(hash))
-      }
-
-      this.layers[layerIndex].push(hash)
-    }
-
-    this.createHashes(this.layers[layerIndex])
   }
 
   /**
