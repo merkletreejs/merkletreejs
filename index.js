@@ -127,7 +127,8 @@ class MerkleTree {
    * @param {Buffer} leaf - Target leaf
    * @param {Number} [index] - Target leaf index in leaves array.
    * Use if there are leaves containing duplicate data in order to distinguish it.
-   * @return {Buffer[]} - Array of Buffer hashes.
+   * @return {Object[]} - Array of objects containing a position property of type string
+   * with values of 'left' or 'right' and a data property of type Buffer.
    * @example
    * const proof = tree.getProof(leaves[2])
    *
@@ -206,7 +207,7 @@ class MerkleTree {
    * verify
    * @desc Returns true if the proof path (array of hashes) can connect the target node
    * to the Merkle root.
-   * @param {Buffer[]} proof - Array of proof Buffer hashes that should connect
+   * @param {Object[]} proof - Array of proof objects that should connect
    * target node to Merkle root.
    * @param {Buffer} targetNode - Target node Buffer
    * @param {Buffer} root - Merkle root Buffer
