@@ -3,6 +3,7 @@
   "version": "0.0.10",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "tape test/*.js",
     "docs:md": "node jsdoc.js"
