@@ -55,7 +55,7 @@ npm install merkletreejs
     * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Buffer&gt;</code>
+    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Object&gt;</code>
     * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
 
 
@@ -134,11 +134,11 @@ const root = tree.getRoot()
 
 <a name="MerkleTree+getProof"></a>
 
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Buffer&gt;</code>
+### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Object&gt;</code>
 Returns the proof for a target leaf.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of Buffer hashes.
+**Returns**: <code>Array.&lt;Object&gt;</code> - - Array of objects containing a position property of type string with values of 'left' or 'right' and a data property of type Buffer.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -168,7 +168,7 @@ to the Merkle root.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| proof | <code>Array.&lt;Buffer&gt;</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
+| proof | <code>Array.&lt;Object&gt;</code> | Array of proof objects that should connect target node to Merkle root. |
 | targetNode | <code>Buffer</code> | Target node Buffer |
 | root | <code>Buffer</code> | Merkle root Buffer |
 
@@ -193,7 +193,7 @@ Class reprensenting a Merkle Tree
     * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
     * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Buffer&gt;</code>
+    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Object&gt;</code>
     * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
 
 
@@ -272,11 +272,11 @@ const root = tree.getRoot()
 
 <a name="MerkleTree+getProof"></a>
 
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Buffer&gt;</code>
+### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Object&gt;</code>
 Returns the proof for a target leaf.
 
 **Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of Buffer hashes.
+**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of objects containing a position property of type string with values of 'left' or 'right' and a data property of type Buffer.
 
 | Param | Type | Description |
 | --- | --- | --- |
