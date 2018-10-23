@@ -29,7 +29,7 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/miguelmota/merkletreejs/blob/master/LICENSE.md"
+    "url": "https://github.com/miguelmota/merkletreejs/blob/master/LICENSE"
   },
   "bugs": {
     "url": "https://github.com/miguelmota/merkletreejs/issues"
