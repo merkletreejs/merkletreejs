@@ -12,7 +12,7 @@
 
 - [Diagrams](#diagrams)
 - [Install](#install)
-- [Documentation](#classes)
+- [Documentation](#documentation)
 - [Test](#test)
 - [FAQ](#faq)
 - [Notes](#notes)
@@ -37,11 +37,13 @@ Diagram of Bitcoin Merkle Tree
 
 <img src="https://user-images.githubusercontent.com/168240/43616417-46d3293e-9671-11e8-81c3-8cdf7f8ddd77.png" alt="Merkle Tree Proof" width="420">
 
-# Install
+## Install
 
 ```bash
 npm install merkletreejs
 ```
+
+## Documentation
 
 ## Classes
 
@@ -371,4 +373,4 @@ More info [here](https://bitcointalk.org/?topic=102395).
 
 ## License
 
-MIT
+[MIT](LICENSE)
