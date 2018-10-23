@@ -8,6 +8,19 @@
 
 > Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify proofs in JavaScript.
 
+# Contents
+
+- [Diagrams](#diagrams)
+- [Install](#install)
+- [Documentation](#classes)
+- [Test](#test)
+- [FAQ](#faq)
+- [Notes](#notes)
+- [Resources](#resources)
+- [License](#license)
+
+# Diagrams
+
 Diagram of Merkle Tree
 
 <img src="https://user-images.githubusercontent.com/168240/43616375-15330c32-9671-11e8-9057-6e61c312c856.png" alt="Merkle Tree" width="500">
@@ -319,13 +332,18 @@ const verified = tree.verify(proof, leaves[2], root)
 
 * * *
 
-# Test
+## Test
 
 ```bash
 npm test
 ```
 
-# Notes
+## FAQ
+
+- Q: How do you verify merkle proofs in Solidity?
+  - A: Yes, check out the example [merkletreejs-solidity](https://github.com/miguelmota/merkletreejs-solidity).
+
+## Notes
 
 As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing algorithm function for leaves and nodes, so that `H(x) != H'(x)`.
 
@@ -333,7 +351,7 @@ Also, as is, this implementation is vulnerable to a forgery attack for an unbala
 
 More info [here](https://bitcointalk.org/?topic=102395).
 
-# Resources
+## Resources
 
 - [Bitcoin mining the hard way: the algorithms, protocols, and bytes](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html)
 
@@ -351,6 +369,6 @@ More info [here](https://bitcointalk.org/?topic=102395).
 
 - [Where is Double hashing performed in Bitcoin?](https://bitcoin.stackexchange.com/questions/8443/where-is-double-hashing-performed-in-bitcoin)
 
-# License
+## License
 
 MIT
