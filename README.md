@@ -343,7 +343,7 @@ npm test
 ## FAQ
 
 - Q: How do you verify merkle proofs in Solidity?
-  - A: Yes, check out the example [merkletreejs-solidity](https://github.com/miguelmota/merkletreejs-solidity).
+  - A: Check out the example repo [merkletreejs-solidity](https://github.com/miguelmota/merkletreejs-solidity) on how to generate merkle proofs with this library and verify them in Solidity.
 
 ## Notes
 
