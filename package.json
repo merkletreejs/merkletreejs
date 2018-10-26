@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "buffer-reverse": "^1.0.1",
-    "is-buffer": "^2.0.3",
-    "crypto-js": "^3.1.9-1"
+    "crypto-js": "^3.1.9-1",
+    "is-buffer": "^2.0.3"
   }
 }

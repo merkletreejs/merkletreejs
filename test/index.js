@@ -1,7 +1,9 @@
 const test = require('tape')
 const {sha3} = require('ethereumjs-util')
 const crypto = require('crypto')
+const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
+const SHA3 = require('crypto-js/SHA3')
 
 const MerkleTree = require('../')
 
@@ -39,6 +41,17 @@ test('crypto-js - SHA256 leaves', t => {
   const tree = new MerkleTree(leaves, SHA256)
 
   const root = '7075152d03a5cd92104887b476862778ec0c87be5c2fa1c0a90f87c49fad6eff'
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('crypto-js - SHA3 leaves', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(SHA3)
+
+  const tree = new MerkleTree(leaves, SHA256)
+
+  const root = '57e9ee696a291f8a51d224a6d64ba4a0693920a63f1e0329efe96c02a5f28849'
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
@@ -252,7 +265,7 @@ test('sha256 - no leaves', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha256 - 1,000,000 leaves', t => {
+test.skip('sha256 - 1,000,000 leaves', t => {
   t.plan(1)
 
   let values = []
@@ -266,4 +279,33 @@ test('sha256 - 1,000,000 leaves', t => {
 
   const root = '101dd357df60384d254330fe118e3046871767c2748ebd62ce031c117df483da'
   t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('crypto-js SHA3 leaves SHA256 hash algo', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c', 'd'].map(SHA3)
+
+  const tree = new MerkleTree(leaves, SHA256)
+
+  t.deepEqual(tree.getLeaves(), leaves.map(MerkleTree.bufferify))
+
+  const root = tree.getRoot()
+
+  const verifications = leaves.map(leaf => {
+    const proof = tree.getProof(leaf)
+    return tree.verify(proof, leaf, root)
+  })
+
+  t.equal(verifications.every(Boolean), true)
+});
+
+test('crypto-js bufferify', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd'].map(SHA3)
+
+  const bufferifyCryptoJS = x => Buffer.from(x.toString(CryptoJS.enc.Hex), 'hex')
+
+  t.deepEqual(leaves.map(MerkleTree.bufferify), leaves.map(bufferifyCryptoJS))
 })

@@ -32,7 +32,7 @@ class MerkleTree {
   constructor(leaves, hashAlgorithm, options={}) {
     this.hashAlgo = bufferifyFn(hashAlgorithm)
     this.leaves = leaves.map(bufferify)
-    this.layers = [leaves]
+    this.layers = [this.leaves]
     this.isBitcoinTree = !!options.isBitcoinTree
 
     this.createHashes(this.leaves)
@@ -137,6 +137,7 @@ class MerkleTree {
    * const proof = tree.getProof(leaves[2], 2)
    */
   getProof(leaf, index) {
+    leaf = bufferify(leaf);
     const proof = [];
 
     if (typeof index !== 'number') {
@@ -218,7 +219,7 @@ class MerkleTree {
    *
    */
   verify(proof, targetNode, root) {
-    let hash = targetNode
+    let hash = bufferify(targetNode)
 
     if (!Array.isArray(proof) ||
         !proof.length ||
@@ -250,6 +251,10 @@ class MerkleTree {
     }
 
     return Buffer.compare(hash, root) === 0
+  }
+
+  static bufferify(x) {
+    return bufferify(x)
   }
 }
 
