@@ -30,8 +30,8 @@ class MerkleTree {
    * const tree = new MerkleTree(leaves, sha256)
    */
   constructor(leaves, hashAlgorithm, options={}) {
-    this.hashAlgo = bufferify(hashAlgorithm)
-    this.leaves = leaves
+    this.hashAlgo = bufferifyFn(hashAlgorithm)
+    this.leaves = leaves.map(bufferify)
     this.layers = [leaves]
     this.isBitcoinTree = !!options.isBitcoinTree
 
@@ -253,7 +253,22 @@ class MerkleTree {
   }
 }
 
-function bufferify (f) {
+function bufferify(x) {
+  if (!Buffer.isBuffer(x)) {
+    // crypto-js support
+    if (typeof x === 'object' && x.words) {
+      return Buffer.from(x.toString(CryptoJS.enc.Hex), 'hex')
+    } else if (isHexStr(x)) {
+      return Buffer.from(x, 'hex')
+    } else if (typeof x === 'string') {
+      return Buffer.from(x)
+    }
+  }
+
+  return x
+}
+
+function bufferifyFn (f) {
   return function (x) {
     const v = f(x)
     if (Buffer.isBuffer(v)) {
@@ -263,6 +278,10 @@ function bufferify (f) {
     // crypto-js support
     return Buffer.from(f(CryptoJS.enc.Hex.parse(x.toString('hex'))).toString(CryptoJS.enc.Hex), 'hex')
   }
+}
+
+function isHexStr(v, size) {
+  return (typeof v === 'string' && /^(0x)?[0-9A-Fa-f]*$/.test(v))
 }
 
 module.exports = MerkleTree

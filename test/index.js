@@ -31,6 +31,17 @@ test('crypto-js - sha256', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
+test('crypto-js - SHA256 leaves', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(SHA256)
+
+  const tree = new MerkleTree(leaves, SHA256)
+
+  const root = '7075152d03a5cd92104887b476862778ec0c87be5c2fa1c0a90f87c49fad6eff'
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
 test('solidity sha3 [keccak-256]', t => {
   t.plan(20)
 
@@ -221,6 +232,14 @@ test('sha-256 with option.isBitcoinTree', t => {
   const proof_0 = tree.getProof(leaves[0])
 
   t.equal(tree.verify(proof_0, leaves[0], root), true)
+})
+
+test('sha3 - hex strings', t => {
+  t.plan(1)
+  let leaves = ['a', 'b', 'c'].map(x => sha3(x).toString('hex'));
+  const tree = new MerkleTree(leaves, SHA256);
+  const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae';
+  t.equal(tree.getRoot().toString('hex'), root)
 })
 
 test('sha256 - no leaves', t => {
