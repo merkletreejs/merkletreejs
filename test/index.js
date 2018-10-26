@@ -222,3 +222,29 @@ test('sha-256 with option.isBitcoinTree', t => {
 
   t.equal(tree.verify(proof_0, leaves[0], root), true)
 })
+
+test('sha256 - no leaves', t => {
+  t.plan(1)
+
+  const leaves = []
+  const tree = new MerkleTree(leaves, sha256)
+
+  const root = ''
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('sha256 - 1,000,000 leaves', t => {
+  t.plan(1)
+
+  let values = []
+  for (let i = 0; i < 1e6; i++) {
+    values.push(`${i}`)
+  }
+
+  const leaves = values.map(x => sha256(x))
+
+  const tree = new MerkleTree(leaves, sha256)
+
+  const root = '101dd357df60384d254330fe118e3046871767c2748ebd62ce031c117df483da'
+  t.equal(tree.getRoot().toString('hex'), root)
+})

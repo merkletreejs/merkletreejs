@@ -39,8 +39,7 @@ class MerkleTree {
   }
 
   createHashes(nodes) {
-
-    while (nodes.length !== 1) {
+    while (nodes.length > 1) {
 
       const layerIndex = this.layers.length
 
@@ -118,7 +117,7 @@ class MerkleTree {
    * const root = tree.getRoot()
    */
   getRoot() {
-    return this.layers[this.layers.length-1][0]
+    return this.layers[this.layers.length-1][0] || Buffer.from([])
   }
 
   /**
