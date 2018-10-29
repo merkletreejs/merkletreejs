@@ -249,9 +249,9 @@ test('sha-256 with option.isBitcoinTree', t => {
 
 test('sha3 - hex strings', t => {
   t.plan(1)
-  let leaves = ['a', 'b', 'c'].map(x => sha3(x).toString('hex'));
-  const tree = new MerkleTree(leaves, SHA256);
-  const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae';
+  let leaves = ['a', 'b', 'c'].map(x => sha3(x).toString('hex'))
+  const tree = new MerkleTree(leaves, SHA256)
+  const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
@@ -298,7 +298,7 @@ test('crypto-js SHA3 leaves SHA256 hash algo', t => {
   })
 
   t.equal(verifications.every(Boolean), true)
-});
+})
 
 test('crypto-js bufferify', t => {
   t.plan(1)

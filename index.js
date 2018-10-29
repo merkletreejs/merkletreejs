@@ -137,8 +137,8 @@ class MerkleTree {
    * const proof = tree.getProof(leaves[2], 2)
    */
   getProof(leaf, index) {
-    leaf = bufferify(leaf);
-    const proof = [];
+    leaf = bufferify(leaf)
+    const proof = []
 
     if (typeof index !== 'number') {
       index = -1
