@@ -309,3 +309,20 @@ test('crypto-js bufferify', t => {
 
   t.deepEqual(leaves.map(MerkleTree.bufferify), leaves.map(bufferifyCryptoJS))
 })
+
+test('print', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const tree = new MerkleTree(leaves, sha256)
+  const str = MerkleTree.print(tree, {log: false})
+
+  t.equal(str,
+`└─ 311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae
+   ├─ 176f0f307632fdd5831875eb709e2f68d770b102262998b214ddeb3f04164ae1
+   │  ├─ 3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb
+   │  └─ b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510
+   └─ 0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2
+      └─ 0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2
+`)
+})

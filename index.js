@@ -1,5 +1,6 @@
 const reverse = require('buffer-reverse')
 const CryptoJS = require('crypto-js')
+const treeify = require('treeify')
 
 /**
  * Class reprensenting a Merkle Tree
@@ -220,6 +221,7 @@ class MerkleTree {
    */
   verify(proof, targetNode, root) {
     let hash = bufferify(targetNode)
+    root = bufferify(root)
 
     if (!Array.isArray(proof) ||
         !proof.length ||
@@ -255,6 +257,38 @@ class MerkleTree {
 
   static bufferify(x) {
     return bufferify(x)
+  }
+
+  static print(tree, opts) {
+    opts = opts || {}
+    const log = opts instanceof Object && opts.log !== false
+    const layers = tree.getLayers().map(x => x.map(x => x.toString('hex')))
+    const objs = []
+    for (let i = 0; i < layers.length; i++) {
+      const arr = []
+      for (let j = 0; j < layers[i].length; j++) {
+        const obj = { [layers[i][j]]: {} }
+        if (objs.length) {
+          const a = objs.shift()
+          const akey = Object.keys(a)[0]
+          obj[layers[i][j]][akey] = a[akey]
+          if (objs.length) {
+            const b = objs.shift()
+            const bkey = Object.keys(b)[0]
+            obj[layers[i][j]][bkey] = b[bkey]
+          }
+        }
+
+        arr.push(obj)
+      }
+
+      objs.push(...arr)
+    }
+
+    const str = treeify.asTree(objs[0], true)
+    if (log) console.log(str)
+
+    return str
   }
 }
 
