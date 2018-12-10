@@ -39,6 +39,7 @@ class MerkleTree {
     this.createHashes(this.leaves)
   }
 
+  // TODO: documentation
   createHashes(nodes) {
     while (nodes.length > 1) {
 
@@ -255,20 +256,16 @@ class MerkleTree {
     return Buffer.compare(hash, root) === 0
   }
 
-  static bufferify(x) {
-    return bufferify(x)
-  }
-
-  static print(tree, opts) {
-    opts = opts || {}
-    const log = opts instanceof Object && opts.log !== false
-    const layers = tree.getLayers().map(x => x.map(x => x.toString('hex')))
+  // TODO: documentation
+  getLayersAsObject() {
+    const layers = this.getLayers().map(x => x.map(x => x.toString('hex')))
     const objs = []
     for (let i = 0; i < layers.length; i++) {
       const arr = []
       for (let j = 0; j < layers[i].length; j++) {
-        const obj = { [layers[i][j]]: {} }
+        const obj = { [layers[i][j]]: null }
         if (objs.length) {
+          obj[layers[i][j]] = {}
           const a = objs.shift()
           const akey = Object.keys(a)[0]
           obj[layers[i][j]][akey] = a[akey]
@@ -285,10 +282,33 @@ class MerkleTree {
       objs.push(...arr)
     }
 
-    const str = treeify.asTree(objs[0], true)
-    if (log) console.log(str)
+    return objs[0]
+  }
 
-    return str
+  // TODO: documentation
+  print() {
+    MerkleTree.print(this)
+  }
+
+  // TODO: documentation
+  toTreeString() {
+    const obj = this.getLayersAsObject()
+    return treeify.asTree(obj, true)
+  }
+
+  // TODO: documentation
+  toString() {
+    return this.toTreeString()
+  }
+
+  // TODO: documentation
+  static bufferify(x) {
+    return bufferify(x)
+  }
+
+  // TODO: documentation
+  static print(tree) {
+    console.log(tree.toString())
   }
 }
 
@@ -319,7 +339,7 @@ function bufferifyFn (f) {
   }
 }
 
-function isHexStr(v, size) {
+function isHexStr(v) {
   return (typeof v === 'string' && /^(0x)?[0-9A-Fa-f]*$/.test(v))
 }
 
