@@ -48,7 +48,7 @@ npm install merkletreejs
 
 Construct tree, generate proof, and verify proof:
 
-```bash
+```js
 const MerkleTree = require('merkletreejs')
 const SHA256 = require('crypto-js/sha256')
 
@@ -70,8 +70,6 @@ console.log(tree.verify(badProof, leaf, root)) // false
 Print tree to console:
 
 ```js
-const leaves = ['a', 'b', 'c'].map(x => sha3(x))
-const tree = new MerkleTree(leaves, sha256)
 MerkleTree.print(tree)
 ```
 
