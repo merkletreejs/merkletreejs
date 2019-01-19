@@ -1,14 +1,16 @@
-<h1 align="center">
+<h3 align="center">
   <br />
-  <img src="https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png" alt="Merkle Tree" width="600" />
+  <img src="https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png" alt="logo" width="600" />
   <br />
   <br />
   <br />
-</h1>
+</h3>
+
+# MerkleTree.js
 
 > Construct [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) and verify proofs in JavaScript.
 
-# Contents
+## Contents
 
 - [Diagrams](#diagrams)
 - [Install](#install)
@@ -20,7 +22,7 @@
 - [Resources](#resources)
 - [License](#license)
 
-# Diagrams
+## Diagrams
 
 Diagram of Merkle Tree
 
