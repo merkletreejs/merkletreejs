@@ -3,7 +3,7 @@ const {sha3} = require('ethereumjs-util')
 const crypto = require('crypto')
 const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
-const SHA3 = require('crypto-js/SHA3')
+const SHA3 = require('crypto-js/sha3')
 
 const MerkleTree = require('../')
 
