@@ -41,7 +41,8 @@
     "crypto": "0.0.3",
     "ethereumjs-util": "^5.1.2",
     "jsdoc-to-markdown": "^3.0.0",
-    "tape": "^4.9.2"
+    "tape": "^4.9.2",
+    "typescript": "^3.4.1"
   },
   "engines": {
     "node": ">= 7.6.0"
