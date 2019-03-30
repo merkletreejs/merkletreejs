@@ -1,11 +1,11 @@
 {
   "name": "merkletreejs",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "typings/merkletreejs/*",
   "scripts": {
-    "test": "npm run build && tape test/*.js",
+    "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
     "docs:md": "node jsdoc.js"
   },

@@ -106,4 +106,4 @@ tmp
 example.js
 
 build
-dist
+#dist
