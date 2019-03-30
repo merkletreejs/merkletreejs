@@ -5,7 +5,7 @@ const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
 const SHA3 = require('crypto-js/sha3')
 
-const MerkleTree = require('../')
+const { MerkleTree } = require('../')
 
 function sha256(data) {
   return crypto.createHash('sha256').update(data).digest()

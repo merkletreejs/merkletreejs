@@ -54,7 +54,7 @@ npm install merkletreejs
 Construct tree, generate proof, and verify proof:
 
 ```js
-const MerkleTree = require('merkletreejs')
+const { MerkleTree } = require('merkletreejs')
 const SHA256 = require('crypto-js/sha256')
 
 const leaves = ['a', 'b', 'c'].map(x => SHA256(x))
@@ -139,7 +139,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 **Example**
 ```js
-const MerkleTree = require('merkletreejs')
+const { MerkleTree } = require('merkletreejs')
 const crypto = require('crypto')
 
 function sha256(data) {
@@ -277,7 +277,7 @@ Lonely leaf nodes are promoted to the next level up without being hashed again.
 
 **Example**
 ```js
-const MerkleTree = require('merkletreejs')
+const { MerkleTree } = require('merkletreejs')
 const crypto = require('crypto')
 
 function sha256(data) {

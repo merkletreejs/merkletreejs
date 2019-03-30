@@ -1,12 +1,17 @@
-const reverse = require('buffer-reverse')
-const CryptoJS = require('crypto-js')
-const treeify = require('treeify')
+import * as reverse from 'buffer-reverse'
+import * as CryptoJS from 'crypto-js'
+import * as treeify from 'treeify'
 
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
  */
-class MerkleTree {
+export class MerkleTree {
+  hashAlgo: any
+  leaves: any
+  layers: any
+  isBitcoinTree: boolean
+
   /**
    * @desc Constructs a Merkle Tree.
    * All nodes and leaves are stored as Buffers.
@@ -30,7 +35,7 @@ class MerkleTree {
    *
    * const tree = new MerkleTree(leaves, sha256)
    */
-  constructor(leaves, hashAlgorithm, options={}) {
+  constructor(leaves, hashAlgorithm, options={} as any) {
     this.hashAlgo = bufferifyFn(hashAlgorithm)
     this.leaves = leaves.map(bufferify)
     this.layers = [this.leaves]
@@ -138,7 +143,7 @@ class MerkleTree {
    * const tree = new MerkleTree(leaves, sha3)
    * const proof = tree.getProof(leaves[2], 2)
    */
-  getProof(leaf, index) {
+  getProof(leaf, index?) {
     leaf = bufferify(leaf)
     const proof = []
 
@@ -343,4 +348,4 @@ function isHexStr(v) {
   return (typeof v === 'string' && /^(0x)?[0-9A-Fa-f]*$/.test(v))
 }
 
-module.exports = MerkleTree
+export default MerkleTree

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "typings/*"
+      ]
+    },
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
