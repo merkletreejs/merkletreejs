@@ -104,3 +104,6 @@ tmp
 
 # Debug files to ignore #
 example.js
+
+build
+dist
