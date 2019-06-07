@@ -7,7 +7,7 @@
   "scripts": {
     "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
-    "docs:md": "typedoc --theme markdown index.ts --out docs"
+    "docs:md": "rm -rf docs/ && typedoc --theme markdown index.ts --out docs --mdEngine github --mdDocusaurus --mdHideSources"
   },
   "repository": {
     "type": "git",

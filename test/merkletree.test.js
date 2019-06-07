@@ -386,7 +386,7 @@ test('sha256 - no leaves', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha256 - 1,000,000 leaves', t => {
+test.skip('sha256 - 1,000,000 leaves', t => {
   t.plan(1)
 
   const values = []

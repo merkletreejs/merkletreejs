@@ -1,15 +1,21 @@
+interface Options {
+    duplicateOdd: boolean;
+    hashLeaves: boolean;
+    isBitcoinTree: boolean;
+    sort: boolean;
+}
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
  */
 export declare class MerkleTree {
-    hashAlgo: any;
-    hashLeaves: boolean;
-    leaves: any;
-    layers: any;
-    isBitcoinTree: boolean;
-    _sort: boolean;
     duplicateOdd: boolean;
+    hashAlgo: (value: any) => any;
+    hashLeaves: boolean;
+    isBitcoinTree: boolean;
+    leaves: any[];
+    layers: any[];
+    sort: boolean;
     /**
      * @desc Constructs a Merkle Tree.
      * All nodes and leaves are stored as Buffers.
@@ -24,42 +30,50 @@ export declare class MerkleTree {
      * to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
      * @param {Boolean} options.duplicateOdd - If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
      * @example
-     * const MerkleTree = require('merkletreejs')
-     * const crypto = require('crypto')
+     *```js
+     *const MerkleTree = require('merkletreejs')
+     *const crypto = require('crypto')
      *
-     * function sha256(data) {
-     *   // returns Buffer
-     *   return crypto.createHash('sha256').update(data).digest()
-     * }
+     *function sha256(data) {
+     *  // returns Buffer
+     *  return crypto.createHash('sha256').update(data).digest()
+     *}
      *
-     * const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+     *const leaves = ['a', 'b', 'c'].map(x => sha3(x))
      *
-     * const tree = new MerkleTree(leaves, sha256)
+     *const tree = new MerkleTree(leaves, sha256)
+     *```
      */
-    constructor(leaves: any, hashAlgorithm: any, options?: any);
+    constructor(leaves: any, hashAlgorithm: any, options?: Options);
     createHashes(nodes: any): void;
     /**
      * getLeaves
      * @desc Returns array of leaves of Merkle Tree.
      * @return {Buffer[]}
      * @example
-     * const leaves = tree.getLeaves()
+     *```js
+     *const leaves = tree.getLeaves()
+     *```
      */
-    getLeaves(): any;
+    getLeaves(): any[];
     /**
      * getLayers
      * @desc Returns array of all layers of Merkle Tree, including leaves and root.
      * @return {Buffer[]}
      * @example
-     * const layers = tree.getLayers()
+     *```js
+     *const layers = tree.getLayers()
+     *```
      */
-    getLayers(): any;
+    getLayers(): any[];
     /**
      * getRoot
      * @desc Returns the Merkle root hash as a Buffer.
      * @return {Buffer}
      * @example
-     * const root = tree.getRoot()
+     *```js
+     *const root = tree.getRoot()
+     *```
      */
     getRoot(): any;
     /**
@@ -70,13 +84,17 @@ export declare class MerkleTree {
      * Use if there are leaves containing duplicate data in order to distinguish it.
      * @return {Object[]} - Array of objects containing a position property of type string
      * with values of 'left' or 'right' and a data property of type Buffer.
-     * @example
-     * const proof = tree.getProof(leaves[2])
+     *@example
+     * ```js
+     *const proof = tree.getProof(leaves[2])
+     *```
      *
      * @example
-     * const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-     * const tree = new MerkleTree(leaves, sha3)
-     * const proof = tree.getProof(leaves[2], 2)
+     *```js
+     *const leaves = ['a', 'b', 'a'].map(x => sha3(x))
+     *const tree = new MerkleTree(leaves, sha3)
+     *const proof = tree.getProof(leaves[2], 2)
+     *```
      */
     getProof(leaf: any, index?: any): any[];
     /**
@@ -89,10 +107,11 @@ export declare class MerkleTree {
      * @param {Buffer} root - Merkle root Buffer
      * @return {Boolean}
      * @example
-     * const root = tree.getRoot()
-     * const proof = tree.getProof(leaves[2])
-     * const verified = tree.verify(proof, leaves[2], root)
-     *
+     *```js
+     *const root = tree.getRoot()
+     *const proof = tree.getProof(leaves[2])
+     *const verified = tree.verify(proof, leaves[2], root)
+     *```
      */
     verify(proof: any, targetNode: any, root: any): boolean;
     getLayersAsObject(): any;

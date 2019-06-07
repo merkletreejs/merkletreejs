@@ -22,23 +22,25 @@ var MerkleTree = /** @class */ (function () {
      * to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
      * @param {Boolean} options.duplicateOdd - If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
      * @example
-     * const MerkleTree = require('merkletreejs')
-     * const crypto = require('crypto')
+     *```js
+     *const MerkleTree = require('merkletreejs')
+     *const crypto = require('crypto')
      *
-     * function sha256(data) {
-     *   // returns Buffer
-     *   return crypto.createHash('sha256').update(data).digest()
-     * }
+     *function sha256(data) {
+     *  // returns Buffer
+     *  return crypto.createHash('sha256').update(data).digest()
+     *}
      *
-     * const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+     *const leaves = ['a', 'b', 'c'].map(x => sha3(x))
      *
-     * const tree = new MerkleTree(leaves, sha256)
+     *const tree = new MerkleTree(leaves, sha256)
+     *```
      */
     function MerkleTree(leaves, hashAlgorithm, options) {
         if (options === void 0) { options = {}; }
         this.isBitcoinTree = !!options.isBitcoinTree;
         this.hashLeaves = !!options.hashLeaves;
-        this._sort = !!options.sort;
+        this.sort = !!options.sort;
         this.duplicateOdd = !!options.duplicateOdd;
         this.hashAlgo = bufferifyFn(hashAlgorithm);
         if (this.hashLeaves) {
@@ -80,14 +82,14 @@ var MerkleTree = /** @class */ (function () {
                 var data = null;
                 if (this.isBitcoinTree) {
                     var combined = [reverse(left), reverse(right)];
-                    if (this._sort) {
+                    if (this.sort) {
                         combined.sort(Buffer.compare);
                     }
                     data = Buffer.concat(combined);
                 }
                 else {
                     var combined = [left, right];
-                    if (this._sort) {
+                    if (this.sort) {
                         combined.sort(Buffer.compare);
                     }
                     data = Buffer.concat(combined);
@@ -107,7 +109,9 @@ var MerkleTree = /** @class */ (function () {
      * @desc Returns array of leaves of Merkle Tree.
      * @return {Buffer[]}
      * @example
-     * const leaves = tree.getLeaves()
+     *```js
+     *const leaves = tree.getLeaves()
+     *```
      */
     MerkleTree.prototype.getLeaves = function () {
         return this.leaves;
@@ -117,7 +121,9 @@ var MerkleTree = /** @class */ (function () {
      * @desc Returns array of all layers of Merkle Tree, including leaves and root.
      * @return {Buffer[]}
      * @example
-     * const layers = tree.getLayers()
+     *```js
+     *const layers = tree.getLayers()
+     *```
      */
     MerkleTree.prototype.getLayers = function () {
         return this.layers;
@@ -127,7 +133,9 @@ var MerkleTree = /** @class */ (function () {
      * @desc Returns the Merkle root hash as a Buffer.
      * @return {Buffer}
      * @example
-     * const root = tree.getRoot()
+     *```js
+     *const root = tree.getRoot()
+     *```
      */
     MerkleTree.prototype.getRoot = function () {
         return this.layers[this.layers.length - 1][0] || Buffer.from([]);
@@ -140,13 +148,17 @@ var MerkleTree = /** @class */ (function () {
      * Use if there are leaves containing duplicate data in order to distinguish it.
      * @return {Object[]} - Array of objects containing a position property of type string
      * with values of 'left' or 'right' and a data property of type Buffer.
-     * @example
-     * const proof = tree.getProof(leaves[2])
+     *@example
+     * ```js
+     *const proof = tree.getProof(leaves[2])
+     *```
      *
      * @example
-     * const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-     * const tree = new MerkleTree(leaves, sha3)
-     * const proof = tree.getProof(leaves[2], 2)
+     *```js
+     *const leaves = ['a', 'b', 'a'].map(x => sha3(x))
+     *const tree = new MerkleTree(leaves, sha3)
+     *const proof = tree.getProof(leaves[2], 2)
+     *```
      */
     MerkleTree.prototype.getProof = function (leaf, index) {
         leaf = bufferify(leaf);
@@ -207,10 +219,11 @@ var MerkleTree = /** @class */ (function () {
      * @param {Buffer} root - Merkle root Buffer
      * @return {Boolean}
      * @example
-     * const root = tree.getRoot()
-     * const proof = tree.getProof(leaves[2])
-     * const verified = tree.verify(proof, leaves[2], root)
-     *
+     *```js
+     *const root = tree.getRoot()
+     *const proof = tree.getProof(leaves[2])
+     *const verified = tree.verify(proof, leaves[2], root)
+     *```
      */
     MerkleTree.prototype.verify = function (proof, targetNode, root) {
         var hash = bufferify(targetNode);
