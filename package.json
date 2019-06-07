@@ -1,13 +1,13 @@
 {
   "name": "merkletreejs",
-  "version": "0.0.25",
+  "version": "0.1.0",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "typings/merkletreejs/*",
   "scripts": {
     "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
-    "docs:md": "node jsdoc.js"
+    "docs:md": "typedoc --theme markdown index.ts --out docs"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,9 @@
     "@types/node": "^11.12.1",
     "crypto": "0.0.3",
     "ethereumjs-util": "^5.1.2",
-    "jsdoc-to-markdown": "^3.0.0",
     "tape": "^4.9.2",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.2.1",
     "typescript": "^3.4.1"
   },
   "engines": {
@@ -51,6 +52,7 @@
     "buffer-reverse": "^1.0.1",
     "crypto-js": "^3.1.9-1",
     "is-buffer": "^2.0.3",
+    "merkle-lib": "^2.0.10",
     "treeify": "^1.1.0"
   }
 }

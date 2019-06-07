@@ -103,7 +103,11 @@ tmp
 .netrwhist
 
 # Debug files to ignore #
+#########################
 example.js
 
+# Build directories #
+#####################
 build
 #dist
+docs

@@ -8,9 +8,12 @@ import * as treeify from 'treeify'
  */
 export class MerkleTree {
   hashAlgo: any
+  hashLeaves: boolean
   leaves: any
   layers: any
   isBitcoinTree: boolean
+  _sort: boolean
+  duplicateOdd: boolean
 
   /**
    * @desc Constructs a Merkle Tree.
@@ -19,9 +22,12 @@ export class MerkleTree {
    * @param {Buffer[]} leaves - Array of hashed leaves. Each leaf must be a Buffer.
    * @param {Function} hashAlgorithm - Algorithm used for hashing leaves and nodes
    * @param {Object} options - Additional options
+   * @param {Boolean} options.sort - If set to `true`, the leaves and hashing pairs will be sorted.
+   * @param {Boolean} options.hashLeaves - If set to `true`, the leaves will hashed using the set hashing algorithms.
    * @param {Boolean} options.isBitcoinTree - If set to `true`, constructs the Merkle
    * Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need
    * to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
+   * @param {Boolean} options.duplicateOdd - If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
    * @example
    * const MerkleTree = require('merkletreejs')
    * const crypto = require('crypto')
@@ -36,11 +42,17 @@ export class MerkleTree {
    * const tree = new MerkleTree(leaves, sha256)
    */
   constructor(leaves, hashAlgorithm, options={} as any) {
+    this.isBitcoinTree = !!options.isBitcoinTree
+    this.hashLeaves = !!options.hashLeaves
+    this._sort = !!options.sort
+    this.duplicateOdd = !!options.duplicateOdd
     this.hashAlgo = bufferifyFn(hashAlgorithm)
+    if (this.hashLeaves) {
+      leaves = leaves.map(this.hashAlgo)
+    }
+
     this.leaves = leaves.map(bufferify)
     this.layers = [this.leaves]
-    this.isBitcoinTree = !!options.isBitcoinTree
-
     this.createHashes(this.leaves)
   }
 
@@ -52,15 +64,50 @@ export class MerkleTree {
 
       this.layers.push([])
 
-      for (let i = 0; i < nodes.length - 1; i += 2) {
+      for (let i = 0; i < nodes.length; i += 2) {
+
+        if (i+1 === nodes.length) {
+          if (nodes.length % 2 === 1) {
+            let data = nodes[nodes.length-1]
+            let hash = data
+
+            // is bitcoin tree
+            if (this.isBitcoinTree) {
+              // Bitcoin method of duplicating the odd ending nodes
+              data = Buffer.concat([reverse(data), reverse(data)])
+              hash = this.hashAlgo(data)
+              hash = reverse(this.hashAlgo(hash))
+
+              this.layers[layerIndex].push(hash)
+              continue
+            } else {
+              if (!this.duplicateOdd) {
+                this.layers[layerIndex].push(nodes[i])
+                continue
+              }
+            }
+          }
+
+        }
+
         const left = nodes[i]
-        const right = nodes[i+1]
+        const right = i + 1 == nodes.length ? left : nodes[i + 1];
         let data = null
 
         if (this.isBitcoinTree) {
-          data = Buffer.concat([reverse(left), reverse(right)])
+          let combined = [reverse(left), reverse(right)]
+          if (this._sort) {
+            combined.sort(Buffer.compare)
+          }
+
+          data = Buffer.concat(combined)
         } else {
-          data = Buffer.concat([left, right])
+          let combined = [left, right]
+          if (this._sort) {
+            combined.sort(Buffer.compare)
+          }
+
+          data = Buffer.concat(combined)
         }
 
         let hash = this.hashAlgo(data)
@@ -73,25 +120,8 @@ export class MerkleTree {
         this.layers[layerIndex].push(hash)
       }
 
-      // is odd number of nodes
-      if (nodes.length % 2 === 1) {
-        let data = nodes[nodes.length-1]
-        let hash = data
-
-        // is bitcoin tree
-        if (this.isBitcoinTree) {
-          // Bitcoin method of duplicating the odd ending nodes
-          data = Buffer.concat([reverse(data), reverse(data)])
-          hash = this.hashAlgo(data)
-          hash = reverse(this.hashAlgo(hash))
-        }
-
-        this.layers[layerIndex].push(hash)
-      }
-
       nodes = this.layers[layerIndex]
     }
-
   }
 
   /**
@@ -180,35 +210,35 @@ export class MerkleTree {
         // set index to parent index
         index = (index / 2)|0
 
-        }
-
-        return proof
-
-      } else {
-
-        // Proof Generation for Non-Bitcoin Trees
-
-        for (let i = 0; i < this.layers.length; i++) {
-          const layer = this.layers[i]
-          const isRightNode = index % 2
-          const pairIndex = (isRightNode ? index - 1 : index + 1)
-
-          if (pairIndex < layer.length) {
-            proof.push({
-              position: isRightNode ? 'left': 'right',
-              data: layer[pairIndex]
-            })
-          }
-
-          // set index to parent index
-          index = (index / 2)|0
-
-          }
-
-          return proof
-
-        }
       }
+
+      return proof
+
+    } else {
+
+      // Proof Generation for Non-Bitcoin Trees
+
+      for (let i = 0; i < this.layers.length; i++) {
+        const layer = this.layers[i]
+        const isRightNode = index % 2
+        const pairIndex = (isRightNode ? index - 1 : index + 1)
+
+        if (pairIndex < layer.length) {
+          proof.push({
+            position: isRightNode ? 'left': 'right',
+            data: layer[pairIndex]
+          })
+        }
+
+        // set index to parent index
+        index = (index / 2)|0
+
+      }
+
+      return proof
+
+    }
+  }
 
   /**
    * verify
@@ -230,9 +260,9 @@ export class MerkleTree {
     root = bufferify(root)
 
     if (!Array.isArray(proof) ||
-        !proof.length ||
-        !targetNode ||
-        !root) {
+      !proof.length ||
+      !targetNode ||
+      !root) {
       return false
     }
 
