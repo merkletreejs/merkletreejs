@@ -432,13 +432,6 @@ ___
 
 ## Options
 
-### Properties
-
-* [duplicateOdd](#duplicateodd)
-* [hashLeaves](#hashleaves)
-* [isBitcoinTree](#isbitcointree)
-* [sort](#sort)
-
 ## Properties
 
 <a id="duplicateodd"></a>
@@ -447,12 +440,16 @@ ___
 
 **● duplicateOdd**: *`boolean`*
 
+If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
+
 ___
 <a id="hashleaves"></a>
 
 ###  hashLeaves
 
 **● hashLeaves**: *`boolean`*
+
+If set to `true`, the leaves will hashed using the set hashing algorithms.
 
 ___
 <a id="isbitcointree"></a>
@@ -461,12 +458,16 @@ ___
 
 **● isBitcoinTree**: *`boolean`*
 
+If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
+
 ___
 <a id="sort"></a>
 
 ###  sort
 
 **● sort**: *`boolean`*
+
+If set to `true`, the leaves and hashing pairs will be sorted.
 
 
 ## Test
