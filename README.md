@@ -91,296 +91,9 @@ Output
 
 ## Documentation
 
-## Classes
+[merkletreejs](../README.md) > ["index"](../modules/_index_.md) > [MerkleTree](../classes/_index_.merkletree.md)
 
-<dl>
-<dt><a href="#MerkleTree">MerkleTree</a></dt>
-<dd></dd>
-</dl>
-
-## Objects
-
-<dl>
-<dt><a href="#MerkleTree">MerkleTree</a> : <code>object</code></dt>
-<dd><p>Class reprensenting a Merkle Tree</p>
-</dd>
-</dl>
-
-<a name="MerkleTree"></a>
-
-## MerkleTree
-**Kind**: global class
-
-* [MerkleTree](#MerkleTree)
-    * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
-    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
-    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
-    * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Object&gt;</code>
-    * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
-
-
-* * *
-
-<a name="new_MerkleTree_new"></a>
-
-### new MerkleTree(leaves, hashAlgorithm, options)
-Constructs a Merkle Tree.
-All nodes and leaves are stored as Buffers.
-Lonely leaf nodes are promoted to the next level up without being hashed again.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
-| hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
-| options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. |
-
-**Example**
-```js
-const { MerkleTree } = require('merkletreejs')
-const crypto = require('crypto')
-
-function sha256(data) {
-  // returns Buffer
-  return crypto.createHash('sha256').update(data).digest()
-}
-
-const leaves = ['a', 'b', 'c'].map(x => sha256(x))
-
-const tree = new MerkleTree(leaves, sha256)
-```
-
-* * *
-
-<a name="MerkleTree+getLeaves"></a>
-
-### merkleTree.getLeaves() ⇒ <code>Array.&lt;Buffer&gt;</code>
-Returns array of leaves of Merkle Tree.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const leaves = tree.getLeaves()
-```
-
-* * *
-
-<a name="MerkleTree+getLayers"></a>
-
-### merkleTree.getLayers() ⇒ <code>Array.&lt;Buffer&gt;</code>
-Returns array of all layers of Merkle Tree, including leaves and root.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const layers = tree.getLayers()
-```
-
-* * *
-
-<a name="MerkleTree+getRoot"></a>
-
-### merkleTree.getRoot() ⇒ <code>Buffer</code>
-Returns the Merkle root hash as a Buffer.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const root = tree.getRoot()
-```
-
-* * *
-
-<a name="MerkleTree+getProof"></a>
-
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Object&gt;</code>
-Returns the proof for a target leaf.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array.&lt;Object&gt;</code> - - Array of objects containing a position property of type string with values of 'left' or 'right' and a data property of type Buffer.
-
-| Param | Type | Description |
-| --- | --- | --- |
-| leaf | <code>Buffer</code> | Target leaf |
-| [index] | <code>Number</code> | Target leaf index in leaves array. Use if there are leaves containing duplicate data in order to distinguish it. |
-
-**Example**
-```js
-const proof = tree.getProof(leaves[2])
-```
-**Example**
-```js
-const leaves = ['a', 'b', 'a'].map(x => sha256(x))
-const tree = new MerkleTree(leaves, sha256)
-const proof = tree.getProof(leaves[2], 2)
-```
-
-* * *
-
-<a name="MerkleTree+verify"></a>
-
-### merkleTree.verify(proof, targetNode, root) ⇒ <code>Boolean</code>
-Returns true if the proof path (array of hashes) can connect the target node
-to the Merkle root.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| proof | <code>Array.&lt;Object&gt;</code> | Array of proof objects that should connect target node to Merkle root. |
-| targetNode | <code>Buffer</code> | Target node Buffer |
-| root | <code>Buffer</code> | Merkle root Buffer |
-
-**Example**
-```js
-const root = tree.getRoot()
-const proof = tree.getProof(leaves[2])
-const verified = tree.verify(proof, leaves[2], root)
-```
-
-* * *
-
-<a name="MerkleTree"></a>
-
-## MerkleTree : <code>object</code>
-Class reprensenting a Merkle Tree
-
-**Kind**: global namespace
-
-* [MerkleTree](#MerkleTree) : <code>object</code>
-    * [new MerkleTree(leaves, hashAlgorithm, options)](#new_MerkleTree_new)
-    * [.getLeaves()](#MerkleTree+getLeaves) ⇒ <code>Array.&lt;Buffer&gt;</code>
-    * [.getLayers()](#MerkleTree+getLayers) ⇒ <code>Array.&lt;Buffer&gt;</code>
-    * [.getRoot()](#MerkleTree+getRoot) ⇒ <code>Buffer</code>
-    * [.getProof(leaf, [index])](#MerkleTree+getProof) ⇒ <code>Array.&lt;Object&gt;</code>
-    * [.verify(proof, targetNode, root)](#MerkleTree+verify) ⇒ <code>Boolean</code>
-
-
-* * *
-
-<a name="new_MerkleTree_new"></a>
-
-### new MerkleTree(leaves, hashAlgorithm, options)
-Constructs a Merkle Tree.
-All nodes and leaves are stored as Buffers.
-Lonely leaf nodes are promoted to the next level up without being hashed again.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| leaves | <code>Array.&lt;Buffer&gt;</code> | Array of hashed leaves. Each leaf must be a Buffer. |
-| hashAlgorithm | <code>function</code> | Algorithm used for hashing leaves and nodes |
-| options | <code>Object</code> | Additional options |
-| options.isBitcoinTree | <code>Boolean</code> | If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. |
-
-**Example**
-```js
-const { MerkleTree } = require('merkletreejs')
-const crypto = require('crypto')
-
-function sha256(data) {
-  // returns Buffer
-  return crypto.createHash('sha256').update(data).digest()
-}
-
-const leaves = ['a', 'b', 'c'].map(x => sha256(x))
-
-const tree = new MerkleTree(leaves, sha256)
-```
-
-* * *
-
-<a name="MerkleTree+getLeaves"></a>
-
-### merkleTree.getLeaves() ⇒ <code>Array.&lt;Buffer&gt;</code>
-Returns array of leaves of Merkle Tree.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const leaves = tree.getLeaves()
-```
-
-* * *
-
-<a name="MerkleTree+getLayers"></a>
-
-### merkleTree.getLayers() ⇒ <code>Array.&lt;Buffer&gt;</code>
-Returns array of all layers of Merkle Tree, including leaves and root.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const layers = tree.getLayers()
-```
-
-* * *
-
-<a name="MerkleTree+getRoot"></a>
-
-### merkleTree.getRoot() ⇒ <code>Buffer</code>
-Returns the Merkle root hash as a Buffer.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Example**
-```js
-const root = tree.getRoot()
-```
-
-* * *
-
-<a name="MerkleTree+getProof"></a>
-
-### merkleTree.getProof(leaf, [index]) ⇒ <code>Array.&lt;Object&gt;</code>
-Returns the proof for a target leaf.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-**Returns**: <code>Array.&lt;Buffer&gt;</code> - - Array of objects containing a position property of type string with values of 'left' or 'right' and a data property of type Buffer.
-
-| Param | Type | Description |
-| --- | --- | --- |
-| leaf | <code>Buffer</code> | Target leaf |
-| [index] | <code>Number</code> | Target leaf index in leaves array. Use if there are leaves containing duplicate data in order to distinguish it. |
-
-**Example**
-```js
-const proof = tree.getProof(leaves[2])
-```
-**Example**
-```js
-const leaves = ['a', 'b', 'a'].map(x => sha256(x))
-const tree = new MerkleTree(leaves, sha256)
-const proof = tree.getProof(leaves[2], 2)
-```
-
-* * *
-
-<a name="MerkleTree+verify"></a>
-
-### merkleTree.verify(proof, targetNode, root) ⇒ <code>Boolean</code>
-Returns true if the proof path (array of hashes) can connect the target node
-to the Merkle root.
-
-**Kind**: instance method of [<code>MerkleTree</code>](#MerkleTree)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| proof | <code>Array.&lt;Buffer&gt;</code> | Array of proof Buffer hashes that should connect target node to Merkle root. |
-| targetNode | <code>Buffer</code> | Target node Buffer |
-| root | <code>Buffer</code> | Merkle root Buffer |
-
-**Example**
-```js
-const root = tree.getRoot()
-const proof = tree.getProof(leaves[2])
-const verified = tree.verify(proof, leaves[2], root)
-```
-
-* * *
-
-# Class: MerkleTree
+## Class: MerkleTree
 
 Class reprensenting a Merkle Tree
 
@@ -431,7 +144,7 @@ Class reprensenting a Merkle Tree
 
 ⊕ **new MerkleTree**(leaves: *`any`*, hashAlgorithm: *`any`*, options?: *`any`*): [MerkleTree](_index_.merkletree.md)
 
-*Defined in [index.ts:16](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L16)*
+*Defined in [index.ts:16](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L16)*
 
 *__desc__*: Constructs a Merkle Tree. All nodes and leaves are stored as Buffers. Lonely leaf nodes are promoted to the next level up without being hashed again.
 
@@ -463,7 +176,7 @@ ___
 
 **● _sort**: *`boolean`*
 
-*Defined in [index.ts:15](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L15)*
+*Defined in [index.ts:15](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L15)*
 
 ___
 <a id="duplicateodd"></a>
@@ -472,7 +185,7 @@ ___
 
 **● duplicateOdd**: *`boolean`*
 
-*Defined in [index.ts:16](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L16)*
+*Defined in [index.ts:16](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L16)*
 
 ___
 <a id="hashalgo"></a>
@@ -481,7 +194,7 @@ ___
 
 **● hashAlgo**: *`any`*
 
-*Defined in [index.ts:10](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L10)*
+*Defined in [index.ts:10](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L10)*
 
 ___
 <a id="hashleaves"></a>
@@ -490,7 +203,7 @@ ___
 
 **● hashLeaves**: *`boolean`*
 
-*Defined in [index.ts:11](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L11)*
+*Defined in [index.ts:11](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L11)*
 
 ___
 <a id="isbitcointree"></a>
@@ -499,7 +212,7 @@ ___
 
 **● isBitcoinTree**: *`boolean`*
 
-*Defined in [index.ts:14](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L14)*
+*Defined in [index.ts:14](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L14)*
 
 ___
 <a id="layers"></a>
@@ -508,7 +221,7 @@ ___
 
 **● layers**: *`any`*
 
-*Defined in [index.ts:13](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L13)*
+*Defined in [index.ts:13](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L13)*
 
 ___
 <a id="leaves"></a>
@@ -517,7 +230,7 @@ ___
 
 **● leaves**: *`any`*
 
-*Defined in [index.ts:12](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L12)*
+*Defined in [index.ts:12](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L12)*
 
 ___
 
@@ -529,7 +242,7 @@ ___
 
 ▸ **createHashes**(nodes: *`any`*): `void`
 
-*Defined in [index.ts:60](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L60)*
+*Defined in [index.ts:60](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L60)*
 
 **Parameters:**
 
@@ -546,7 +259,7 @@ ___
 
 ▸ **getLayers**(): `any`
 
-*Defined in [index.ts:145](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L145)*
+*Defined in [index.ts:145](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L145)*
 
 getLayers
 
@@ -563,7 +276,7 @@ ___
 
 ▸ **getLayersAsObject**(): `any`
 
-*Defined in [index.ts:295](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L295)*
+*Defined in [index.ts:295](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L295)*
 
 **Returns:** `any`
 
@@ -574,7 +287,7 @@ ___
 
 ▸ **getLeaves**(): `any`
 
-*Defined in [index.ts:134](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L134)*
+*Defined in [index.ts:134](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L134)*
 
 getLeaves
 
@@ -591,7 +304,7 @@ ___
 
 ▸ **getProof**(leaf: *`any`*, index?: *`any`*): `any`[]
 
-*Defined in [index.ts:176](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L176)*
+*Defined in [index.ts:176](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L176)*
 
 getProof
 
@@ -618,7 +331,7 @@ ___
 
 ▸ **getRoot**(): `any`
 
-*Defined in [index.ts:156](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L156)*
+*Defined in [index.ts:156](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L156)*
 
 getRoot
 
@@ -635,7 +348,7 @@ ___
 
 ▸ **print**(): `void`
 
-*Defined in [index.ts:324](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L324)*
+*Defined in [index.ts:324](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L324)*
 
 **Returns:** `void`
 
@@ -646,7 +359,7 @@ ___
 
 ▸ **toString**(): `any`
 
-*Defined in [index.ts:335](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L335)*
+*Defined in [index.ts:335](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L335)*
 
 **Returns:** `any`
 
@@ -657,7 +370,7 @@ ___
 
 ▸ **toTreeString**(): `any`
 
-*Defined in [index.ts:329](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L329)*
+*Defined in [index.ts:329](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L329)*
 
 **Returns:** `any`
 
@@ -668,7 +381,7 @@ ___
 
 ▸ **verify**(proof: *`any`*, targetNode: *`any`*, root: *`any`*): `boolean`
 
-*Defined in [index.ts:258](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L258)*
+*Defined in [index.ts:258](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L258)*
 
 verify
 
@@ -693,7 +406,7 @@ ___
 
 ▸ **bufferify**(x: *`any`*): `any`
 
-*Defined in [index.ts:340](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L340)*
+*Defined in [index.ts:340](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L340)*
 
 **Parameters:**
 
@@ -710,7 +423,7 @@ ___
 
 ▸ **print**(tree: *`any`*): `void`
 
-*Defined in [index.ts:345](https://github.com/miguelmota/merkletreejs/blob/c1fcf89/index.ts#L345)*
+*Defined in [index.ts:345](https://github.com/miguelmota/merkletreejs/blob/49ef70e/index.ts#L345)*
 
 **Parameters:**
 
