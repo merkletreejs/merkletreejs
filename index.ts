@@ -9,8 +9,10 @@ interface Options {
   hashLeaves: boolean
   /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
   isBitcoinTree: boolean
-  /** If set to `true`, the leaves and hashing pairs will be sorted. */
-  sort: boolean
+  /** If set to `true`, the leaves will be sorted. */
+  sortLeaves: boolean
+  /** If set to `true`, the hashing pairs will be sorted. */
+  sortPairs: boolean
 }
 
 
@@ -25,7 +27,8 @@ export class MerkleTree {
   isBitcoinTree: boolean
   leaves: any[]
   layers: any[]
-  sort: boolean
+  sortLeaves: boolean
+  sortPairs: boolean
 
   /**
    * @desc Constructs a Merkle Tree.
@@ -52,7 +55,8 @@ export class MerkleTree {
   constructor(leaves, hashAlgorithm, options:Options={} as any) {
     this.isBitcoinTree = !!options.isBitcoinTree
     this.hashLeaves = !!options.hashLeaves
-    this.sort = !!options.sort
+    this.sortLeaves = !!options.sortLeaves
+    this.sortPairs = !!options.sortPairs
     this.duplicateOdd = !!options.duplicateOdd
     this.hashAlgo = bufferifyFn(hashAlgorithm)
     if (this.hashLeaves) {
@@ -60,6 +64,10 @@ export class MerkleTree {
     }
 
     this.leaves = leaves.map(bufferify)
+    if (this.sortLeaves) {
+      this.leaves = this.leaves.sort(Buffer.compare)
+    }
+
     this.layers = [this.leaves]
     this.createHashes(this.leaves)
   }
@@ -101,22 +109,19 @@ export class MerkleTree {
         const left = nodes[i]
         const right = i + 1 == nodes.length ? left : nodes[i + 1];
         let data = null
+        let combined = null
 
         if (this.isBitcoinTree) {
-          let combined = [reverse(left), reverse(right)]
-          if (this.sort) {
-            combined.sort(Buffer.compare)
-          }
-
-          data = Buffer.concat(combined)
+          combined = [reverse(left), reverse(right)]
         } else {
-          let combined = [left, right]
-          if (this.sort) {
-            combined.sort(Buffer.compare)
-          }
-
-          data = Buffer.concat(combined)
+          combined = [left, right]
         }
+
+        if (this.sortPairs) {
+          combined.sort(Buffer.compare)
+        }
+
+        data = Buffer.concat(combined)
 
         let hash = this.hashAlgo(data)
 

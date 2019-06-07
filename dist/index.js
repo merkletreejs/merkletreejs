@@ -34,13 +34,17 @@ var MerkleTree = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         this.isBitcoinTree = !!options.isBitcoinTree;
         this.hashLeaves = !!options.hashLeaves;
-        this.sort = !!options.sort;
+        this.sortLeaves = !!options.sortLeaves;
+        this.sortPairs = !!options.sortPairs;
         this.duplicateOdd = !!options.duplicateOdd;
         this.hashAlgo = bufferifyFn(hashAlgorithm);
         if (this.hashLeaves) {
             leaves = leaves.map(this.hashAlgo);
         }
         this.leaves = leaves.map(bufferify);
+        if (this.sortLeaves) {
+            this.leaves = this.leaves.sort(Buffer.compare);
+        }
         this.layers = [this.leaves];
         this.createHashes(this.leaves);
     }
@@ -74,20 +78,17 @@ var MerkleTree = /** @class */ (function () {
                 var left = nodes[i];
                 var right = i + 1 == nodes.length ? left : nodes[i + 1];
                 var data = null;
+                var combined = null;
                 if (this.isBitcoinTree) {
-                    var combined = [reverse(left), reverse(right)];
-                    if (this.sort) {
-                        combined.sort(Buffer.compare);
-                    }
-                    data = Buffer.concat(combined);
+                    combined = [reverse(left), reverse(right)];
                 }
                 else {
-                    var combined = [left, right];
-                    if (this.sort) {
-                        combined.sort(Buffer.compare);
-                    }
-                    data = Buffer.concat(combined);
+                    combined = [left, right];
                 }
+                if (this.sortPairs) {
+                    combined.sort(Buffer.compare);
+                }
+                data = Buffer.concat(combined);
                 var hash = this.hashAlgo(data);
                 // double hash if bitcoin tree
                 if (this.isBitcoinTree) {

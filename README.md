@@ -91,7 +91,7 @@ Output
 
 ## Documentation
 
-<!-- :%s// -->
+<!-- :%s/// -->
 <!-- :%s/\[Options\]()/\[Options\](#options) -->
 
 ## Class
@@ -116,7 +116,8 @@ Class reprensenting a Merkle Tree
 * [isBitcoinTree](#isbitcointree)
 * [layers](#layers)
 * [leaves](#leaves)
-* [sort](#sort)
+* [sortLeaves](#sortleaves)
+* [sortPairs](#sortpairs)
 
 ### Methods
 
@@ -133,13 +134,15 @@ Class reprensenting a Merkle Tree
 * [bufferify](#bufferify)
 * [print](#print-1)
 
+---
+
 ## Constructors
 
 <a id="constructor"></a>
 
 ###  constructor
 
-⊕ **new MerkleTree**(leaves: *`any`*, hashAlgorithm: *`any`*, options?: *[Options](#options)
+⊕ **new MerkleTree**(leaves: *`any`*, hashAlgorithm: *`any`*, options?: *[Options]()
 
 *__desc__*: Constructs a Merkle Tree. All nodes and leaves are stored as Buffers. Lonely leaf nodes are promoted to the next level up without being hashed again.
 
@@ -164,9 +167,11 @@ const tree = new MerkleTree(leaves, sha256)
 | ------ | ------ | ------ | ------ |
 | leaves | `any` | - |  Array of hashed leaves. Each leaf must be a Buffer. |
 | hashAlgorithm | `any` | - |  Algorithm used for hashing leaves and nodes |
-| `Default value` options | [Options](#options) | {} as any |  Additional options |
+| `Default value` options | [Options]() | {} as any |  Additional options |
 
 **Returns:** [MerkleTree]()
+
+___
 
 ## Properties
 
@@ -223,11 +228,18 @@ ___
 **● leaves**: *`any`[]*
 
 ___
-<a id="sort"></a>
+<a id="sortleaves"></a>
 
-###  sort
+###  sortLeaves
 
-**● sort**: *`boolean`*
+**● sortLeaves**: *`boolean`*
+
+___
+<a id="sortpairs"></a>
+
+###  sortPairs
+
+**● sortPairs**: *`boolean`*
 
 ___
 
@@ -432,6 +444,16 @@ ___
 
 ## Options
 
+### Properties
+
+* [duplicateOdd](#duplicateodd)
+* [hashLeaves](#hashleaves)
+* [isBitcoinTree](#isbitcointree)
+* [sortLeaves](#sortleaves)
+* [sortPairs](#sortpairs)
+
+---
+
 ## Properties
 
 <a id="duplicateodd"></a>
@@ -461,14 +483,22 @@ ___
 If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
 
 ___
-<a id="sort"></a>
+<a id="sortleaves"></a>
 
-###  sort
+###  sortLeaves
 
-**● sort**: *`boolean`*
+**● sortLeaves**: *`boolean`*
 
-If set to `true`, the leaves and hashing pairs will be sorted.
+If set to `true`, the leaves will be sorted.
 
+___
+<a id="sortpairs"></a>
+
+###  sortPairs
+
+**● sortPairs**: *`boolean`*
+
+If set to `true`, the hashing pairs will be sorted.
 
 ## Test
 

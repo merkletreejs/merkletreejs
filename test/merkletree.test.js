@@ -39,21 +39,31 @@ test('crypto-js - sha256', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha256 with sort option', t => {
+test('sha256 with sort pairs option', t => {
   t.plan(1)
 
   const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
-  const tree = new MerkleTree(leaves, sha256, {sort: true})
+  const tree = new MerkleTree(leaves, sha256, {sortPairs: true})
   const root = 'a30ba95a1a5dc397fe45ea20105363b08d682b864a28f4940419a29349a28325'
 
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha256 with sha256 leaves and sort option and duplicate odd option', t => {
+test('sha3 with sort leaves and sort pairs option', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => sha3(x))
+  const tree = new MerkleTree(leaves, sha3, {sortLeaves: true, sortPairs: true})
+  const root = '60219f87561939610b484575e45c6e81156a53b86d7cd16640d930d14f21758e'
+
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('sha256 with sha256 leaves and sort pairs option and duplicate odd option', t => {
   t.plan(1)
 
   const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
-  const tree = new MerkleTree(leaves, sha256, {sort: true, duplicateOdd: true})
+  const tree = new MerkleTree(leaves, sha256, {sortPairs: true, duplicateOdd: true})
   const root = 'a5260b2a7ec31584e5d5689a5628c2b3d949e2397334fd71c107478e5f887eaf'
 
   t.equal(tree.getRoot().toString('hex'), root)
