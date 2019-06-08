@@ -215,28 +215,25 @@ export class MerkleTree {
     }
 
     if (this.isBitcoinTree && index === (this.leaves.length - 1)) {
-
       // Proof Generation for Bitcoin Trees
 
       for (let i = 0; i < this.layers.length - 1; i++) {
         const layer = this.layers[i]
         const isRightNode = index % 2
         const pairIndex = (isRightNode ? index - 1: index)
+        const position = isRightNode ? 'left': 'right'
 
         if (pairIndex < layer.length) {
           proof.push({
-            position: isRightNode ? 'left': 'right',
             data: layer[pairIndex]
           })
         }
 
         // set index to parent index
         index = (index / 2)|0
-
       }
 
       return proof
-
     } else {
 
       // Proof Generation for Non-Bitcoin Trees
@@ -259,7 +256,6 @@ export class MerkleTree {
       }
 
       return proof
-
     }
   }
 
@@ -304,11 +300,19 @@ export class MerkleTree {
         hash = reverse(this.hashAlgo(hash))
 
       } else {
-        buffers.push(hash)
-
-        buffers[isLeftNode ? 'unshift' : 'push'](node.data)
-
-        hash = this.hashAlgo(Buffer.concat(buffers))
+        if (this.sortPairs) {
+          if (Buffer.compare(hash, node.data) === -1) {
+            buffers.push(hash, node.data)
+            hash = this.hashAlgo(Buffer.concat(buffers));
+          } else {
+            buffers.push(node.data, hash)
+            hash = this.hashAlgo(Buffer.concat(buffers));
+          }
+        } else {
+          buffers.push(hash);
+          buffers[isLeftNode ? 'unshift' : 'push'](node.data);
+          hash = this.hashAlgo(Buffer.concat(buffers));
+        }
       }
     }
 

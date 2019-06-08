@@ -175,9 +175,9 @@ var MerkleTree = /** @class */ (function () {
                 var layer = this.layers[i];
                 var isRightNode = index % 2;
                 var pairIndex = (isRightNode ? index - 1 : index);
+                var position = isRightNode ? 'left' : 'right';
                 if (pairIndex < layer.length) {
                     proof.push({
-                        position: isRightNode ? 'left' : 'right',
                         data: layer[pairIndex]
                     });
                 }
@@ -240,9 +240,21 @@ var MerkleTree = /** @class */ (function () {
                 hash = reverse(this.hashAlgo(hash));
             }
             else {
-                buffers.push(hash);
-                buffers[isLeftNode ? 'unshift' : 'push'](node.data);
-                hash = this.hashAlgo(Buffer.concat(buffers));
+                if (this.sortPairs) {
+                    if (Buffer.compare(hash, node.data) === -1) {
+                        buffers.push(hash, node.data);
+                        hash = this.hashAlgo(Buffer.concat(buffers));
+                    }
+                    else {
+                        buffers.push(node.data, hash);
+                        hash = this.hashAlgo(Buffer.concat(buffers));
+                    }
+                }
+                else {
+                    buffers.push(hash);
+                    buffers[isLeftNode ? 'unshift' : 'push'](node.data);
+                    hash = this.hashAlgo(Buffer.concat(buffers));
+                }
             }
         }
         return Buffer.compare(hash, root) === 0;
