@@ -135,6 +135,10 @@ var MerkleTree = /** @class */ (function () {
     MerkleTree.prototype.getRoot = function () {
         return this.layers[this.layers.length - 1][0] || Buffer.from([]);
     };
+    // TODO: documentation
+    MerkleTree.prototype.getHexRoot = function () {
+        return bufferToHex(this.getRoot());
+    };
     /**
      * getProof
      * @desc Returns the proof for a target leaf.
@@ -203,6 +207,10 @@ var MerkleTree = /** @class */ (function () {
             }
             return proof;
         }
+    };
+    // TODO: documentation
+    MerkleTree.prototype.getHexProof = function (leaf, index) {
+        return this.getProof(leaf, index).map(function (x) { return bufferToHex(x.data); });
     };
     /**
      * verify
@@ -309,6 +317,9 @@ var MerkleTree = /** @class */ (function () {
     return MerkleTree;
 }());
 exports.MerkleTree = MerkleTree;
+function bufferToHex(value) {
+    return '0x' + value.toString('hex');
+}
 function bufferify(x) {
     if (!Buffer.isBuffer(x)) {
         // crypto-js support

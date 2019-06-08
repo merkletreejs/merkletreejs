@@ -176,6 +176,11 @@ export class MerkleTree {
     return this.layers[this.layers.length-1][0] || Buffer.from([])
   }
 
+  // TODO: documentation
+  getHexRoot() {
+    return bufferToHex(this.getRoot())
+  }
+
   /**
    * getProof
    * @desc Returns the proof for a target leaf.
@@ -257,6 +262,11 @@ export class MerkleTree {
 
       return proof
     }
+  }
+
+  // TODO: documentation
+  getHexProof(leaf, index?) {
+    return this.getProof(leaf, index).map(x => bufferToHex(x.data))
   }
 
   /**
@@ -373,6 +383,10 @@ export class MerkleTree {
   static print(tree) {
     console.log(tree.toString())
   }
+}
+
+function bufferToHex(value:Buffer) {
+  return '0x'+value.toString('hex')
 }
 
 function bufferify(x) {

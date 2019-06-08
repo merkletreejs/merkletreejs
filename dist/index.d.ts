@@ -77,6 +77,7 @@ export declare class MerkleTree {
      *```
      */
     getRoot(): any;
+    getHexRoot(): string;
     /**
      * getProof
      * @desc Returns the proof for a target leaf.
@@ -98,6 +99,7 @@ export declare class MerkleTree {
      *```
      */
     getProof(leaf: any, index?: any): any[];
+    getHexProof(leaf: any, index?: any): string[];
     /**
      * verify
      * @desc Returns true if the proof path (array of hashes) can connect the target node
