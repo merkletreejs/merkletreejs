@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "typings/merkletreejs/*",

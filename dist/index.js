@@ -327,7 +327,7 @@ function bufferify(x) {
             return Buffer.from(x.toString(CryptoJS.enc.Hex), 'hex');
         }
         else if (isHexStr(x)) {
-            return Buffer.from(x, 'hex');
+            return Buffer.from(x.replace(/^0x/, ''), 'hex');
         }
         else if (typeof x === 'string') {
             return Buffer.from(x);
