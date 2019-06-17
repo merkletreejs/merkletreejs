@@ -4,6 +4,7 @@ const crypto = require('crypto')
 const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
 const SHA3 = require('crypto-js/sha3')
+const sha1 = require('sha1')
 
 const { MerkleTree } = require('../')
 
@@ -435,6 +436,28 @@ test('crypto-js bufferify', t => {
   const bufferifyCryptoJS = x => Buffer.from(x.toString(CryptoJS.enc.Hex), 'hex')
 
   t.deepEqual(leaves.map(MerkleTree.bufferify), leaves.map(bufferifyCryptoJS))
+})
+
+test('sha1', t => {
+  t.plan(1)
+
+  const leaves = [
+    'd89f84d948796605a413e196f40bce1d6294175d',
+    '32f04c7f572bf75a266268c6f4d8c92731dc3b7f',
+    'b80b52d80f5fe940ac2c987044bc439e4218ac94',
+    '1553c75a1d637961827f4904a0955e57915d8310',
+  ]
+
+  const tree = new MerkleTree(leaves, sha1, {
+    sortLeaves: true,
+    sortPairs: true,
+  })
+
+  const root = tree.getHexRoot()
+  const leaf = 'd89f84d948796605a413e196f40bce1d6294175d'
+  const proof = tree.getHexProof(leaf)
+
+  t.equal(tree.verify(proof, leaf, root), true)
 })
 
 test('getLayersAsObject', t => {

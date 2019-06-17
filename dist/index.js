@@ -239,28 +239,38 @@ var MerkleTree = /** @class */ (function () {
         }
         for (var i = 0; i < proof.length; i++) {
             var node = proof[i];
-            var isLeftNode = (node.position === 'left');
+            var data = null;
+            var isLeftNode = null;
+            // NOTE: case for when proof is hex values only
+            if (typeof node === 'string') {
+                data = bufferify(node);
+                isLeftNode = true;
+            }
+            else {
+                data = node.data;
+                isLeftNode = (node.position === 'left');
+            }
             var buffers = [];
             if (this.isBitcoinTree) {
                 buffers.push(reverse(hash));
-                buffers[isLeftNode ? 'unshift' : 'push'](reverse(node.data));
+                buffers[isLeftNode ? 'unshift' : 'push'](reverse(data));
                 hash = this.hashAlgo(Buffer.concat(buffers));
                 hash = reverse(this.hashAlgo(hash));
             }
             else {
                 if (this.sortPairs) {
-                    if (Buffer.compare(hash, node.data) === -1) {
-                        buffers.push(hash, node.data);
+                    if (Buffer.compare(hash, data) === -1) {
+                        buffers.push(hash, data);
                         hash = this.hashAlgo(Buffer.concat(buffers));
                     }
                     else {
-                        buffers.push(node.data, hash);
+                        buffers.push(data, hash);
                         hash = this.hashAlgo(Buffer.concat(buffers));
                     }
                 }
                 else {
                     buffers.push(hash);
-                    buffers[isLeftNode ? 'unshift' : 'push'](node.data);
+                    buffers[isLeftNode ? 'unshift' : 'push'](data);
                     hash = this.hashAlgo(Buffer.concat(buffers));
                 }
             }
@@ -340,6 +350,9 @@ function bufferifyFn(f) {
         var v = f(x);
         if (Buffer.isBuffer(v)) {
             return v;
+        }
+        if (isHexStr(v)) {
+            return Buffer.from(v, 'hex');
         }
         // crypto-js support
         return Buffer.from(f(CryptoJS.enc.Hex.parse(x.toString('hex'))).toString(CryptoJS.enc.Hex), 'hex');
