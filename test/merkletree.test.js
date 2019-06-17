@@ -60,6 +60,16 @@ test('sha3 with sort leaves and sort pairs option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
+test('sha3 with sort option', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => sha3(x))
+  const tree = new MerkleTree(leaves, sha3, {sort: true})
+  const root = '60219f87561939610b484575e45c6e81156a53b86d7cd16640d930d14f21758e'
+
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
 test('sha256 with sha256 leaves and sort pairs option and duplicate odd option', t => {
   t.plan(1)
 

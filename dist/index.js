@@ -36,6 +36,11 @@ var MerkleTree = /** @class */ (function () {
         this.hashLeaves = !!options.hashLeaves;
         this.sortLeaves = !!options.sortLeaves;
         this.sortPairs = !!options.sortPairs;
+        this.sort = !!options.sort;
+        if (this.sort) {
+            this.sortLeaves = true;
+            this.sortPairs = true;
+        }
         this.duplicateOdd = !!options.duplicateOdd;
         this.hashAlgo = bufferifyFn(hashAlgorithm);
         if (this.hashLeaves) {

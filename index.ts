@@ -13,6 +13,8 @@ interface Options {
   sortLeaves: boolean
   /** If set to `true`, the hashing pairs will be sorted. */
   sortPairs: boolean
+  /** If set to `true`, the leaves and hashing pairs will be sorted. */
+  sort: boolean
 }
 
 
@@ -29,6 +31,7 @@ export class MerkleTree {
   layers: any[]
   sortLeaves: boolean
   sortPairs: boolean
+  sort: boolean
 
   /**
    * @desc Constructs a Merkle Tree.
@@ -57,6 +60,13 @@ export class MerkleTree {
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
     this.sortPairs = !!options.sortPairs
+
+    this.sort = !!options.sort
+    if (this.sort) {
+      this.sortLeaves = true
+      this.sortPairs = true
+    }
+
     this.duplicateOdd = !!options.duplicateOdd
     this.hashAlgo = bufferifyFn(hashAlgorithm)
     if (this.hashLeaves) {

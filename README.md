@@ -116,6 +116,7 @@ Class reprensenting a Merkle Tree
 * [isBitcoinTree](#isbitcointree)
 * [layers](#layers)
 * [leaves](#leaves)
+* [sort](#sort)
 * [sortLeaves](#sortleaves)
 * [sortPairs](#sortpairs)
 
@@ -449,6 +450,7 @@ ___
 * [duplicateOdd](#duplicateodd)
 * [hashLeaves](#hashleaves)
 * [isBitcoinTree](#isbitcointree)
+* [sort](#sort)
 * [sortLeaves](#sortleaves)
 * [sortPairs](#sortpairs)
 
@@ -484,6 +486,12 @@ If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree impl
 
 ___
 <a id="sortleaves"></a>
+
+### sort
+
+**● sort**: *`boolean`*
+
+If set to `true`, the leaves and hashing pairs will be sorted.
 
 ###  sortLeaves
 

@@ -9,6 +9,8 @@ interface Options {
     sortLeaves: boolean;
     /** If set to `true`, the hashing pairs will be sorted. */
     sortPairs: boolean;
+    /** If set to `true`, the leaves and hashing pairs will be sorted. */
+    sort: boolean;
 }
 /**
  * Class reprensenting a Merkle Tree
@@ -23,6 +25,7 @@ export declare class MerkleTree {
     layers: any[];
     sortLeaves: boolean;
     sortPairs: boolean;
+    sort: boolean;
     /**
      * @desc Constructs a Merkle Tree.
      * All nodes and leaves are stored as Buffers.
