@@ -1,5 +1,5 @@
 const test = require('tape')
-const {sha3} = require('ethereumjs-util')
+const {keccak} = require('ethereumjs-util')
 const crypto = require('crypto')
 const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
@@ -10,20 +10,20 @@ const { MerkleTree } = require('../')
 
 const sha256 = (data) => crypto.createHash('sha256').update(data).digest()
 
-test('sha256 with sha3 leaves', t => {
+test('sha256 with keccak leaves', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256)
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
 
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha256 with sha3 leaves with duplicate odd option', t => {
+test('sha256 with keccak leaves with duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256, {duplicateOdd: true})
   const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
@@ -33,7 +33,7 @@ test('sha256 with sha3 leaves with duplicate odd option', t => {
 test('crypto-js - sha256', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, SHA256)
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
 
@@ -50,21 +50,21 @@ test('sha256 with sort pairs option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha3 with sort leaves and sort pairs option', t => {
+test('keccak with sort leaves and sort pairs option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => sha3(x))
-  const tree = new MerkleTree(leaves, sha3, {sortLeaves: true, sortPairs: true})
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => keccak(x))
+  const tree = new MerkleTree(leaves, keccak, {sortLeaves: true, sortPairs: true})
   const root = '60219f87561939610b484575e45c6e81156a53b86d7cd16640d930d14f21758e'
 
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('sha3 with sort option', t => {
+test('keccak with sort option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => sha3(x))
-  const tree = new MerkleTree(leaves, sha3, {sort: true})
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].map(x => keccak(x))
+  const tree = new MerkleTree(leaves, keccak, {sort: true})
   const root = '60219f87561939610b484575e45c6e81156a53b86d7cd16640d930d14f21758e'
 
   t.equal(tree.getRoot().toString('hex'), root)
@@ -100,7 +100,7 @@ test('sha256 with hash leaves option and duplicate odd option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('crypto-js - sha256 with sha3 leaves', t => {
+test('crypto-js - sha256 with keccak leaves', t => {
   t.plan(1)
 
   const leaves = ['a', 'b', 'c'].map(SHA256)
@@ -110,10 +110,10 @@ test('crypto-js - sha256 with sha3 leaves', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('crypto-js - sha256 with sha3 leaves and duplicate odd option', t => {
+test('crypto-js - sha256 with keccak leaves and duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, SHA256, {duplicateOdd: true})
   const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
@@ -141,20 +141,20 @@ test('crypto-js - SHA256 with SHA3 leaves', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('crypto-js - SHA256 with sha3 leaves and duplicate odd option', t => {
+test('crypto-js - SHA256 with keccak leaves and duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, SHA256, {duplicateOdd: true})
   const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('solidity sha3 [keccak-256]', t => {
+test('solidity keccak [keccak-256]', t => {
   t.plan(20)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
@@ -162,11 +162,11 @@ test('solidity sha3 [keccak-256]', t => {
 
   t.deepEqual(leaves.map(x => x.toString('hex')), [a_hash, b_hash, c_hash])
 
-  const tree = new MerkleTree(leaves, sha3)
+  const tree = new MerkleTree(leaves, keccak)
 
   const layers = tree.getLayers().slice(1) // no leaves
 
-  const layer_1 = sha3(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
+  const layer_1 = keccak(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
 
   t.equal(layers[0][0].toString('hex'), layer_1)
   t.equal(layers[0][1].toString('hex'), c_hash)
@@ -200,10 +200,10 @@ test('solidity sha3 [keccak-256]', t => {
   t.equal(tree.verify(proof_2, leaves[2], root), true)
 })
 
-test('solidity sha3 [keccak-256] with duplicate odd option', t => {
+test('solidity keccak [keccak-256] with duplicate odd option', t => {
   t.plan(20)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
@@ -211,10 +211,10 @@ test('solidity sha3 [keccak-256] with duplicate odd option', t => {
 
   t.deepEqual(leaves.map(x => x.toString('hex')), [a_hash, b_hash, c_hash])
 
-  const tree = new MerkleTree(leaves, sha3, {duplicateOdd: true})
+  const tree = new MerkleTree(leaves, keccak, {duplicateOdd: true})
   const layers = tree.getLayers().slice(1) // no leaves
-  const layer_1 = sha3(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
-  const layer_2 = sha3(Buffer.concat([leaves[2], leaves[2]])).toString('hex')
+  const layer_1 = keccak(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
+  const layer_2 = keccak(Buffer.concat([leaves[2], leaves[2]])).toString('hex')
   t.equal(layers[0][0].toString('hex'), layer_1)
   t.equal(layers[0][1].toString('hex'), layer_2)
 
@@ -247,22 +247,22 @@ test('solidity sha3 [keccak-256] with duplicate odd option', t => {
   t.equal(tree.verify(proof_2, layer_2, root), true)
 })
 
-test('solidity sha3 [keccak-256] with duplicate leaves', t => {
+test('solidity keccak [keccak-256] with duplicate leaves', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'a'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'a'].map(x => keccak(x))
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
 
-  const tree = new MerkleTree(leaves, sha3)
+  const tree = new MerkleTree(leaves, keccak)
 
   t.deepEqual(leaves.map(x => x.toString('hex')), [a_hash, b_hash, a_hash])
 
   const root = Buffer.from('b8912f7269068901f231a965adfefbc10f0eedcfa61852b103efd54dac7db3d7', 'hex')
   t.equal(tree.getRoot().toString('hex'), root.toString('hex'))
 
-  const layer_1 = sha3(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
+  const layer_1 = keccak(Buffer.concat([leaves[0], leaves[1]])).toString('hex')
 
   const proof_0 = tree.getProof(leaves[2], 2)
   t.equal(proof_0.length, 1)
@@ -389,9 +389,9 @@ test('sha-256 with option.isBitcoinTree', t => {
   t.equal(tree.verify(proof_0, leaves[0], root), true)
 })
 
-test('sha3 - hex strings', t => {
+test('keccak - hex strings', t => {
   t.plan(1)
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x).toString('hex'))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x).toString('hex'))
   const tree = new MerkleTree(leaves, SHA256)
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
   t.equal(tree.getRoot().toString('hex'), root)
@@ -473,7 +473,7 @@ test('sha1', t => {
 test('getLayersAsObject', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256)
   const obj = tree.getLayersAsObject()
   t.deepEqual(obj, {
@@ -492,7 +492,7 @@ test('getLayersAsObject', t => {
 test('getLayersAsObject with duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256, {duplicateOdd: true})
   const obj = tree.getLayersAsObject()
 
@@ -512,7 +512,7 @@ test('getLayersAsObject with duplicate odd option', t => {
 test('print', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.toString(),
@@ -528,7 +528,7 @@ test('print', t => {
 test('print with duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256, {duplicateOdd: true})
 
   t.equal(tree.toString(),
