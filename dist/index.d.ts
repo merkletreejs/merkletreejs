@@ -43,7 +43,7 @@ export declare class MerkleTree {
      *  return crypto.createHash('sha256').update(data).digest()
      *}
      *
-     *const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+     *const leaves = ['a', 'b', 'c'].map(x => keccak(x))
      *
      *const tree = new MerkleTree(leaves, sha256)
      *```
@@ -96,8 +96,8 @@ export declare class MerkleTree {
      *
      * @example
      *```js
-     *const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-     *const tree = new MerkleTree(leaves, sha3)
+     *const leaves = ['a', 'b', 'a'].map(x => keccak(x))
+     *const tree = new MerkleTree(leaves, keccak)
      *const proof = tree.getProof(leaves[2], 2)
      *```
      */

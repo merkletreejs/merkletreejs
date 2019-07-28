@@ -24,7 +24,7 @@ interface Options {
  */
 export class MerkleTree {
   duplicateOdd: boolean
-  hashAlgo: (value:any) => any
+  hashAlgo: (value: any) => any
   hashLeaves: boolean
   isBitcoinTree: boolean
   leaves: any[]
@@ -50,12 +50,12 @@ export class MerkleTree {
    *  return crypto.createHash('sha256').update(data).digest()
    *}
    *
-   *const leaves = ['a', 'b', 'c'].map(x => sha3(x))
+   *const leaves = ['a', 'b', 'c'].map(x => keccak(x))
    *
    *const tree = new MerkleTree(leaves, sha256)
    *```
    */
-  constructor(leaves, hashAlgorithm, options:Options={} as any) {
+  constructor(leaves, hashAlgorithm, options: Options = {} as any) {
     this.isBitcoinTree = !!options.isBitcoinTree
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
@@ -92,9 +92,9 @@ export class MerkleTree {
 
       for (let i = 0; i < nodes.length; i += 2) {
 
-        if (i+1 === nodes.length) {
+        if (i + 1 === nodes.length) {
           if (nodes.length % 2 === 1) {
-            let data = nodes[nodes.length-1]
+            let data = nodes[nodes.length - 1]
             let hash = data
 
             // is bitcoin tree
@@ -183,7 +183,7 @@ export class MerkleTree {
    *```
    */
   getRoot() {
-    return this.layers[this.layers.length-1][0] || Buffer.from([])
+    return this.layers[this.layers.length - 1][0] || Buffer.from([])
   }
 
   // TODO: documentation
@@ -206,8 +206,8 @@ export class MerkleTree {
    *
    * @example
    *```js
-   *const leaves = ['a', 'b', 'a'].map(x => sha3(x))
-   *const tree = new MerkleTree(leaves, sha3)
+   *const leaves = ['a', 'b', 'a'].map(x => keccak(x))
+   *const tree = new MerkleTree(leaves, keccak)
    *const proof = tree.getProof(leaves[2], 2)
    *```
    */
@@ -235,8 +235,8 @@ export class MerkleTree {
       for (let i = 0; i < this.layers.length - 1; i++) {
         const layer = this.layers[i]
         const isRightNode = index % 2
-        const pairIndex = (isRightNode ? index - 1: index)
-        const position = isRightNode ? 'left': 'right'
+        const pairIndex = (isRightNode ? index - 1 : index)
+        const position = isRightNode ? 'left' : 'right'
 
         if (pairIndex < layer.length) {
           proof.push({
@@ -245,7 +245,7 @@ export class MerkleTree {
         }
 
         // set index to parent index
-        index = (index / 2)|0
+        index = (index / 2) | 0
       }
 
       return proof
@@ -260,13 +260,13 @@ export class MerkleTree {
 
         if (pairIndex < layer.length) {
           proof.push({
-            position: isRightNode ? 'left': 'right',
+            position: isRightNode ? 'left' : 'right',
             data: layer[pairIndex]
           })
         }
 
         // set index to parent index
-        index = (index / 2)|0
+        index = (index / 2) | 0
 
       }
 
@@ -406,8 +406,8 @@ export class MerkleTree {
   }
 }
 
-function bufferToHex(value:Buffer) {
-  return '0x'+value.toString('hex')
+function bufferToHex(value: Buffer) {
+  return '0x' + value.toString('hex')
 }
 
 function bufferify(x) {
@@ -425,7 +425,7 @@ function bufferify(x) {
   return x
 }
 
-function bufferifyFn (f) {
+function bufferifyFn(f) {
   return function (x) {
     const v = f(x)
     if (Buffer.isBuffer(v)) {
