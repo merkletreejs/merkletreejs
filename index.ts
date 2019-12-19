@@ -236,7 +236,6 @@ export class MerkleTree {
         const layer = this.layers[i]
         const isRightNode = index % 2
         const pairIndex = (isRightNode ? index - 1 : index)
-//         const position = isRightNode ? 'left' : 'right'
 
         if (pairIndex < layer.length) {
           proof.push({
