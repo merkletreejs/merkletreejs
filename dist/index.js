@@ -184,7 +184,6 @@ var MerkleTree = /** @class */ (function () {
                 var layer = this.layers[i];
                 var isRightNode = index % 2;
                 var pairIndex = (isRightNode ? index - 1 : index);
-                var position = isRightNode ? 'left' : 'right';
                 if (pairIndex < layer.length) {
                     proof.push({
                         data: layer[pairIndex]

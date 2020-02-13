@@ -1,28 +1,32 @@
 interface Options {
     /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */
-    duplicateOdd: boolean;
+    duplicateOdd?: boolean;
     /** If set to `true`, the leaves will hashed using the set hashing algorithms. */
-    hashLeaves: boolean;
+    hashLeaves?: boolean;
     /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
-    isBitcoinTree: boolean;
+    isBitcoinTree?: boolean;
     /** If set to `true`, the leaves will be sorted. */
-    sortLeaves: boolean;
+    sortLeaves?: boolean;
     /** If set to `true`, the hashing pairs will be sorted. */
-    sortPairs: boolean;
+    sortPairs?: boolean;
     /** If set to `true`, the leaves and hashing pairs will be sorted. */
-    sort: boolean;
+    sort?: boolean;
 }
+declare type THashAlgo = any;
+declare type TValue = any;
+declare type TLeaf = any;
+declare type TLayer = any;
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
  */
 export declare class MerkleTree {
     duplicateOdd: boolean;
-    hashAlgo: (value: any) => any;
+    hashAlgo: (value: TValue) => THashAlgo;
     hashLeaves: boolean;
     isBitcoinTree: boolean;
-    leaves: any[];
-    layers: any[];
+    leaves: TLeaf[];
+    layers: TLayer[];
     sortLeaves: boolean;
     sortPairs: boolean;
     sort: boolean;
