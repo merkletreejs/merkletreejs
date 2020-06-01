@@ -3,6 +3,7 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "downlevelIteration": true,
     "types": ["node"],
     "baseUrl": "./",
     "paths": {
