@@ -629,7 +629,7 @@ test('sha256 getMultiProof', t => {
 })
 
 test('sha256 getMultiProof using tree array', t => {
-  t.plan(4)
+  t.plan(5)
 
   const leaves = Array(16).fill(0).map((x, i) => {
     const b = Buffer.alloc(32)
@@ -643,9 +643,6 @@ test('sha256 getMultiProof using tree array', t => {
   t.equal(root, '0xc1ebc5b83154907160d73863bdae7eb86fe1888495a83cb8daadb1603b8aeaf5')
 
   const treeFlat = tree.getLayersFlat()
-
-  const i = 100
-  const indices = Array(16).fill(0).map((x, j) => j).filter(j => (i >> j) % 2 === 1)
 
   t.deepEqual(treeFlat.map(x => x.toString('hex')), [
     '00',
@@ -682,6 +679,7 @@ test('sha256 getMultiProof using tree array', t => {
     '000000000000000000000000000000000000000000000000000000000000000f'
   ])
 
+  const indices = [2, 5, 6]
   const proof = tree.getMultiProof(treeFlat, indices)
 
   t.deepEqual(proof.map(x => x.toString('hex')), [
@@ -693,6 +691,7 @@ test('sha256 getMultiProof using tree array', t => {
   ])
 
   const depth = tree.getDepth()
+  t.equal(depth, Math.log2((treeFlat.length/2)|0))
 
   const tRoot = treeFlat[1]
   const tLeaves = indices.map(i => leaves[i])

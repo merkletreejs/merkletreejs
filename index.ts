@@ -1,6 +1,6 @@
-import * as reverse from 'buffer-reverse'
-import * as CryptoJS from 'crypto-js'
-import * as treeify from 'treeify'
+import reverse from 'buffer-reverse'
+import CryptoJS from 'crypto-js'
+import treeify from 'treeify'
 
 interface Options {
   /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */

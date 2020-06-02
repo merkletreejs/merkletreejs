@@ -1,44 +1,16 @@
 "use strict";
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __spread = (this && this.__spread) || function () {
-    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
-    return ar;
-};
-var __values = (this && this.__values) || function(o) {
-    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-    if (m) return m.call(o);
-    if (o && typeof o.length === "number") return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
-exports.__esModule = true;
-var reverse = require("buffer-reverse");
-var CryptoJS = require("crypto-js");
-var treeify = require("treeify");
+Object.defineProperty(exports, "__esModule", { value: true });
+const buffer_reverse_1 = __importDefault(require("buffer-reverse"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
+const treeify_1 = __importDefault(require("treeify"));
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
  */
-var MerkleTree = /** @class */ (function () {
+class MerkleTree {
     /**
      * @desc Constructs a Merkle Tree.
      * All nodes and leaves are stored as Buffers.
@@ -61,8 +33,7 @@ var MerkleTree = /** @class */ (function () {
      *const tree = new MerkleTree(leaves, sha256)
      *```
      */
-    function MerkleTree(leaves, hashAlgorithm, options) {
-        if (options === void 0) { options = {}; }
+    constructor(leaves, hashAlgorithm, options = {}) {
         this.isBitcoinTree = !!options.isBitcoinTree;
         this.hashLeaves = !!options.hashLeaves;
         this.sortLeaves = !!options.sortLeaves;
@@ -86,22 +57,22 @@ var MerkleTree = /** @class */ (function () {
         this.createHashes(this.leaves);
     }
     // TODO: documentation
-    MerkleTree.prototype.createHashes = function (nodes) {
+    createHashes(nodes) {
         while (nodes.length > 1) {
-            var layerIndex = this.layers.length;
+            const layerIndex = this.layers.length;
             this.layers.push([]);
-            for (var i = 0; i < nodes.length; i += 2) {
+            for (let i = 0; i < nodes.length; i += 2) {
                 if (i + 1 === nodes.length) {
                     if (nodes.length % 2 === 1) {
-                        var data_1 = nodes[nodes.length - 1];
-                        var hash_1 = data_1;
+                        let data = nodes[nodes.length - 1];
+                        let hash = data;
                         // is bitcoin tree
                         if (this.isBitcoinTree) {
                             // Bitcoin method of duplicating the odd ending nodes
-                            data_1 = Buffer.concat([reverse(data_1), reverse(data_1)]);
-                            hash_1 = this.hashAlgo(data_1);
-                            hash_1 = reverse(this.hashAlgo(hash_1));
-                            this.layers[layerIndex].push(hash_1);
+                            data = Buffer.concat([buffer_reverse_1.default(data), buffer_reverse_1.default(data)]);
+                            hash = this.hashAlgo(data);
+                            hash = buffer_reverse_1.default(this.hashAlgo(hash));
+                            this.layers[layerIndex].push(hash);
                             continue;
                         }
                         else {
@@ -112,12 +83,12 @@ var MerkleTree = /** @class */ (function () {
                         }
                     }
                 }
-                var left = nodes[i];
-                var right = i + 1 === nodes.length ? left : nodes[i + 1];
-                var data = null;
-                var combined = null;
+                const left = nodes[i];
+                let right = i + 1 === nodes.length ? left : nodes[i + 1];
+                let data = null;
+                let combined = null;
                 if (this.isBitcoinTree) {
-                    combined = [reverse(left), reverse(right)];
+                    combined = [buffer_reverse_1.default(left), buffer_reverse_1.default(right)];
                 }
                 else {
                     if (this.singleOdd) {
@@ -140,16 +111,16 @@ var MerkleTree = /** @class */ (function () {
                     combined.sort(Buffer.compare);
                 }
                 data = Buffer.concat(combined);
-                var hash = this.hashAlgo(data);
+                let hash = this.hashAlgo(data);
                 // double hash if bitcoin tree
                 if (this.isBitcoinTree) {
-                    hash = reverse(this.hashAlgo(hash));
+                    hash = buffer_reverse_1.default(this.hashAlgo(hash));
                 }
                 this.layers[layerIndex].push(hash);
             }
             nodes = this.layers[layerIndex];
         }
-    };
+    }
     /**
      * getLeaves
      * @desc Returns array of leaves of Merkle Tree.
@@ -159,8 +130,7 @@ var MerkleTree = /** @class */ (function () {
      *const leaves = tree.getLeaves()
      *```
      */
-    MerkleTree.prototype.getLeaves = function (data) {
-        var _this = this;
+    getLeaves(data) {
         if (Array.isArray(data)) {
             if (this.hashLeaves) {
                 data = data.map(this.hashAlgo);
@@ -168,10 +138,10 @@ var MerkleTree = /** @class */ (function () {
                     data = data.sort(Buffer.compare);
                 }
             }
-            return this.leaves.filter(function (x) { return _this.bufIndexOf(data, x) !== -1; });
+            return this.leaves.filter(x => this.bufIndexOf(data, x) !== -1);
         }
         return this.leaves;
-    };
+    }
     /**
      * getHexLeaves
      * @desc Returns array of leaves of Merkle Tree as hex strings.
@@ -181,10 +151,9 @@ var MerkleTree = /** @class */ (function () {
      *const leaves = tree.getHexLeaves()
      *```
      */
-    MerkleTree.prototype.getHexLeaves = function () {
-        var _this = this;
-        return this.leaves.map(function (x) { return _this._bufferToHex(x); });
-    };
+    getHexLeaves() {
+        return this.leaves.map(x => this._bufferToHex(x));
+    }
     /**
      * getLayers
      * @desc Returns multi-dimensional array of all layers of Merkle Tree, including leaves and root.
@@ -194,9 +163,9 @@ var MerkleTree = /** @class */ (function () {
      *const layers = tree.getLayers()
      *```
      */
-    MerkleTree.prototype.getLayers = function () {
+    getLayers() {
         return this.layers;
-    };
+    }
     /**
      * getHexLayers
      * @desc Returns multi-dimensional array of all layers of Merkle Tree, including leaves and root as hex strings.
@@ -206,18 +175,17 @@ var MerkleTree = /** @class */ (function () {
      *const layers = tree.getHexLayers()
      *```
      */
-    MerkleTree.prototype.getHexLayers = function () {
-        var _this = this;
-        return this.layers.reduce(function (acc, item, i) {
+    getHexLayers() {
+        return this.layers.reduce((acc, item, i) => {
             if (Array.isArray(item)) {
-                acc.push(item.map(function (x) { return _this._bufferToHex(x); }));
+                acc.push(item.map(x => this._bufferToHex(x)));
             }
             else {
                 acc.push(item);
             }
             return acc;
         }, []);
-    };
+    }
     /**
      * getLayersFlat
      * @desc Returns single flat array of all layers of Merkle Tree, including leaves and root.
@@ -227,10 +195,10 @@ var MerkleTree = /** @class */ (function () {
      *const layers = tree.getLayersFlat()
      *```
      */
-    MerkleTree.prototype.getLayersFlat = function () {
-        var layers = this.layers.reduce(function (acc, item, i) {
+    getLayersFlat() {
+        const layers = this.layers.reduce((acc, item, i) => {
             if (Array.isArray(item)) {
-                acc.unshift.apply(acc, __spread(item));
+                acc.unshift(...item);
             }
             else {
                 acc.unshift(item);
@@ -239,7 +207,7 @@ var MerkleTree = /** @class */ (function () {
         }, []);
         layers.unshift(Buffer.from([0]));
         return layers;
-    };
+    }
     /**
      * getHexLayersFlat
      * @desc Returns single flat array of all layers of Merkle Tree, including leaves and root as hex string.
@@ -249,10 +217,9 @@ var MerkleTree = /** @class */ (function () {
      *const layers = tree.getHexLayersFlat()
      *```
      */
-    MerkleTree.prototype.getHexLayersFlat = function () {
-        var _this = this;
-        return this.getLayersFlat().map(function (x) { return _this._bufferToHex(x); });
-    };
+    getHexLayersFlat() {
+        return this.getLayersFlat().map(x => this._bufferToHex(x));
+    }
     /**
      * getRoot
      * @desc Returns the Merkle root hash as a Buffer.
@@ -262,9 +229,9 @@ var MerkleTree = /** @class */ (function () {
      *const root = tree.getRoot()
      *```
      */
-    MerkleTree.prototype.getRoot = function () {
+    getRoot() {
         return this.layers[this.layers.length - 1][0] || Buffer.from([]);
-    };
+    }
     /**
      * getHexRoot
      * @desc Returns the Merkle root hash as a hex string.
@@ -274,9 +241,9 @@ var MerkleTree = /** @class */ (function () {
      *const root = tree.getHexRoot()
      *```
      */
-    MerkleTree.prototype.getHexRoot = function () {
+    getHexRoot() {
         return this._bufferToHex(this.getRoot());
-    };
+    }
     /**
      * getProof
      * @desc Returns the proof for a target leaf.
@@ -297,12 +264,12 @@ var MerkleTree = /** @class */ (function () {
      *const proof = tree.getProof(leaves[2], 2)
      *```
      */
-    MerkleTree.prototype.getProof = function (leaf, index) {
+    getProof(leaf, index) {
         leaf = this._bufferify(leaf);
-        var proof = [];
+        const proof = [];
         if (typeof index !== 'number') {
             index = -1;
-            for (var i = 0; i < this.leaves.length; i++) {
+            for (let i = 0; i < this.leaves.length; i++) {
                 if (Buffer.compare(leaf, this.leaves[i]) === 0) {
                     index = i;
                 }
@@ -313,10 +280,10 @@ var MerkleTree = /** @class */ (function () {
         }
         if (this.isBitcoinTree && index === (this.leaves.length - 1)) {
             // Proof Generation for Bitcoin Trees
-            for (var i = 0; i < this.layers.length - 1; i++) {
-                var layer = this.layers[i];
-                var isRightNode = index % 2;
-                var pairIndex = (isRightNode ? index - 1 : index);
+            for (let i = 0; i < this.layers.length - 1; i++) {
+                const layer = this.layers[i];
+                const isRightNode = index % 2;
+                const pairIndex = (isRightNode ? index - 1 : index);
                 if (pairIndex < layer.length) {
                     proof.push({
                         data: layer[pairIndex]
@@ -329,10 +296,10 @@ var MerkleTree = /** @class */ (function () {
         }
         else {
             // Proof Generation for Non-Bitcoin Trees
-            for (var i = 0; i < this.layers.length; i++) {
-                var layer = this.layers[i];
-                var isRightNode = index % 2;
-                var pairIndex = (isRightNode ? index - 1 : index + 1);
+            for (let i = 0; i < this.layers.length; i++) {
+                const layer = this.layers[i];
+                const isRightNode = index % 2;
+                const pairIndex = (isRightNode ? index - 1 : index + 1);
                 if (pairIndex < layer.length) {
                     proof.push({
                         position: isRightNode ? 'left' : 'right',
@@ -344,125 +311,102 @@ var MerkleTree = /** @class */ (function () {
             }
             return proof;
         }
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getProofIndices = function (treeIndices, depth) {
-        var e_1, _a, e_2, _b;
-        var leafCount = Math.pow(2, depth);
-        var maximalIndices = new Set();
-        try {
-            for (var treeIndices_1 = __values(treeIndices), treeIndices_1_1 = treeIndices_1.next(); !treeIndices_1_1.done; treeIndices_1_1 = treeIndices_1.next()) {
-                var index = treeIndices_1_1.value;
-                var x = leafCount + index;
-                while (x > 1) {
-                    maximalIndices.add(x ^ 1);
-                    x = (x / 2) | 0;
-                }
+    getProofIndices(treeIndices, depth) {
+        const leafCount = Math.pow(2, depth);
+        let maximalIndices = new Set();
+        for (const index of treeIndices) {
+            let x = leafCount + index;
+            while (x > 1) {
+                maximalIndices.add(x ^ 1);
+                x = (x / 2) | 0;
             }
         }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (treeIndices_1_1 && !treeIndices_1_1.done && (_a = treeIndices_1["return"])) _a.call(treeIndices_1);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
-        var a = treeIndices.map(function (index) { return leafCount + index; });
-        var b = Array.from(maximalIndices).sort(function (a, b) { return a - b; }).reverse();
+        const a = treeIndices.map(index => leafCount + index);
+        const b = Array.from(maximalIndices).sort((a, b) => a - b).reverse();
         maximalIndices = a.concat(b);
-        var redundantIndices = new Set();
-        var proof = [];
-        try {
-            for (var maximalIndices_1 = __values(maximalIndices), maximalIndices_1_1 = maximalIndices_1.next(); !maximalIndices_1_1.done; maximalIndices_1_1 = maximalIndices_1.next()) {
-                var index = maximalIndices_1_1.value;
-                if (!redundantIndices.has(index)) {
-                    proof.push(index);
-                    while (index > 1) {
-                        redundantIndices.add(index);
-                        if (!redundantIndices.has(index ^ 1))
-                            break;
-                        index = (index / 2) | 0;
-                    }
+        const redundantIndices = new Set();
+        const proof = [];
+        for (let index of maximalIndices) {
+            if (!redundantIndices.has(index)) {
+                proof.push(index);
+                while (index > 1) {
+                    redundantIndices.add(index);
+                    if (!redundantIndices.has(index ^ 1))
+                        break;
+                    index = (index / 2) | 0;
                 }
             }
         }
-        catch (e_2_1) { e_2 = { error: e_2_1 }; }
-        finally {
-            try {
-                if (maximalIndices_1_1 && !maximalIndices_1_1.done && (_b = maximalIndices_1["return"])) _b.call(maximalIndices_1);
-            }
-            finally { if (e_2) throw e_2.error; }
-        }
-        return proof.filter(function (index) {
+        return proof.filter(index => {
             return !treeIndices.includes(index - leafCount);
         });
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getMultiProof = function (tree, indices) {
-        var _this = this;
+    getMultiProof(tree, indices) {
         if (!indices) {
             indices = tree;
             tree = this.getLayersFlat();
-            if (!indices.every(function (x) { return typeof x === 'number'; })) {
-                var els = indices;
+            if (!indices.every(x => typeof x === 'number')) {
+                let els = indices;
                 if (this.sortPairs) {
                     els = els.sort(Buffer.compare);
                 }
-                var ids = els.map(function (el) { return _this.bufIndexOf(_this.leaves, el); }).sort(function (a, b) { return a === b ? 0 : a > b ? 1 : -1; });
-                if (!ids.every(function (idx) { return idx !== -1; })) {
+                let ids = els.map((el) => this.bufIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
+                if (!ids.every((idx) => idx !== -1)) {
                     throw new Error('Element does not exist in Merkle tree');
                 }
-                var hashes_1 = [];
-                var proof = [];
-                var nextIds = [];
-                for (var i = 0; i < this.layers.length; i++) {
-                    var layer = this.layers[i];
-                    for (var j = 0; j < ids.length; j++) {
-                        var idx = ids[j];
-                        var pairElement = this.getPairElement(idx, layer);
-                        hashes_1.push(layer[idx]);
+                const hashes = [];
+                const proof = [];
+                let nextIds = [];
+                for (let i = 0; i < this.layers.length; i++) {
+                    const layer = this.layers[i];
+                    for (let j = 0; j < ids.length; j++) {
+                        const idx = ids[j];
+                        const pairElement = this.getPairElement(idx, layer);
+                        hashes.push(layer[idx]);
                         if (pairElement) {
                             proof.push(pairElement);
                         }
                         nextIds.push((idx / 2) | 0);
                     }
-                    ids = nextIds.filter(function (value, i, self) { return self.indexOf(value) === i; });
+                    ids = nextIds.filter((value, i, self) => self.indexOf(value) === i);
                     nextIds = [];
                 }
-                return proof.filter(function (value) { return !hashes_1.includes(value); });
+                return proof.filter((value) => !hashes.includes(value));
             }
         }
-        return this.getProofIndices(indices, this._log2((tree.length / 2) | 0)).map(function (index) { return tree[index]; });
-    };
+        return this.getProofIndices(indices, this._log2((tree.length / 2) | 0)).map(index => tree[index]);
+    }
     // TODO: documentation
-    MerkleTree.prototype.getHexMultiProof = function (tree, indices) {
+    getHexMultiProof(tree, indices) {
         return this.getMultiProof(tree, indices).map(this._bufferToHex);
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.bufIndexOf = function (arr, el) {
-        for (var i = 0; i < arr.length; i++) {
+    bufIndexOf(arr, el) {
+        for (let i = 0; i < arr.length; i++) {
             if (el.equals(arr[i])) {
                 return i;
             }
         }
         return -1;
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getProofFlags = function (els, proofs) {
-        var _this = this;
-        var ids = els.map(function (el) { return _this.bufIndexOf(_this.leaves, el); }).sort(function (a, b) { return a === b ? 0 : a > b ? 1 : -1; });
-        if (!ids.every(function (idx) { return idx !== -1; })) {
+    getProofFlags(els, proofs) {
+        let ids = els.map((el) => this.bufIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
+        if (!ids.every((idx) => idx !== -1)) {
             throw new Error('Element does not exist in Merkle tree');
         }
-        var tested = [];
-        var flags = [];
-        var _loop_1 = function (index) {
-            var layer = this_1.layers[index];
-            ids = ids.reduce(function (ids, idx) {
-                var skipped = tested.includes(layer[idx]);
+        const tested = [];
+        const flags = [];
+        for (let index = 0; index < this.layers.length; index++) {
+            const layer = this.layers[index];
+            ids = ids.reduce((ids, idx) => {
+                const skipped = tested.includes(layer[idx]);
                 if (!skipped) {
-                    var pairElement = _this.getPairElement(idx, layer);
-                    var proofUsed = proofs.includes(layer[idx]) || proofs.includes(pairElement);
+                    const pairElement = this.getPairElement(idx, layer);
+                    const proofUsed = proofs.includes(layer[idx]) || proofs.includes(pairElement);
                     pairElement && flags.push(!proofUsed);
                     tested.push(layer[idx]);
                     tested.push(pairElement);
@@ -470,27 +414,22 @@ var MerkleTree = /** @class */ (function () {
                 ids.push((idx / 2) | 0);
                 return ids;
             }, []);
-        };
-        var this_1 = this;
-        for (var index = 0; index < this.layers.length; index++) {
-            _loop_1(index);
         }
         return flags;
-    };
-    MerkleTree.prototype.getPairElement = function (idx, layer) {
-        var pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1;
+    }
+    getPairElement(idx, layer) {
+        const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1;
         if (pairIdx < layer.length) {
             return layer[pairIdx];
         }
         else {
             return null;
         }
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getHexProof = function (leaf, index) {
-        var _this = this;
-        return this.getProof(leaf, index).map(function (x) { return _this._bufferToHex(x.data); });
-    };
+    getHexProof(leaf, index) {
+        return this.getProof(leaf, index).map(x => this._bufferToHex(x.data));
+    }
     /**
      * verify
      * @desc Returns true if the proof path (array of hashes) can connect the target node
@@ -507,8 +446,8 @@ var MerkleTree = /** @class */ (function () {
      *const verified = tree.verify(proof, leaves[2], root)
      *```
      */
-    MerkleTree.prototype.verify = function (proof, targetNode, root) {
-        var hash = this._bufferify(targetNode);
+    verify(proof, targetNode, root) {
+        let hash = this._bufferify(targetNode);
         root = this._bufferify(root);
         if (!Array.isArray(proof) ||
             !proof.length ||
@@ -516,10 +455,10 @@ var MerkleTree = /** @class */ (function () {
             !root) {
             return false;
         }
-        for (var i = 0; i < proof.length; i++) {
-            var node = proof[i];
-            var data = null;
-            var isLeftNode = null;
+        for (let i = 0; i < proof.length; i++) {
+            const node = proof[i];
+            let data = null;
+            let isLeftNode = null;
             // NOTE: case for when proof is hex values only
             if (typeof node === 'string') {
                 data = this._bufferify(node);
@@ -529,12 +468,12 @@ var MerkleTree = /** @class */ (function () {
                 data = node.data;
                 isLeftNode = (node.position === 'left');
             }
-            var buffers = [];
+            const buffers = [];
             if (this.isBitcoinTree) {
-                buffers.push(reverse(hash));
-                buffers[isLeftNode ? 'unshift' : 'push'](reverse(data));
+                buffers.push(buffer_reverse_1.default(hash));
+                buffers[isLeftNode ? 'unshift' : 'push'](buffer_reverse_1.default(data));
                 hash = this.hashAlgo(Buffer.concat(buffers));
-                hash = reverse(this.hashAlgo(hash));
+                hash = buffer_reverse_1.default(this.hashAlgo(hash));
             }
             else {
                 if (this.sortPairs) {
@@ -555,45 +494,24 @@ var MerkleTree = /** @class */ (function () {
             }
         }
         return Buffer.compare(hash, root) === 0;
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.verifyMultiProof = function (root, indices, leaves, depth, proof) {
-        var e_3, _a, e_4, _b;
+    verifyMultiProof(root, indices, leaves, depth, proof) {
         root = this._bufferify(root);
         leaves = leaves.map(this._bufferify);
         proof = proof.map(this._bufferify);
-        var tree = {};
-        try {
-            for (var _c = __values(this._zip(indices, leaves)), _d = _c.next(); !_d.done; _d = _c.next()) {
-                var _e = __read(_d.value, 2), index = _e[0], leaf = _e[1];
-                tree[(Math.pow(2, depth)) + index] = leaf;
-            }
+        const tree = {};
+        for (const [index, leaf] of this._zip(indices, leaves)) {
+            tree[(Math.pow(2, depth)) + index] = leaf;
         }
-        catch (e_3_1) { e_3 = { error: e_3_1 }; }
-        finally {
-            try {
-                if (_d && !_d.done && (_a = _c["return"])) _a.call(_c);
-            }
-            finally { if (e_3) throw e_3.error; }
+        for (const [index, proofitem] of this._zip(this.getProofIndices(indices, depth), proof)) {
+            tree[index] = proofitem;
         }
-        try {
-            for (var _f = __values(this._zip(this.getProofIndices(indices, depth), proof)), _g = _f.next(); !_g.done; _g = _f.next()) {
-                var _h = __read(_g.value, 2), index = _h[0], proofitem = _h[1];
-                tree[index] = proofitem;
-            }
-        }
-        catch (e_4_1) { e_4 = { error: e_4_1 }; }
-        finally {
-            try {
-                if (_g && !_g.done && (_b = _f["return"])) _b.call(_f);
-            }
-            finally { if (e_4) throw e_4.error; }
-        }
-        var indexqueue = Object.keys(tree).map(function (x) { return +x; }).sort(function (a, b) { return a - b; });
+        let indexqueue = Object.keys(tree).map(x => +x).sort((a, b) => a - b);
         indexqueue = indexqueue.slice(0, indexqueue.length - 1);
-        var i = 0;
+        let i = 0;
         while (i < indexqueue.length) {
-            var index = indexqueue[i];
+            const index = indexqueue[i];
             if (index >= 2 && ({}).hasOwnProperty.call(tree, index ^ 1)) {
                 tree[(index / 2) | 0] = this.hashAlgo(Buffer.concat([tree[index - (index % 2)], tree[index - (index % 2) + 1]]));
                 indexqueue.push((index / 2) | 0);
@@ -601,56 +519,55 @@ var MerkleTree = /** @class */ (function () {
             i += 1;
         }
         return !indices.length || (({}).hasOwnProperty.call(tree, 1) && tree[1].equals(root));
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getDepth = function () {
+    getDepth() {
         return this.getLayers().length - 1;
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.getLayersAsObject = function () {
-        var _a;
-        var layers = this.getLayers().map(function (x) { return x.map(function (x) { return x.toString('hex'); }); });
-        var objs = [];
-        for (var i = 0; i < layers.length; i++) {
-            var arr = [];
-            for (var j = 0; j < layers[i].length; j++) {
-                var obj = (_a = {}, _a[layers[i][j]] = null, _a);
+    getLayersAsObject() {
+        const layers = this.getLayers().map(x => x.map(x => x.toString('hex')));
+        const objs = [];
+        for (let i = 0; i < layers.length; i++) {
+            const arr = [];
+            for (let j = 0; j < layers[i].length; j++) {
+                const obj = { [layers[i][j]]: null };
                 if (objs.length) {
                     obj[layers[i][j]] = {};
-                    var a = objs.shift();
-                    var akey = Object.keys(a)[0];
+                    const a = objs.shift();
+                    const akey = Object.keys(a)[0];
                     obj[layers[i][j]][akey] = a[akey];
                     if (objs.length) {
-                        var b = objs.shift();
-                        var bkey = Object.keys(b)[0];
+                        const b = objs.shift();
+                        const bkey = Object.keys(b)[0];
                         obj[layers[i][j]][bkey] = b[bkey];
                     }
                 }
                 arr.push(obj);
             }
-            objs.push.apply(objs, __spread(arr));
+            objs.push(...arr);
         }
         return objs[0];
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.print = function () {
+    print() {
         MerkleTree.print(this);
-    };
+    }
     // TODO: documentation
-    MerkleTree.prototype.toTreeString = function () {
-        var obj = this.getLayersAsObject();
-        return treeify.asTree(obj, true);
-    };
+    toTreeString() {
+        const obj = this.getLayersAsObject();
+        return treeify_1.default.asTree(obj, true);
+    }
     // TODO: documentation
-    MerkleTree.prototype.toString = function () {
+    toString() {
         return this.toTreeString();
-    };
+    }
     // TODO: documentation
-    MerkleTree.bufferify = function (x) {
+    static bufferify(x) {
         if (!Buffer.isBuffer(x)) {
             // crypto-js support
             if (typeof x === 'object' && x.words) {
-                return Buffer.from(x.toString(CryptoJS.enc.Hex), 'hex');
+                return Buffer.from(x.toString(crypto_js_1.default.enc.Hex), 'hex');
             }
             else if (MerkleTree.isHexStr(x)) {
                 return Buffer.from(x.replace(/^0x/, ''), 'hex');
@@ -660,23 +577,23 @@ var MerkleTree = /** @class */ (function () {
             }
         }
         return x;
-    };
-    MerkleTree.isHexStr = function (v) {
+    }
+    static isHexStr(v) {
         return (typeof v === 'string' && /^(0x)?[0-9A-Fa-f]*$/.test(v));
-    };
+    }
     // TODO: documentation
-    MerkleTree.print = function (tree) {
+    static print(tree) {
         console.log(tree.toString());
-    };
-    MerkleTree.prototype._bufferToHex = function (value) {
+    }
+    _bufferToHex(value) {
         return '0x' + value.toString('hex');
-    };
-    MerkleTree.prototype._bufferify = function (x) {
+    }
+    _bufferify(x) {
         return MerkleTree.bufferify(x);
-    };
-    MerkleTree.prototype._bufferifyFn = function (f) {
+    }
+    _bufferifyFn(f) {
         return function (x) {
-            var v = f(x);
+            const v = f(x);
             if (Buffer.isBuffer(v)) {
                 return v;
             }
@@ -684,19 +601,18 @@ var MerkleTree = /** @class */ (function () {
                 return Buffer.from(v, 'hex');
             }
             // crypto-js support
-            return Buffer.from(f(CryptoJS.enc.Hex.parse(x.toString('hex'))).toString(CryptoJS.enc.Hex), 'hex');
+            return Buffer.from(f(crypto_js_1.default.enc.Hex.parse(x.toString('hex'))).toString(crypto_js_1.default.enc.Hex), 'hex');
         };
-    };
-    MerkleTree.prototype._isHexStr = function (v) {
+    }
+    _isHexStr(v) {
         return MerkleTree.isHexStr(v);
-    };
-    MerkleTree.prototype._log2 = function (x) {
+    }
+    _log2(x) {
         return x === 1 ? 0 : 1 + this._log2((x / 2) | 0);
-    };
-    MerkleTree.prototype._zip = function (a, b) {
-        return a.map(function (e, i) { return [e, b[i]]; });
-    };
-    return MerkleTree;
-}());
+    }
+    _zip(a, b) {
+        return a.map((e, i) => [e, b[i]]);
+    }
+}
 exports.MerkleTree = MerkleTree;
-exports["default"] = MerkleTree;
+exports.default = MerkleTree;

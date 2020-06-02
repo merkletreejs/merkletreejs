@@ -2,8 +2,13 @@
   "compilerOptions": {
     "declaration": true,
     "module": "commonjs",
+    "target": "es2015",
+    "esModuleInterop": true,
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "downlevelIteration": true,
+    "sourceMap": false,
     "types": ["node"],
     "baseUrl": "./",
     "paths": {
