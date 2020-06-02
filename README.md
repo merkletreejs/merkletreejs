@@ -552,6 +552,10 @@ More info [here](https://bitcointalk.org/?topic=102395).
 
 - [Where is Double hashing performed in Bitcoin?](https://bitcoin.stackexchange.com/questions/8443/where-is-double-hashing-performed-in-bitcoin)
 
+- [Compact Merkle Multiproofs](https://arxiv.org/pdf/2002.07648.pdf)
+
+- [Eth 2.0 specs - Merkle Multiproofs](https://github.com/ethereum/eth2.0-specs/blob/dev/ssz/merkle-proofs.md#merkle-multiproofs)
+
 ## Contributing
 
 Pull requests are welcome!
