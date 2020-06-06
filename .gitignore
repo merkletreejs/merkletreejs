@@ -109,10 +109,10 @@ example.js
 # Build directories #
 #####################
 build
-#dist
+dist
 docs
 
 # Files to ignore #
 #####################
 package-lock.json
-/merkletree.js
+merkletree.js
