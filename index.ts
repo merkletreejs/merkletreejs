@@ -60,7 +60,7 @@ export class MerkleTree {
    *const tree = new MerkleTree(leaves, sha256)
    *```
    */
-  constructor (leaves: any[], hashAlgorithm=SHA256, options: Options = {}) {
+  constructor (leaves: any[], hashAlgorithm = SHA256, options: Options = {}) {
     this.isBitcoinTree = !!options.isBitcoinTree
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
@@ -119,7 +119,7 @@ export class MerkleTree {
         }
 
         const left = nodes[i]
-        let right = i + 1 === nodes.length ? left : nodes[i + 1]
+        const right = i + 1 === nodes.length ? left : nodes[i + 1]
         let data = null
         let combined = null
 
@@ -457,7 +457,7 @@ export class MerkleTree {
         const proof = []
         let nextIds = []
 
-        for (let i= 0; i< this.layers.length; i++) {
+        for (let i = 0; i < this.layers.length; i++) {
           const layer = this.layers[i]
           for (let j = 0; j < ids.length; j++) {
             const idx = ids[j]
@@ -468,7 +468,7 @@ export class MerkleTree {
               proof.push(pairElement)
             }
 
-            nextIds.push((idx / 2)|0)
+            nextIds.push((idx / 2) | 0)
           }
 
           ids = nextIds.filter((value, i, self) => self.indexOf(value) === i)
@@ -530,7 +530,7 @@ export class MerkleTree {
           tested.push(layer[idx])
           tested.push(pairElement)
         }
-        ids.push((idx / 2)|0)
+        ids.push((idx / 2) | 0)
         return ids
       }, [])
     }
@@ -772,7 +772,7 @@ export class MerkleTree {
    *const node = tree.getPairNode(layer, index)
    *```
    */
-  private _getPairNode(layer: Buffer[], idx: number):Buffer {
+  private _getPairNode (layer: Buffer[], idx: number):Buffer {
     const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1
 
     if (pairIdx < layer.length) {

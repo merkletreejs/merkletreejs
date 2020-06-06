@@ -1,11 +1,12 @@
 {
   "name": "merkletreejs",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "merkletree.js"
   ],
   "scripts": {
     "test": "tape test/*.js",

@@ -1,3 +1,5 @@
 diagrams
 test
 index.ts
+!dist
+!merkletree.js
