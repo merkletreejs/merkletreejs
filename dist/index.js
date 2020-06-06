@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MerkleTree = void 0;
 const buffer_reverse_1 = __importDefault(require("buffer-reverse"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const sha256_1 = __importDefault(require("crypto-js/sha256"));
@@ -115,15 +116,15 @@ class MerkleTree {
      *const leaves = tree.getLeaves()
      *```
      */
-    getLeaves(data) {
-        if (Array.isArray(data)) {
+    getLeaves(values) {
+        if (Array.isArray(values)) {
             if (this.hashLeaves) {
-                data = data.map(this.hashAlgo);
+                values = values.map(this.hashAlgo);
                 if (this.sortLeaves) {
-                    data = data.sort(Buffer.compare);
+                    values = values.sort(Buffer.compare);
                 }
             }
-            return this.leaves.filter(x => this._bufferIndexOf(data, x) !== -1);
+            return this.leaves.filter(x => this._bufferIndexOf(values, x) !== -1);
         }
         return this.leaves;
     }
@@ -418,7 +419,8 @@ class MerkleTree {
      * getProofFlags
      * @desc Returns list of booleans where proofs should be used instead of hashing.
      * Proof flags are used in the Solidity multiproof verifiers.
-     * @param {Number[]} indices - Tree indices.
+     * @param {Buffer[]} leaves
+     * @param {Buffer[]} proofs
      * @return {Boolean[]} - Boolean flags
      * @example
      * ```js
@@ -427,8 +429,8 @@ class MerkleTree {
      *const proofFlags = tree.getProofFlags(leaves, proof)
      *```
      */
-    getProofFlags(els, proofs) {
-        let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
+    getProofFlags(leaves, proofs) {
+        let ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
         if (!ids.every((idx) => idx !== -1)) {
             throw new Error('Element does not exist in Merkle tree');
         }
@@ -581,7 +583,7 @@ class MerkleTree {
      *```
      */
     getLayersAsObject() {
-        const layers = this.getLayers().map(x => x.map(x => x.toString('hex')));
+        const layers = this.getLayers().map((layer) => layer.map((value) => value.toString('hex')));
         const objs = [];
         for (let i = 0; i < layers.length; i++) {
             const arr = [];
@@ -655,7 +657,7 @@ class MerkleTree {
      */
     static getMultiProof(tree, indices) {
         const t = new MerkleTree([]);
-        return t.getMultiProof(tree.getLayersFlat(), indices);
+        return t.getMultiProof(tree, indices);
     }
     /**
      * getPairNode
@@ -690,9 +692,9 @@ class MerkleTree {
      *const index = tree.bufferIndexOf(haystack, needle)
      *```
      */
-    _bufferIndexOf(arr, el) {
-        for (let i = 0; i < arr.length; i++) {
-            if (el.equals(arr[i])) {
+    _bufferIndexOf(array, element) {
+        for (let i = 0; i < array.length; i++) {
+            if (element.equals(array[i])) {
                 return i;
             }
         }
@@ -709,20 +711,20 @@ class MerkleTree {
      *const buf = MerkleTree.bufferify('0x1234')
      *```
      */
-    static bufferify(x) {
-        if (!Buffer.isBuffer(x)) {
+    static bufferify(value) {
+        if (!Buffer.isBuffer(value)) {
             // crypto-js support
-            if (typeof x === 'object' && x.words) {
-                return Buffer.from(x.toString(crypto_js_1.default.enc.Hex), 'hex');
+            if (typeof value === 'object' && value.words) {
+                return Buffer.from(value.toString(crypto_js_1.default.enc.Hex), 'hex');
             }
-            else if (MerkleTree.isHexString(x)) {
-                return Buffer.from(x.replace(/^0x/, ''), 'hex');
+            else if (MerkleTree.isHexString(value)) {
+                return Buffer.from(value.replace(/^0x/, ''), 'hex');
             }
-            else if (typeof x === 'string') {
-                return Buffer.from(x);
+            else if (typeof value === 'string') {
+                return Buffer.from(value);
             }
         }
-        return x;
+        return value;
     }
     /**
      * isHexString
@@ -775,8 +777,8 @@ class MerkleTree {
      *const buf = MerkleTree.bufferify('0x1234')
      *```
      */
-    _bufferify(x) {
-        return MerkleTree.bufferify(x);
+    _bufferify(value) {
+        return MerkleTree.bufferify(value);
     }
     /**
      * bufferifyFn
@@ -790,8 +792,8 @@ class MerkleTree {
      *```
      */
     _bufferifyFn(f) {
-        return function (x) {
-            const v = f(x);
+        return function (value) {
+            const v = f(value);
             if (Buffer.isBuffer(v)) {
                 return v;
             }
@@ -799,7 +801,7 @@ class MerkleTree {
                 return Buffer.from(v, 'hex');
             }
             // crypto-js support
-            return Buffer.from(f(crypto_js_1.default.enc.Hex.parse(x.toString('hex'))).toString(crypto_js_1.default.enc.Hex), 'hex');
+            return Buffer.from(f(crypto_js_1.default.enc.Hex.parse(value.toString('hex'))).toString(crypto_js_1.default.enc.Hex), 'hex');
         };
     }
     /**
@@ -813,8 +815,8 @@ class MerkleTree {
      *console.log(MerkleTree.isHexString('0x1234'))
      *```
      */
-    _isHexString(v) {
-        return MerkleTree.isHexString(v);
+    _isHexString(value) {
+        return MerkleTree.isHexString(value);
     }
     /**
      * log2
@@ -822,8 +824,8 @@ class MerkleTree {
      * @param {Number} value
      * @return {Number}
      */
-    _log2(x) {
-        return x === 1 ? 0 : 1 + this._log2((x / 2) | 0);
+    _log2(n) {
+        return n === 1 ? 0 : 1 + this._log2((n / 2) | 0);
     }
     /**
      * zip

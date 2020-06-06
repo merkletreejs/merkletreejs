@@ -77,19 +77,19 @@ Output
 
 ## Diagrams
 
-Visualization of Merkle Tree
+▾ Visualization of Merkle Tree
 
 <img src="https://user-images.githubusercontent.com/168240/43616375-15330c32-9671-11e8-9057-6e61c312c856.png" alt="Merkle Tree" width="500">
 
-Visualization of Merkle Tree Proof
+▾ Visualization of Merkle Tree Proof
 
 <img src="https://user-images.githubusercontent.com/168240/43616387-27ec860a-9671-11e8-9f3f-0b871a6581a6.png" alt="Merkle Tree Proof" width="420">
 
-Visualization of Invalid Merkle Tree Proofs
+▾ Visualization of Invalid Merkle Tree Proofs
 
 <img src="https://user-images.githubusercontent.com/168240/43616398-33e20584-9671-11e8-9f62-9f48ce412898.png" alt="Merkle Tree Proof" width="420">
 
-Visualization of Bitcoin Merkle Tree
+▾ Visualization of Bitcoin Merkle Tree
 
 <img src="https://user-images.githubusercontent.com/168240/43616417-46d3293e-9671-11e8-81c3-8cdf7f8ddd77.png" alt="Merkle Tree Proof" width="420">
 
@@ -97,6 +97,8 @@ Visualization of Bitcoin Merkle Tree
 
 <!-- :%s/// -->
 <!-- :%s/\[Options\]()/\[Options\](#options) -->
+
+<!-- BEGIN DOCUMENTATION -->
 
 # Class: MerkleTree
 
@@ -145,9 +147,7 @@ Class reprensenting a Merkle Tree
 
 ###  constructor
 
-\+ **new MerkleTree**(`leaves`: any, `hashAlgorithm`: any, `options`: [Options](../interfaces/_index_.options.md)): *[MerkleTree](_index_.merkletree.md)*
-
-*Defined in [index.ts:39](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L39)*
+\+ **new MerkleTree**(`leaves`: any[], `hashAlgorithm`: any, `options`: [Options](#options)): *[MerkleTree](_index_.merkletree.md)*
 
 **`desc`** Constructs a Merkle Tree.
 All nodes and leaves are stored as Buffers.
@@ -172,7 +172,7 @@ const tree = new MerkleTree(leaves, sha256)
 
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
-`leaves` | any | - | Array of hashed leaves. Each leaf must be a Buffer. |
+`leaves` | any[] | - | Array of hashed leaves. Each leaf must be a Buffer. |
 `hashAlgorithm` | any | SHA256 | Algorithm used for hashing leaves and nodes |
 `options` | [Options](../interfaces/_index_.options.md) | {} | Additional options |
 
@@ -183,8 +183,6 @@ Name | Type | Default | Description |
 ###  getDepth
 
 ▸ **getDepth**(): *number*
-
-*Defined in [index.ts:665](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L665)*
 
 getDepth
 
@@ -201,9 +199,7 @@ ___
 
 ###  getHexLayers
 
-▸ **getHexLayers**(): *any*
-
-*Defined in [index.ts:211](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L211)*
+▸ **getHexLayers**(): *string[]*
 
 getHexLayers
 
@@ -214,15 +210,13 @@ getHexLayers
 const layers = tree.getHexLayers()
 ```
 
-**Returns:** *any*
+**Returns:** *string[]*
 
 ___
 
 ###  getHexLayersFlat
 
-▸ **getHexLayersFlat**(): *any*
-
-*Defined in [index.ts:257](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L257)*
+▸ **getHexLayersFlat**(): *string[]*
 
 getHexLayersFlat
 
@@ -233,15 +227,13 @@ getHexLayersFlat
 const layers = tree.getHexLayersFlat()
 ```
 
-**Returns:** *any*
+**Returns:** *string[]*
 
 ___
 
 ###  getHexLeaves
 
 ▸ **getHexLeaves**(): *string[]*
-
-*Defined in [index.ts:185](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L185)*
 
 getHexLeaves
 
@@ -258,9 +250,7 @@ ___
 
 ###  getHexMultiProof
 
-▸ **getHexMultiProof**(`tree`: any, `indices`: any): *string[]*
-
-*Defined in [index.ts:496](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L496)*
+▸ **getHexMultiProof**(`tree`: Buffer[], `indices`: number[]): *string[]*
 
 getHexMultiProof
 
@@ -276,8 +266,8 @@ const proof = tree.getHexMultiProof(indices)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`tree` | any | - |
-`indices` | any | Tree indices. |
+`tree` | Buffer[] | - |
+`indices` | number[] | Tree indices. |
 
 **Returns:** *string[]*
 
@@ -287,9 +277,7 @@ ___
 
 ###  getHexProof
 
-▸ **getHexProof**(`leaf`: any, `index?`: any): *string[]*
-
-*Defined in [index.ts:379](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L379)*
+▸ **getHexProof**(`leaf`: Buffer, `index?`: number): *string[]*
 
 getHexProof
 
@@ -304,8 +292,8 @@ const proof = tree.getHexProof(leaves[2])
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`leaf` | any | Target leaf |
-`index?` | any | - |
+`leaf` | Buffer | Target leaf |
+`index?` | number | - |
 
 **Returns:** *string[]*
 
@@ -316,8 +304,6 @@ ___
 ###  getHexRoot
 
 ▸ **getHexRoot**(): *string*
-
-*Defined in [index.ts:283](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L283)*
 
 getHexRoot
 
@@ -334,9 +320,7 @@ ___
 
 ###  getLayers
 
-▸ **getLayers**(): *any[]*
-
-*Defined in [index.ts:198](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L198)*
+▸ **getLayers**(): *Buffer[]*
 
 getLayers
 
@@ -347,15 +331,13 @@ getLayers
 const layers = tree.getLayers()
 ```
 
-**Returns:** *any[]*
+**Returns:** *Buffer[]*
 
 ___
 
 ###  getLayersAsObject
 
 ▸ **getLayersAsObject**(): *any*
-
-*Defined in [index.ts:677](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L677)*
 
 getLayersAsObject
 
@@ -372,9 +354,7 @@ ___
 
 ###  getLayersFlat
 
-▸ **getLayersFlat**(): *any*
-
-*Defined in [index.ts:232](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L232)*
+▸ **getLayersFlat**(): *Buffer[]*
 
 getLayersFlat
 
@@ -385,15 +365,13 @@ getLayersFlat
 const layers = tree.getLayersFlat()
 ```
 
-**Returns:** *any*
+**Returns:** *Buffer[]*
 
 ___
 
 ###  getLeaves
 
-▸ **getLeaves**(`data?`: any[]): *any[]*
-
-*Defined in [index.ts:161](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L161)*
+▸ **getLeaves**(`values?`: any[]): *Buffer[]*
 
 getLeaves
 
@@ -408,17 +386,15 @@ const leaves = tree.getLeaves()
 
 Name | Type |
 ------ | ------ |
-`data?` | any[] |
+`values?` | any[] |
 
-**Returns:** *any[]*
+**Returns:** *Buffer[]*
 
 ___
 
 ###  getMultiProof
 
-▸ **getMultiProof**(`tree`: any, `indices`: any): *any[]*
-
-*Defined in [index.ts:440](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L440)*
+▸ **getMultiProof**(`tree?`: any[], `indices?`: any[]): *Buffer[]*
 
 getMultiProof
 
@@ -434,10 +410,10 @@ const proof = tree.getMultiProof(indices)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`tree` | any | - |
-`indices` | any | Tree indices. |
+`tree?` | any[] | - |
+`indices?` | any[] | Tree indices. |
 
-**Returns:** *any[]*
+**Returns:** *Buffer[]*
 
 - Multiproofs
 
@@ -445,9 +421,7 @@ ___
 
 ###  getProof
 
-▸ **getProof**(`leaf`: any, `index?`: any): *any[]*
-
-*Defined in [index.ts:307](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L307)*
+▸ **getProof**(`leaf`: Buffer, `index?`: number): *any[]*
 
 getProof
 
@@ -469,8 +443,8 @@ const proof = tree.getProof(leaves[2], 2)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`leaf` | any | Target leaf |
-`index?` | any | - |
+`leaf` | Buffer | Target leaf |
+`index?` | number | - |
 
 **Returns:** *any[]*
 
@@ -481,9 +455,7 @@ ___
 
 ###  getProofFlags
 
-▸ **getProofFlags**(`els`: any, `proofs`: any): *any[]*
-
-*Defined in [index.ts:513](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L513)*
+▸ **getProofFlags**(`leaves`: Buffer[], `proofs`: Buffer[]): *boolean[]*
 
 getProofFlags
 
@@ -501,10 +473,10 @@ const proofFlags = tree.getProofFlags(leaves, proof)
 
 Name | Type |
 ------ | ------ |
-`els` | any |
-`proofs` | any |
+`leaves` | Buffer[] |
+`proofs` | Buffer[] |
 
-**Returns:** *any[]*
+**Returns:** *boolean[]*
 
 - Boolean flags
 
@@ -512,9 +484,7 @@ ___
 
 ###  getProofIndices
 
-▸ **getProofIndices**(`treeIndices`: any, `depth`: any): *any[]*
-
-*Defined in [index.ts:395](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L395)*
+▸ **getProofIndices**(`treeIndices`: number[], `depth`: number): *number[]*
 
 getProofIndices
 
@@ -530,10 +500,10 @@ console.log(proofIndices) // [ 23, 20, 19, 8, 3 ]
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`treeIndices` | any | Tree indices |
-`depth` | any | Tree depth; number of layers. |
+`treeIndices` | number[] | Tree indices |
+`depth` | number | Tree depth; number of layers. |
 
-**Returns:** *any[]*
+**Returns:** *number[]*
 
 - Proof indices
 
@@ -541,9 +511,7 @@ ___
 
 ###  getRoot
 
-▸ **getRoot**(): *any*
-
-*Defined in [index.ts:270](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L270)*
+▸ **getRoot**(): *Buffer*
 
 getRoot
 
@@ -554,15 +522,13 @@ getRoot
 const root = tree.getRoot()
 ```
 
-**Returns:** *any*
+**Returns:** *Buffer*
 
 ___
 
 ###  print
 
 ▸ **print**(): *void*
-
-*Defined in [index.ts:713](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L713)*
 
 print
 
@@ -579,9 +545,7 @@ ___
 
 ###  toString
 
-▸ **toString**(): *any*
-
-*Defined in [index.ts:739](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L739)*
+▸ **toString**(): *string*
 
 toString
 
@@ -592,15 +556,13 @@ toString
 console.log(tree.toString())
 ```
 
-**Returns:** *any*
+**Returns:** *string*
 
 ___
 
 ###  verify
 
-▸ **verify**(`proof`: any, `targetNode`: any, `root`: any): *boolean*
-
-*Defined in [index.ts:556](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L556)*
+▸ **verify**(`proof`: any[], `targetNode`: Buffer, `root`: Buffer): *boolean*
 
 verify
 
@@ -618,9 +580,9 @@ const verified = tree.verify(proof, leaves[2], root)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`proof` | any | Array of proof objects that should connect target node to Merkle root. |
-`targetNode` | any | Target node Buffer |
-`root` | any | Merkle root Buffer |
+`proof` | any[] | Array of proof objects that should connect target node to Merkle root. |
+`targetNode` | Buffer | Target node Buffer |
+`root` | Buffer | Merkle root Buffer |
 
 **Returns:** *boolean*
 
@@ -628,9 +590,7 @@ ___
 
 ###  verifyMultiProof
 
-▸ **verifyMultiProof**(`root`: any, `indices`: any, `leaves`: any, `depth`: any, `proof`: any): *any*
-
-*Defined in [index.ts:630](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L630)*
+▸ **verifyMultiProof**(`root`: Buffer, `indices`: number[], `leaves`: Buffer[], `depth`: number, `proof`: Buffer[]): *boolean*
 
 verifyMultiProof
 
@@ -651,21 +611,19 @@ const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`root` | any | Merkle tree root |
-`indices` | any | Leave indices |
-`leaves` | any | Leaf values at indices. |
-`depth` | any | Tree depth |
-`proof` | any | Multiproofs given indices |
+`root` | Buffer | Merkle tree root |
+`indices` | number[] | Leave indices |
+`leaves` | Buffer[] | Leaf values at indices. |
+`depth` | number | Tree depth |
+`proof` | Buffer[] | Multiproofs given indices |
 
-**Returns:** *any*
+**Returns:** *boolean*
 
 ___
 
 ### `Static` bufferify
 
-▸ **bufferify**(`x`: any): *any*
-
-*Defined in [index.ts:817](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L817)*
+▸ **bufferify**(`value`: any): *Buffer*
 
 bufferify
 
@@ -680,17 +638,15 @@ const buf = MerkleTree.bufferify('0x1234')
 
 Name | Type |
 ------ | ------ |
-`x` | any |
+`value` | any |
 
-**Returns:** *any*
+**Returns:** *Buffer*
 
 ___
 
 ### `Static` getMultiProof
 
-▸ **getMultiProof**(`tree`: any, `indices`: any): *any[]*
-
-*Defined in [index.ts:757](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L757)*
+▸ **getMultiProof**(`tree`: Buffer[], `indices`: number[]): *Buffer[]*
 
 getMultiProof
 
@@ -707,10 +663,10 @@ const proof = MerkleTree.getMultiProof(flatTree, indices)
 
 Name | Type | Description |
 ------ | ------ | ------ |
-`tree` | any | Tree as a flat array. |
-`indices` | any | Tree indices. |
+`tree` | Buffer[] | Tree as a flat array. |
+`indices` | number[] | Tree indices. |
 
-**Returns:** *any[]*
+**Returns:** *Buffer[]*
 
 - Multiproofs
 
@@ -718,9 +674,7 @@ ___
 
 ### `Static` isHexString
 
-▸ **isHexString**(`v`: any): *boolean*
-
-*Defined in [index.ts:843](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L843)*
+▸ **isHexString**(`v`: string): *boolean*
 
 isHexString
 
@@ -735,7 +689,7 @@ console.log(MerkleTree.isHexString('0x1234'))
 
 Name | Type |
 ------ | ------ |
-`v` | any |
+`v` | string |
 
 **Returns:** *boolean*
 
@@ -744,8 +698,6 @@ ___
 ### `Static` print
 
 ▸ **print**(`tree`: any): *void*
-
-*Defined in [index.ts:857](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L857)*
 
 print
 
@@ -787,8 +739,6 @@ Name | Type | Description |
 
 • **duplicateOdd**? : *boolean*
 
-*Defined in [index.ts:8](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L8)*
-
 If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
 
 ___
@@ -796,8 +746,6 @@ ___
 ### `Optional` hashLeaves
 
 • **hashLeaves**? : *boolean*
-
-*Defined in [index.ts:10](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L10)*
 
 If set to `true`, the leaves will hashed using the set hashing algorithms.
 
@@ -807,8 +755,6 @@ ___
 
 • **isBitcoinTree**? : *boolean*
 
-*Defined in [index.ts:12](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L12)*
-
 If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
 
 ___
@@ -816,8 +762,6 @@ ___
 ### `Optional` sort
 
 • **sort**? : *boolean*
-
-*Defined in [index.ts:18](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L18)*
 
 If set to `true`, the leaves and hashing pairs will be sorted.
 
@@ -827,8 +771,6 @@ ___
 
 • **sortLeaves**? : *boolean*
 
-*Defined in [index.ts:14](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L14)*
-
 If set to `true`, the leaves will be sorted.
 
 ___
@@ -837,60 +779,9 @@ ___
 
 • **sortPairs**? : *boolean*
 
-*Defined in [index.ts:16](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L16)*
-
 If set to `true`, the hashing pairs will be sorted.
 
-# Module: "index"
-
-## Index
-
-### Classes
-
-* [MerkleTree](../classes/_index_.merkletree.md)
-
-### Interfaces
-
-* [Options](../interfaces/_index_.options.md)
-
-### Type aliases
-
-* [THashAlgo](_index_.md#thashalgo)
-* [TLayer](_index_.md#tlayer)
-* [TLeaf](_index_.md#tleaf)
-* [TValue](_index_.md#tvalue)
-
-## Type aliases
-
-###  THashAlgo
-
-Ƭ **THashAlgo**: *any*
-
-*Defined in [index.ts:21](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L21)*
-
-___
-
-###  TLayer
-
-Ƭ **TLayer**: *any*
-
-*Defined in [index.ts:24](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L24)*
-
-___
-
-###  TLeaf
-
-Ƭ **TLeaf**: *any*
-
-*Defined in [index.ts:23](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L23)*
-
-___
-
-###  TValue
-
-Ƭ **TValue**: *any*
-
-*Defined in [index.ts:22](https://github.com/miguelmota/merkletreejs/blob/a69a927/index.ts#L22)*
+<!-- END DOCUMENTATION -->
 
 ## Test
 

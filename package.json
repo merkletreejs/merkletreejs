@@ -11,7 +11,7 @@
     "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
     "lint": "standardx --fix index.ts test/*.js",
-    "docs": "rm -rf docs/ && typedoc --plugin typedoc-plugin-markdown --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts"
+    "docs": "rm -rf docs/ && typedoc --plugin typedoc-plugin-markdown -hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts"
   },
   "repository": {
     "type": "git",
