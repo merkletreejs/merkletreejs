@@ -13,23 +13,59 @@ const { MerkleTree } = require('../')
 const sha256 = (data) => crypto.createHash('sha256').update(data).digest()
 
 test('sha256 with keccak leaves', t => {
-  t.plan(1)
+  t.plan(3)
 
   const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256)
-  const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
 
-  t.equal(tree.getRoot().toString('hex'), root)
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+  t.deepEqual(tree.getHexLeaves(), [
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+  ])
+  t.deepEqual(tree.getHexLayers(), [
+    [
+      '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+      '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+      '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+    ],
+    [
+      '0x176f0f307632fdd5831875eb709e2f68d770b102262998b214ddeb3f04164ae1',
+      '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+    ],
+    [
+      '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
+    ]
+  ])
 })
 
 test('sha256 with keccak leaves with duplicate odd option', t => {
-  t.plan(1)
+  t.plan(3)
 
   const leaves = ['a', 'b', 'c'].map(x => keccak(x))
   const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
-  const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
-  t.equal(tree.getRoot().toString('hex'), root)
+  t.equal(tree.getHexRoot(), '0xbcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1')
+  t.deepEqual(tree.getHexLeaves(), [
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+  ])
+  t.deepEqual(tree.getHexLayers(), [
+    [
+      '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+      '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+      '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+    ],
+    [
+      '0x176f0f307632fdd5831875eb709e2f68d770b102262998b214ddeb3f04164ae1',
+      '0x43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358'
+    ],
+    [
+      '0xbcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
+    ]
+  ])
 })
 
 test('crypto-js - sha256', t => {
@@ -462,8 +498,20 @@ test('crypto-js bufferify', t => {
   t.deepEqual(leaves.map(MerkleTree.bufferify), leaves.map(bufferifyCryptoJS))
 })
 
-test('sha1', t => {
+test('bufferify', t => {
   t.plan(1)
+
+  t.deepEqual(MerkleTree.bufferify('0x1234'), Buffer.from('1234', 'hex'))
+})
+
+test('isHexString', t => {
+  t.plan(1)
+
+  t.deepEqual(MerkleTree.isHexString('0x1234'), true)
+})
+
+test('sha1', t => {
+  t.plan(2)
 
   const leaves = [
     'd89f84d948796605a413e196f40bce1d6294175d',
@@ -480,6 +528,11 @@ test('sha1', t => {
   const root = tree.getHexRoot()
   const leaf = 'd89f84d948796605a413e196f40bce1d6294175d'
   const proof = tree.getHexProof(leaf)
+
+  t.deepEqual(proof, [
+    '0xb80b52d80f5fe940ac2c987044bc439e4218ac94',
+    '0x59f544ee5de8d761b124ccd4e1285d3b02a2a539'
+  ])
 
   t.equal(tree.verify(proof, leaf, root), true)
 })
@@ -691,7 +744,7 @@ test('sha256 getMultiProof using tree array', t => {
   ])
 
   const depth = tree.getDepth()
-  t.equal(depth, Math.log2((treeFlat.length/2)|0))
+  t.equal(depth, Math.log2((treeFlat.length / 2) | 0))
 
   const tRoot = treeFlat[1]
   const tLeaves = indices.map(i => leaves[i])

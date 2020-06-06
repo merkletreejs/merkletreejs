@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const buffer_reverse_1 = __importDefault(require("buffer-reverse"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
+const sha256_1 = __importDefault(require("crypto-js/sha256"));
 const treeify_1 = __importDefault(require("treeify"));
 /**
  * Class reprensenting a Merkle Tree
@@ -33,7 +34,7 @@ class MerkleTree {
      *const tree = new MerkleTree(leaves, sha256)
      *```
      */
-    constructor(leaves, hashAlgorithm, options = {}) {
+    constructor(leaves, hashAlgorithm = sha256_1.default, options = {}) {
         this.isBitcoinTree = !!options.isBitcoinTree;
         this.hashLeaves = !!options.hashLeaves;
         this.sortLeaves = !!options.sortLeaves;
@@ -44,7 +45,6 @@ class MerkleTree {
             this.sortPairs = true;
         }
         this.duplicateOdd = !!options.duplicateOdd;
-        this.singleOdd = !!options.singleOdd;
         this.hashAlgo = this._bufferifyFn(hashAlgorithm);
         if (this.hashLeaves) {
             leaves = leaves.map(this.hashAlgo);
@@ -54,10 +54,9 @@ class MerkleTree {
             this.leaves = this.leaves.sort(Buffer.compare);
         }
         this.layers = [this.leaves];
-        this.createHashes(this.leaves);
+        this._createHashes(this.leaves);
     }
-    // TODO: documentation
-    createHashes(nodes) {
+    _createHashes(nodes) {
         while (nodes.length > 1) {
             const layerIndex = this.layers.length;
             this.layers.push([]);
@@ -76,7 +75,7 @@ class MerkleTree {
                             continue;
                         }
                         else {
-                            if (!this.duplicateOdd && !this.singleOdd) {
+                            if (!this.duplicateOdd) {
                                 this.layers[layerIndex].push(nodes[i]);
                                 continue;
                             }
@@ -91,21 +90,7 @@ class MerkleTree {
                     combined = [buffer_reverse_1.default(left), buffer_reverse_1.default(right)];
                 }
                 else {
-                    if (this.singleOdd) {
-                        right = nodes[i + 1];
-                        if (!left) {
-                            combined = [right];
-                        }
-                        else if (!right) {
-                            combined = [left];
-                        }
-                        else {
-                            combined = [left, right];
-                        }
-                    }
-                    else {
-                        combined = [left, right];
-                    }
+                    combined = [left, right];
                 }
                 if (this.sortPairs) {
                     combined.sort(Buffer.compare);
@@ -138,7 +123,7 @@ class MerkleTree {
                     data = data.sort(Buffer.compare);
                 }
             }
-            return this.leaves.filter(x => this.bufIndexOf(data, x) !== -1);
+            return this.leaves.filter(x => this._bufferIndexOf(data, x) !== -1);
         }
         return this.leaves;
     }
@@ -252,7 +237,7 @@ class MerkleTree {
      * Use if there are leaves containing duplicate data in order to distinguish it.
      * @return {Object[]} - Array of objects containing a position property of type string
      * with values of 'left' or 'right' and a data property of type Buffer.
-     *@example
+     * @example
      * ```js
      *const proof = tree.getProof(leaves[2])
      *```
@@ -312,7 +297,33 @@ class MerkleTree {
             return proof;
         }
     }
-    // TODO: documentation
+    /**
+     * getHexProof
+     * @desc Returns the proof for a target leaf as hex strings.
+     * @param {Buffer} leaf - Target leaf
+     * @param {Number} [index] - Target leaf index in leaves array.
+     * Use if there are leaves containing duplicate data in order to distinguish it.
+     * @return {String[]} - Proof array as hex strings.
+     * @example
+     * ```js
+     *const proof = tree.getHexProof(leaves[2])
+     *```
+     */
+    getHexProof(leaf, index) {
+        return this.getProof(leaf, index).map(x => this._bufferToHex(x.data));
+    }
+    /**
+     * getProofIndices
+     * @desc Returns the proof indices for given tree indices.
+     * @param {Number[]} treeIndices - Tree indices
+     * @param {Number} depth - Tree depth; number of layers.
+     * @return {Number[]} - Proof indices
+     * @example
+     * ```js
+     *const proofIndices = tree.getProofIndices([2,5,6], 4)
+     *console.log(proofIndices) // [ 23, 20, 19, 8, 3 ]
+     *```
+     */
     getProofIndices(treeIndices, depth) {
         const leafCount = Math.pow(2, depth);
         let maximalIndices = new Set();
@@ -343,7 +354,17 @@ class MerkleTree {
             return !treeIndices.includes(index - leafCount);
         });
     }
-    // TODO: documentation
+    /**
+     * getMultiProof
+     * @desc Returns the multiproof for given tree indices.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Buffer[]} - Multiproofs
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getMultiProof(indices)
+     *```
+     */
     getMultiProof(tree, indices) {
         if (!indices) {
             indices = tree;
@@ -353,7 +374,7 @@ class MerkleTree {
                 if (this.sortPairs) {
                     els = els.sort(Buffer.compare);
                 }
-                let ids = els.map((el) => this.bufIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
+                let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
                 if (!ids.every((idx) => idx !== -1)) {
                     throw new Error('Element does not exist in Merkle tree');
                 }
@@ -364,7 +385,7 @@ class MerkleTree {
                     const layer = this.layers[i];
                     for (let j = 0; j < ids.length; j++) {
                         const idx = ids[j];
-                        const pairElement = this.getPairElement(idx, layer);
+                        const pairElement = this._getPairNode(layer, idx);
                         hashes.push(layer[idx]);
                         if (pairElement) {
                             proof.push(pairElement);
@@ -379,22 +400,35 @@ class MerkleTree {
         }
         return this.getProofIndices(indices, this._log2((tree.length / 2) | 0)).map(index => tree[index]);
     }
-    // TODO: documentation
+    /**
+     * getHexMultiProof
+     * @desc Returns the multiproof for given tree indices as hex strings.
+     * @param {Number[]} indices - Tree indices.
+     * @return {String[]} - Multiproofs as hex strings.
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getHexMultiProof(indices)
+     *```
+     */
     getHexMultiProof(tree, indices) {
         return this.getMultiProof(tree, indices).map(this._bufferToHex);
     }
-    // TODO: documentation
-    bufIndexOf(arr, el) {
-        for (let i = 0; i < arr.length; i++) {
-            if (el.equals(arr[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    // TODO: documentation
+    /**
+     * getProofFlags
+     * @desc Returns list of booleans where proofs should be used instead of hashing.
+     * Proof flags are used in the Solidity multiproof verifiers.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Boolean[]} - Boolean flags
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getMultiProof(indices)
+     *const proofFlags = tree.getProofFlags(leaves, proof)
+     *```
+     */
     getProofFlags(els, proofs) {
-        let ids = els.map((el) => this.bufIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
+        let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1);
         if (!ids.every((idx) => idx !== -1)) {
             throw new Error('Element does not exist in Merkle tree');
         }
@@ -405,7 +439,7 @@ class MerkleTree {
             ids = ids.reduce((ids, idx) => {
                 const skipped = tested.includes(layer[idx]);
                 if (!skipped) {
-                    const pairElement = this.getPairElement(idx, layer);
+                    const pairElement = this._getPairNode(layer, idx);
                     const proofUsed = proofs.includes(layer[idx]) || proofs.includes(pairElement);
                     pairElement && flags.push(!proofUsed);
                     tested.push(layer[idx]);
@@ -416,19 +450,6 @@ class MerkleTree {
             }, []);
         }
         return flags;
-    }
-    getPairElement(idx, layer) {
-        const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1;
-        if (pairIdx < layer.length) {
-            return layer[pairIdx];
-        }
-        else {
-            return null;
-        }
-    }
-    // TODO: documentation
-    getHexProof(leaf, index) {
-        return this.getProof(leaf, index).map(x => this._bufferToHex(x.data));
     }
     /**
      * verify
@@ -495,7 +516,26 @@ class MerkleTree {
         }
         return Buffer.compare(hash, root) === 0;
     }
-    // TODO: documentation
+    /**
+     * verifyMultiProof
+     * @desc Returns true if the multiproofs can connect the leaves to the Merkle root.
+     * @param {Buffer} root - Merkle tree root
+     * @param {Number[]} indices - Leave indices
+     * @param {Buffer[]} leaves - Leaf values at indices.
+     * @param {Number} depth - Tree depth
+     * @param {Buffer[]} proof - Multiproofs given indices
+     * @return {Boolean}
+     * @example
+     *```js
+     *const root = tree.getRoot()
+     *const treeFlat = tree.getLayersFlat()
+     *const depth = tree.getDepth()
+     *const indices = [2, 5, 6]
+     *const proofLeaves = indices.map(i => leaves[i])
+     *const proof = tree.getMultiProof(treeFlat, indices)
+     *const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
+     *```
+     */
     verifyMultiProof(root, indices, leaves, depth, proof) {
         root = this._bufferify(root);
         leaves = leaves.map(this._bufferify);
@@ -520,11 +560,26 @@ class MerkleTree {
         }
         return !indices.length || (({}).hasOwnProperty.call(tree, 1) && tree[1].equals(root));
     }
-    // TODO: documentation
+    /**
+     * getDepth
+     * @desc Returns the tree depth (number of layers)
+     * @return {Number}
+     * @example
+     *```js
+     *const depth = tree.getDepth()
+     *```
+     */
     getDepth() {
         return this.getLayers().length - 1;
     }
-    // TODO: documentation
+    /**
+     * getLayersAsObject
+     * @desc Returns the layers as nested objects instead of an array.
+     * @example
+     *```js
+     *const layersObj = tree.getLayersAsObject()
+     *```
+     */
     getLayersAsObject() {
         const layers = this.getLayers().map(x => x.map(x => x.toString('hex')));
         const objs = [];
@@ -549,27 +604,118 @@ class MerkleTree {
         }
         return objs[0];
     }
-    // TODO: documentation
+    /**
+     * print
+     * @desc Prints out a visual representation of the merkle tree.
+     * @example
+     *```js
+     *tree.print()
+     *```
+     */
     print() {
         MerkleTree.print(this);
     }
-    // TODO: documentation
-    toTreeString() {
+    /**
+     * toTreeString
+     * @desc Returns a visual representation of the merkle tree as a string.
+     * @return {String}
+     * @example
+     *```js
+     *console.log(tree.toTreeString())
+     *```
+     */
+    _toTreeString() {
         const obj = this.getLayersAsObject();
         return treeify_1.default.asTree(obj, true);
     }
-    // TODO: documentation
+    /**
+     * toString
+     * @desc Returns a visual representation of the merkle tree as a string.
+     * @example
+     *```js
+     *console.log(tree.toString())
+     *```
+     */
     toString() {
-        return this.toTreeString();
+        return this._toTreeString();
     }
-    // TODO: documentation
+    /**
+     * getMultiProof
+     * @desc Returns the multiproof for given tree indices.
+     * @param {Buffer[]} tree - Tree as a flat array.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Buffer[]} - Multiproofs
+     *
+     *@example
+     * ```js
+     *const flatTree = tree.getLayersFlat()
+     *const indices = [2, 5, 6]
+     *const proof = MerkleTree.getMultiProof(flatTree, indices)
+     *```
+     */
+    static getMultiProof(tree, indices) {
+        const t = new MerkleTree([]);
+        return t.getMultiProof(tree.getLayersFlat(), indices);
+    }
+    /**
+     * getPairNode
+     * @desc Returns the node at the index for given layer.
+     * @param {Buffer[]} layer - Tree layer
+     * @param {Number} index - Index at layer.
+     * @return {Buffer} - Node
+     *
+     *@example
+     * ```js
+     *const node = tree.getPairNode(layer, index)
+     *```
+     */
+    _getPairNode(layer, idx) {
+        const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1;
+        if (pairIdx < layer.length) {
+            return layer[pairIdx];
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * bufferIndexOf
+     * @desc Returns the first index of which given buffer is found in array.
+     * @param {Buffer[]} haystack - Array of buffers.
+     * @param {Buffer} needle - Buffer to find.
+     * @return {Number} - Index number
+     *
+     * @example
+     * ```js
+     *const index = tree.bufferIndexOf(haystack, needle)
+     *```
+     */
+    _bufferIndexOf(arr, el) {
+        for (let i = 0; i < arr.length; i++) {
+            if (el.equals(arr[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    /**
+     * bufferify
+     * @desc Returns a buffer type for the given value.
+     * @param {String|Number|Object|Buffer} value
+     * @return {Buffer}
+     *
+     * @example
+     * ```js
+     *const buf = MerkleTree.bufferify('0x1234')
+     *```
+     */
     static bufferify(x) {
         if (!Buffer.isBuffer(x)) {
             // crypto-js support
             if (typeof x === 'object' && x.words) {
                 return Buffer.from(x.toString(crypto_js_1.default.enc.Hex), 'hex');
             }
-            else if (MerkleTree.isHexStr(x)) {
+            else if (MerkleTree.isHexString(x)) {
                 return Buffer.from(x.replace(/^0x/, ''), 'hex');
             }
             else if (typeof x === 'string') {
@@ -578,38 +724,120 @@ class MerkleTree {
         }
         return x;
     }
-    static isHexStr(v) {
+    /**
+     * isHexString
+     * @desc Returns true if value is a hex string.
+     * @param {String} value
+     * @return {Boolean}
+     *
+     * @example
+     * ```js
+     *console.log(MerkleTree.isHexString('0x1234'))
+     *```
+     */
+    static isHexString(v) {
         return (typeof v === 'string' && /^(0x)?[0-9A-Fa-f]*$/.test(v));
     }
-    // TODO: documentation
+    /**
+     * print
+     * @desc Prints out a visual representation of the given merkle tree.
+     * @param {Object} tree - Merkle tree instance.
+     * @return {String}
+     * @example
+     *```js
+     *MerkleTree.print(tree)
+     *```
+     */
     static print(tree) {
         console.log(tree.toString());
     }
+    /**
+     * bufferToHex
+     * @desc Returns a hex string with 0x prefix for given buffer.
+     * @param {Buffer} value
+     * @return {String}
+     * @example
+     *```js
+     *const hexStr = tree.bufferToHex(Buffer.from('A'))
+     *```
+     */
     _bufferToHex(value) {
         return '0x' + value.toString('hex');
     }
+    /**
+     * bufferify
+     * @desc Returns a buffer type for the given value.
+     * @param {String|Number|Object|Buffer} value
+     * @return {Buffer}
+     *
+     * @example
+     * ```js
+     *const buf = MerkleTree.bufferify('0x1234')
+     *```
+     */
     _bufferify(x) {
         return MerkleTree.bufferify(x);
     }
+    /**
+     * bufferifyFn
+     * @desc Returns a function that will bufferify the return value.
+     * @param {Function}
+     * @return {Function}
+     *
+     * @example
+     * ```js
+     *const fn = tree.bufferifyFn((value) => sha256(value))
+     *```
+     */
     _bufferifyFn(f) {
         return function (x) {
             const v = f(x);
             if (Buffer.isBuffer(v)) {
                 return v;
             }
-            if (this._isHexStr(v)) {
+            if (this._isHexString(v)) {
                 return Buffer.from(v, 'hex');
             }
             // crypto-js support
             return Buffer.from(f(crypto_js_1.default.enc.Hex.parse(x.toString('hex'))).toString(crypto_js_1.default.enc.Hex), 'hex');
         };
     }
-    _isHexStr(v) {
-        return MerkleTree.isHexStr(v);
+    /**
+     * isHexString
+     * @desc Returns true if value is a hex string.
+     * @param {String} value
+     * @return {Boolean}
+     *
+     * @example
+     * ```js
+     *console.log(MerkleTree.isHexString('0x1234'))
+     *```
+     */
+    _isHexString(v) {
+        return MerkleTree.isHexString(v);
     }
+    /**
+     * log2
+     * @desc Returns the log2 of number.
+     * @param {Number} value
+     * @return {Number}
+     */
     _log2(x) {
         return x === 1 ? 0 : 1 + this._log2((x / 2) | 0);
     }
+    /**
+     * zip
+     * @desc Returns true if value is a hex string.
+     * @param {String[]|Number[]|Buffer[]} a - first array
+     * @param {String[]|Number[]|Buffer[]} b -  second array
+     * @return {String[][]|Number[][]|Buffer[][]}
+     *
+     * @example
+     * ```js
+     *const zipped = tree.zip(['a', 'b'],['A', 'B'])
+     *console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
+     *```
+     */
     _zip(a, b) {
         return a.map((e, i) => [e, b[i]]);
     }

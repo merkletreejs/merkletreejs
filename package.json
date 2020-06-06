@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,7 @@
     "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
     "lint": "standardx --fix index.ts test/*.js",
-    "docs:md": "rm -rf docs/ && typedoc --theme markdown index.ts --out docs --mdEngine github --mdDocusaurus --mdHideSources"
+    "docs": "rm -rf docs/ && typedoc --theme markdown index.ts --out docs --mdEngine github --mdDocusaurus --mdHideSources"
   },
   "repository": {
     "type": "git",

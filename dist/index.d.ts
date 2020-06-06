@@ -1,9 +1,6 @@
-/// <reference types="node" />
 interface Options {
     /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */
     duplicateOdd?: boolean;
-    /** If set to `true`, an odd node will not have a pair generating the layer hash. */
-    singleOdd?: boolean;
     /** If set to `true`, the leaves will hashed using the set hashing algorithms. */
     hashLeaves?: boolean;
     /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
@@ -25,7 +22,6 @@ declare type TLayer = any;
  */
 export declare class MerkleTree {
     duplicateOdd: boolean;
-    singleOdd: boolean;
     hashAlgo: (value: TValue) => THashAlgo;
     hashLeaves: boolean;
     isBitcoinTree: boolean;
@@ -56,8 +52,8 @@ export declare class MerkleTree {
      *const tree = new MerkleTree(leaves, sha256)
      *```
      */
-    constructor(leaves: any, hashAlgorithm: any, options?: Options);
-    createHashes(nodes: any): void;
+    constructor(leaves: any, hashAlgorithm?: any, options?: Options);
+    private _createHashes;
     /**
      * getLeaves
      * @desc Returns array of leaves of Merkle Tree.
@@ -146,7 +142,7 @@ export declare class MerkleTree {
      * Use if there are leaves containing duplicate data in order to distinguish it.
      * @return {Object[]} - Array of objects containing a position property of type string
      * with values of 'left' or 'right' and a data property of type Buffer.
-     *@example
+     * @example
      * ```js
      *const proof = tree.getProof(leaves[2])
      *```
@@ -159,13 +155,70 @@ export declare class MerkleTree {
      *```
      */
     getProof(leaf: any, index?: any): any[];
-    getProofIndices(treeIndices: any, depth: any): any[];
-    getMultiProof(tree: any, indices: any): any[];
-    getHexMultiProof(tree: any, indices: any): string[];
-    bufIndexOf(arr: any, el: any): number;
-    getProofFlags(els: any, proofs: any): any[];
-    getPairElement(idx: any, layer: any): any;
+    /**
+     * getHexProof
+     * @desc Returns the proof for a target leaf as hex strings.
+     * @param {Buffer} leaf - Target leaf
+     * @param {Number} [index] - Target leaf index in leaves array.
+     * Use if there are leaves containing duplicate data in order to distinguish it.
+     * @return {String[]} - Proof array as hex strings.
+     * @example
+     * ```js
+     *const proof = tree.getHexProof(leaves[2])
+     *```
+     */
     getHexProof(leaf: any, index?: any): string[];
+    /**
+     * getProofIndices
+     * @desc Returns the proof indices for given tree indices.
+     * @param {Number[]} treeIndices - Tree indices
+     * @param {Number} depth - Tree depth; number of layers.
+     * @return {Number[]} - Proof indices
+     * @example
+     * ```js
+     *const proofIndices = tree.getProofIndices([2,5,6], 4)
+     *console.log(proofIndices) // [ 23, 20, 19, 8, 3 ]
+     *```
+     */
+    getProofIndices(treeIndices: any, depth: any): any[];
+    /**
+     * getMultiProof
+     * @desc Returns the multiproof for given tree indices.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Buffer[]} - Multiproofs
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getMultiProof(indices)
+     *```
+     */
+    getMultiProof(tree: any, indices: any): any[];
+    /**
+     * getHexMultiProof
+     * @desc Returns the multiproof for given tree indices as hex strings.
+     * @param {Number[]} indices - Tree indices.
+     * @return {String[]} - Multiproofs as hex strings.
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getHexMultiProof(indices)
+     *```
+     */
+    getHexMultiProof(tree: any, indices: any): string[];
+    /**
+     * getProofFlags
+     * @desc Returns list of booleans where proofs should be used instead of hashing.
+     * Proof flags are used in the Solidity multiproof verifiers.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Boolean[]} - Boolean flags
+     * @example
+     * ```js
+     *const indices = [2, 5, 6]
+     *const proof = tree.getMultiProof(indices)
+     *const proofFlags = tree.getProofFlags(leaves, proof)
+     *```
+     */
+    getProofFlags(els: any, proofs: any): any[];
     /**
      * verify
      * @desc Returns true if the proof path (array of hashes) can connect the target node
@@ -183,20 +236,217 @@ export declare class MerkleTree {
      *```
      */
     verify(proof: any, targetNode: any, root: any): boolean;
+    /**
+     * verifyMultiProof
+     * @desc Returns true if the multiproofs can connect the leaves to the Merkle root.
+     * @param {Buffer} root - Merkle tree root
+     * @param {Number[]} indices - Leave indices
+     * @param {Buffer[]} leaves - Leaf values at indices.
+     * @param {Number} depth - Tree depth
+     * @param {Buffer[]} proof - Multiproofs given indices
+     * @return {Boolean}
+     * @example
+     *```js
+     *const root = tree.getRoot()
+     *const treeFlat = tree.getLayersFlat()
+     *const depth = tree.getDepth()
+     *const indices = [2, 5, 6]
+     *const proofLeaves = indices.map(i => leaves[i])
+     *const proof = tree.getMultiProof(treeFlat, indices)
+     *const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
+     *```
+     */
     verifyMultiProof(root: any, indices: any, leaves: any, depth: any, proof: any): any;
+    /**
+     * getDepth
+     * @desc Returns the tree depth (number of layers)
+     * @return {Number}
+     * @example
+     *```js
+     *const depth = tree.getDepth()
+     *```
+     */
     getDepth(): number;
+    /**
+     * getLayersAsObject
+     * @desc Returns the layers as nested objects instead of an array.
+     * @example
+     *```js
+     *const layersObj = tree.getLayersAsObject()
+     *```
+     */
     getLayersAsObject(): any;
+    /**
+     * print
+     * @desc Prints out a visual representation of the merkle tree.
+     * @example
+     *```js
+     *tree.print()
+     *```
+     */
     print(): void;
-    toTreeString(): any;
+    /**
+     * toTreeString
+     * @desc Returns a visual representation of the merkle tree as a string.
+     * @return {String}
+     * @example
+     *```js
+     *console.log(tree.toTreeString())
+     *```
+     */
+    private _toTreeString;
+    /**
+     * toString
+     * @desc Returns a visual representation of the merkle tree as a string.
+     * @example
+     *```js
+     *console.log(tree.toString())
+     *```
+     */
     toString(): any;
+    /**
+     * getMultiProof
+     * @desc Returns the multiproof for given tree indices.
+     * @param {Buffer[]} tree - Tree as a flat array.
+     * @param {Number[]} indices - Tree indices.
+     * @return {Buffer[]} - Multiproofs
+     *
+     *@example
+     * ```js
+     *const flatTree = tree.getLayersFlat()
+     *const indices = [2, 5, 6]
+     *const proof = MerkleTree.getMultiProof(flatTree, indices)
+     *```
+     */
+    static getMultiProof(tree: any, indices: any): any[];
+    /**
+     * getPairNode
+     * @desc Returns the node at the index for given layer.
+     * @param {Buffer[]} layer - Tree layer
+     * @param {Number} index - Index at layer.
+     * @return {Buffer} - Node
+     *
+     *@example
+     * ```js
+     *const node = tree.getPairNode(layer, index)
+     *```
+     */
+    private _getPairNode;
+    /**
+     * bufferIndexOf
+     * @desc Returns the first index of which given buffer is found in array.
+     * @param {Buffer[]} haystack - Array of buffers.
+     * @param {Buffer} needle - Buffer to find.
+     * @return {Number} - Index number
+     *
+     * @example
+     * ```js
+     *const index = tree.bufferIndexOf(haystack, needle)
+     *```
+     */
+    private _bufferIndexOf;
+    /**
+     * bufferify
+     * @desc Returns a buffer type for the given value.
+     * @param {String|Number|Object|Buffer} value
+     * @return {Buffer}
+     *
+     * @example
+     * ```js
+     *const buf = MerkleTree.bufferify('0x1234')
+     *```
+     */
     static bufferify(x: any): any;
-    static isHexStr(v: any): boolean;
+    /**
+     * isHexString
+     * @desc Returns true if value is a hex string.
+     * @param {String} value
+     * @return {Boolean}
+     *
+     * @example
+     * ```js
+     *console.log(MerkleTree.isHexString('0x1234'))
+     *```
+     */
+    static isHexString(v: any): boolean;
+    /**
+     * print
+     * @desc Prints out a visual representation of the given merkle tree.
+     * @param {Object} tree - Merkle tree instance.
+     * @return {String}
+     * @example
+     *```js
+     *MerkleTree.print(tree)
+     *```
+     */
     static print(tree: any): void;
-    _bufferToHex(value: Buffer): string;
-    _bufferify(x: any): any;
-    _bufferifyFn(f: any): (x: any) => Buffer;
-    _isHexStr(v: any): boolean;
-    _log2(x: any): any;
-    _zip(a: any, b: any): any;
+    /**
+     * bufferToHex
+     * @desc Returns a hex string with 0x prefix for given buffer.
+     * @param {Buffer} value
+     * @return {String}
+     * @example
+     *```js
+     *const hexStr = tree.bufferToHex(Buffer.from('A'))
+     *```
+     */
+    private _bufferToHex;
+    /**
+     * bufferify
+     * @desc Returns a buffer type for the given value.
+     * @param {String|Number|Object|Buffer} value
+     * @return {Buffer}
+     *
+     * @example
+     * ```js
+     *const buf = MerkleTree.bufferify('0x1234')
+     *```
+     */
+    private _bufferify;
+    /**
+     * bufferifyFn
+     * @desc Returns a function that will bufferify the return value.
+     * @param {Function}
+     * @return {Function}
+     *
+     * @example
+     * ```js
+     *const fn = tree.bufferifyFn((value) => sha256(value))
+     *```
+     */
+    private _bufferifyFn;
+    /**
+     * isHexString
+     * @desc Returns true if value is a hex string.
+     * @param {String} value
+     * @return {Boolean}
+     *
+     * @example
+     * ```js
+     *console.log(MerkleTree.isHexString('0x1234'))
+     *```
+     */
+    private _isHexString;
+    /**
+     * log2
+     * @desc Returns the log2 of number.
+     * @param {Number} value
+     * @return {Number}
+     */
+    private _log2;
+    /**
+     * zip
+     * @desc Returns true if value is a hex string.
+     * @param {String[]|Number[]|Buffer[]} a - first array
+     * @param {String[]|Number[]|Buffer[]} b -  second array
+     * @return {String[][]|Number[][]|Buffer[][]}
+     *
+     * @example
+     * ```js
+     *const zipped = tree.zip(['a', 'b'],['A', 'B'])
+     *console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
+     *```
+     */
+    private _zip;
 }
 export default MerkleTree;

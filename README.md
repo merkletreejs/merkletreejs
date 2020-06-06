@@ -1,6 +1,6 @@
 <h3 align="center">
   <br />
-  <img src="https://user-images.githubusercontent.com/168240/39508295-ceeb1576-4d96-11e8-90aa-b2a56825567d.png" alt="logo" width="600" />
+  <img src="https://user-images.githubusercontent.com/168240/83951171-85f48c80-a7e4-11ea-896e-529c28ffa18e.png" alt="merkletree.js logo" width="600" />
   <br />
   <br />
   <br />
@@ -18,9 +18,9 @@
 
 ## Contents
 
-- [Diagrams](#diagrams)
 - [Install](#install)
 - [Getting started](#Getting-started)
+- [Diagrams](#diagrams)
 - [Documentation](#documentation)
 - [Test](#test)
 - [FAQ](#faq)
@@ -28,24 +28,6 @@
 - [Resources](#resources)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Diagrams
-
-Diagram of Merkle Tree
-
-<img src="https://user-images.githubusercontent.com/168240/43616375-15330c32-9671-11e8-9057-6e61c312c856.png" alt="Merkle Tree" width="500">
-
-Diagram of Merkle Tree Proof
-
-<img src="https://user-images.githubusercontent.com/168240/43616387-27ec860a-9671-11e8-9f3f-0b871a6581a6.png" alt="Merkle Tree Proof" width="420">
-
-Diagram of Invalid Merkle Tree Proofs
-
-<img src="https://user-images.githubusercontent.com/168240/43616398-33e20584-9671-11e8-9f62-9f48ce412898.png" alt="Merkle Tree Proof" width="420">
-
-Diagram of Bitcoin Merkle Tree
-
-<img src="https://user-images.githubusercontent.com/168240/43616417-46d3293e-9671-11e8-81c3-8cdf7f8ddd77.png" alt="Merkle Tree Proof" width="420">
 
 ## Install
 
@@ -93,6 +75,24 @@ Output
       └─ 0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2
 ```
 
+## Diagrams
+
+Visualization of Merkle Tree
+
+<img src="https://user-images.githubusercontent.com/168240/43616375-15330c32-9671-11e8-9057-6e61c312c856.png" alt="Merkle Tree" width="500">
+
+Visualization of Merkle Tree Proof
+
+<img src="https://user-images.githubusercontent.com/168240/43616387-27ec860a-9671-11e8-9f3f-0b871a6581a6.png" alt="Merkle Tree Proof" width="420">
+
+Visualization of Invalid Merkle Tree Proofs
+
+<img src="https://user-images.githubusercontent.com/168240/43616398-33e20584-9671-11e8-9f62-9f48ce412898.png" alt="Merkle Tree Proof" width="420">
+
+Visualization of Bitcoin Merkle Tree
+
+<img src="https://user-images.githubusercontent.com/168240/43616417-46d3293e-9671-11e8-81c3-8cdf7f8ddd77.png" alt="Merkle Tree Proof" width="420">
+
 ## Documentation
 
 <!-- :%s/// -->
@@ -100,44 +100,62 @@ Output
 
 ## Class
 
-Class reprensenting a Merkle Tree
-
-*__namespace__*: MerkleTree
-
 ## Hierarchy
 
 **MerkleTree**
 
 ### Constructors
 
-* [constructor](#constructor)
+* [constructor](api-classes-index-merkletree.md#constructor)
 
 ### Properties
 
-* [duplicateOdd](#duplicateodd)
-* [hashAlgo](#hashalgo)
-* [hashLeaves](#hashleaves)
-* [isBitcoinTree](#isbitcointree)
-* [layers](#layers)
-* [leaves](#leaves)
-* [sort](#sort)
-* [sortLeaves](#sortleaves)
-* [sortPairs](#sortpairs)
+* [duplicateOdd](api-classes-index-merkletree.md#duplicateodd)
+* [hashAlgo](api-classes-index-merkletree.md#hashalgo)
+* [hashLeaves](api-classes-index-merkletree.md#hashleaves)
+* [isBitcoinTree](api-classes-index-merkletree.md#isbitcointree)
+* [layers](api-classes-index-merkletree.md#layers)
+* [leaves](api-classes-index-merkletree.md#leaves)
+* [sort](api-classes-index-merkletree.md#sort)
+* [sortLeaves](api-classes-index-merkletree.md#sortleaves)
+* [sortPairs](api-classes-index-merkletree.md#sortpairs)
 
 ### Methods
 
-* [createHashes](#createhashes)
-* [getLayers](#getlayers)
-* [getLayersAsObject](#getlayersasobject)
-* [getLeaves](#getleaves)
-* [getProof](#getproof)
-* [getRoot](#getroot)
-* [print](#print)
-* [toString](#tostring)
-* [toTreeString](#totreestring)
-* [verify](#verify)
-* [bufferify](#bufferify)
-* [print](#print-1)
+* [_bufferIndexOf](api-classes-index-merkletree.md#_bufferindexof)
+* [_bufferToHex](api-classes-index-merkletree.md#_buffertohex)
+* [_bufferify](api-classes-index-merkletree.md#_bufferify)
+* [_bufferifyFn](api-classes-index-merkletree.md#_bufferifyfn)
+* [_createHashes](api-classes-index-merkletree.md#_createhashes)
+* [_getPairNode](api-classes-index-merkletree.md#_getpairnode)
+* [_isHexString](api-classes-index-merkletree.md#_ishexstring)
+* [_log2](api-classes-index-merkletree.md#_log2)
+* [_toTreeString](api-classes-index-merkletree.md#_totreestring)
+* [_zip](api-classes-index-merkletree.md#_zip)
+* [getDepth](api-classes-index-merkletree.md#getdepth)
+* [getHexLayers](api-classes-index-merkletree.md#gethexlayers)
+* [getHexLayersFlat](api-classes-index-merkletree.md#gethexlayersflat)
+* [getHexLeaves](api-classes-index-merkletree.md#gethexleaves)
+* [getHexMultiProof](api-classes-index-merkletree.md#gethexmultiproof)
+* [getHexProof](api-classes-index-merkletree.md#gethexproof)
+* [getHexRoot](api-classes-index-merkletree.md#gethexroot)
+* [getLayers](api-classes-index-merkletree.md#getlayers)
+* [getLayersAsObject](api-classes-index-merkletree.md#getlayersasobject)
+* [getLayersFlat](api-classes-index-merkletree.md#getlayersflat)
+* [getLeaves](api-classes-index-merkletree.md#getleaves)
+* [getMultiProof](api-classes-index-merkletree.md#getmultiproof)
+* [getProof](api-classes-index-merkletree.md#getproof)
+* [getProofFlags](api-classes-index-merkletree.md#getproofflags)
+* [getProofIndices](api-classes-index-merkletree.md#getproofindices)
+* [getRoot](api-classes-index-merkletree.md#getroot)
+* [print](api-classes-index-merkletree.md#print)
+* [toString](api-classes-index-merkletree.md#tostring)
+* [verify](api-classes-index-merkletree.md#verify)
+* [verifyMultiProof](api-classes-index-merkletree.md#verifymultiproof)
+* [bufferify](api-classes-index-merkletree.md#bufferify)
+* [getMultiProof](api-classes-index-merkletree.md#getmultiproof-1)
+* [isHexString](api-classes-index-merkletree.md#ishexstring)
+* [print](api-classes-index-merkletree.md#print-1)
 
 ---
 
@@ -147,34 +165,17 @@ Class reprensenting a Merkle Tree
 
 ###  constructor
 
-⊕ **new MerkleTree**(leaves: *`any`*, hashAlgorithm: *`any`*, options?: *[Options]()
-
-*__desc__*: Constructs a Merkle Tree. All nodes and leaves are stored as Buffers. Lonely leaf nodes are promoted to the next level up without being hashed again.
-
-*__example__*:
- ```js
-const MerkleTree = require('merkletreejs')
-const crypto = require('crypto')
-
-function sha256(data) {
- // returns Buffer
- return crypto.createHash('sha256').update(data).digest()
-}
-
-const leaves = ['a', 'b', 'c'].map(x => keccak(x))
-
-const tree = new MerkleTree(leaves, sha256)
-```
+⊕ **new MerkleTree**(leaves: *`any`*, hashAlgorithm?: *`any`*, options?: *[Options](api-interfaces-index-options.md)*): [MerkleTree](api-classes-index-merkletree.md)
 
 **Parameters:**
 
 | Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
 | leaves | `any` | - |  Array of hashed leaves. Each leaf must be a Buffer. |
-| hashAlgorithm | `any` | - |  Algorithm used for hashing leaves and nodes |
-| `Default value` options | [Options]() | {} as any |  Additional options |
+| `Default value` hashAlgorithm | `any` | SHA256 |  Algorithm used for hashing leaves and nodes |
+| `Default value` options | [Options](api-interfaces-index-options.md) |  {} |  Additional options |
 
-**Returns:** [MerkleTree]()
+**Returns:** [MerkleTree](api-classes-index-merkletree.md)
 
 ___
 
@@ -194,15 +195,15 @@ ___
 **● hashAlgo**: *`function`*
 
 #### Type declaration
-▸(value: *`any`*): `any`
+▸(value: *[TValue](api-modules-index-module.md#tvalue)*): [THashAlgo](api-modules-index-module.md#thashalgo)
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| value | `any` |
+| value | [TValue](api-modules-index-module.md#tvalue) |
 
-**Returns:** `any`
+**Returns:** [THashAlgo](api-modules-index-module.md#thashalgo)
 
 ___
 <a id="hashleaves"></a>
@@ -223,14 +224,21 @@ ___
 
 ###  layers
 
-**● layers**: *`any`[]*
+**● layers**: *[TLayer](api-modules-index-module.md#tlayer)[]*
 
 ___
 <a id="leaves"></a>
 
 ###  leaves
 
-**● leaves**: *`any`[]*
+**● leaves**: *[TLeaf](api-modules-index-module.md#tleaf)[]*
+
+___
+<a id="sort"></a>
+
+###  sort
+
+**● sort**: *`boolean`*
 
 ___
 <a id="sortleaves"></a>
@@ -250,11 +258,73 @@ ___
 
 ## Methods
 
-<a id="createhashes"></a>
+<a id="_bufferindexof"></a>
 
-###  createHashes
+### `<Private>` _bufferIndexOf
 
-▸ **createHashes**(nodes: *`any`*): `void`
+▸ **_bufferIndexOf**(arr: *`any`*, el: *`any`*): `number`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| arr | `any` |
+| el | `any` |
+
+**Returns:** `number`
+*   Index number
+
+___
+<a id="_buffertohex"></a>
+
+### `<Private>` _bufferToHex
+
+▸ **_bufferToHex**(value: *`Buffer`*): `string`
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| value | `Buffer` |  \- |
+
+**Returns:** `string`
+
+___
+<a id="_bufferify"></a>
+
+### `<Private>` _bufferify
+
+▸ **_bufferify**(x: *`any`*): `any`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| x | `any` |
+
+**Returns:** `any`
+
+___
+<a id="_bufferifyfn"></a>
+
+### `<Private>` _bufferifyFn
+
+▸ **_bufferifyFn**(f: *`any`*): `(Anonymous function)`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| f | `any` |
+
+**Returns:** `(Anonymous function)`
+
+___
+<a id="_createhashes"></a>
+
+### `<Private>` _createHashes
+
+▸ **_createHashes**(nodes: *`any`*): `void`
 
 **Parameters:**
 
@@ -265,20 +335,162 @@ ___
 **Returns:** `void`
 
 ___
+<a id="_getpairnode"></a>
+
+### `<Private>` _getPairNode
+
+▸ **_getPairNode**(layer: *`any`*, idx: *`any`*): `any`
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| layer | `any` |  Tree layer |
+| idx | `any` |
+
+**Returns:** `any`
+*   Node
+
+___
+<a id="_ishexstring"></a>
+
+### `<Private>` _isHexString
+
+▸ **_isHexString**(v: *`any`*): `boolean`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| v | `any` |
+
+**Returns:** `boolean`
+
+___
+<a id="_log2"></a>
+
+### `<Private>` _log2
+
+▸ **_log2**(x: *`any`*): `any`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| x | `any` |
+
+**Returns:** `any`
+
+___
+<a id="_totreestring"></a>
+
+### `<Private>` _toTreeString
+
+▸ **_toTreeString**(): `any`
+
+**Returns:** `any`
+
+___
+<a id="_zip"></a>
+
+### `<Private>` _zip
+
+▸ **_zip**(a: *`any`*, b: *`any`*): `any`
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| a | `any` |  first array |
+| b | `any` |  second array |
+
+**Returns:** `any`
+
+___
+<a id="getdepth"></a>
+
+###  getDepth
+
+▸ **getDepth**(): `number`
+
+**Returns:** `number`
+
+___
+<a id="gethexlayers"></a>
+
+###  getHexLayers
+
+▸ **getHexLayers**(): `any`
+
+**Returns:** `any`
+
+___
+<a id="gethexlayersflat"></a>
+
+###  getHexLayersFlat
+
+▸ **getHexLayersFlat**(): `any`
+
+**Returns:** `any`
+
+___
+<a id="gethexleaves"></a>
+
+###  getHexLeaves
+
+▸ **getHexLeaves**(): `string`[]
+
+**Returns:** `string`[]
+
+___
+<a id="gethexmultiproof"></a>
+
+###  getHexMultiProof
+
+▸ **getHexMultiProof**(tree: *`any`*, indices: *`any`*): `string`[]
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| tree | `any` |
+| indices | `any` |  Tree indices. |
+
+**Returns:** `string`[]
+*   Multiproofs as hex strings.
+
+___
+<a id="gethexproof"></a>
+
+###  getHexProof
+
+▸ **getHexProof**(leaf: *`any`*, index: *`any`*): `string`[]
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| leaf | `any` |  Target leaf |
+| `Optional` index | `any` |
+
+**Returns:** `string`[]
+*   Proof array as hex strings.
+
+___
+<a id="gethexroot"></a>
+
+###  getHexRoot
+
+▸ **getHexRoot**(): `string`
+
+**Returns:** `string`
+
+___
 <a id="getlayers"></a>
 
 ###  getLayers
 
 ▸ **getLayers**(): `any`[]
-
-getLayers
-
-*__desc__*: Returns array of all layers of Merkle Tree, including leaves and root.
-
-*__example__*:
- ```js
-const layers = tree.getLayers()
-```
 
 **Returns:** `any`[]
 
@@ -292,45 +504,52 @@ ___
 **Returns:** `any`
 
 ___
+<a id="getlayersflat"></a>
+
+###  getLayersFlat
+
+▸ **getLayersFlat**(): `any`
+
+**Returns:** `any`
+
+___
 <a id="getleaves"></a>
 
 ###  getLeaves
 
-▸ **getLeaves**(): `any`[]
+▸ **getLeaves**(data: *`any`[]*): `any`[]
 
-getLeaves
+**Parameters:**
 
-*__desc__*: Returns array of leaves of Merkle Tree.
-
-*__example__*:
- ```js
-const leaves = tree.getLeaves()
-```
+| Name | Type |
+| ------ | ------ |
+| `Optional` data | `any`[] |
 
 **Returns:** `any`[]
+
+___
+<a id="getmultiproof"></a>
+
+###  getMultiProof
+
+▸ **getMultiProof**(tree: *`any`*, indices: *`any`*): `any`[]
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| tree | `any` |
+| indices | `any` |  Tree indices. |
+
+**Returns:** `any`[]
+*   Multiproofs
 
 ___
 <a id="getproof"></a>
 
 ###  getProof
 
-▸ **getProof**(leaf: *`any`*, index?: *`any`*): `any`[]
-
-getProof
-
-*__desc__*: Returns the proof for a target leaf.
-
-*__example__*:
- ```js
-const proof = tree.getProof(leaves[2])
-```
-
-*__example__*:
- ```js
-const leaves = ['a', 'b', 'a'].map(x => keccak(x))
-const tree = new MerkleTree(leaves, keccak)
-const proof = tree.getProof(leaves[2], 2)
-```
+▸ **getProof**(leaf: *`any`*, index: *`any`*): `any`[]
 
 **Parameters:**
 
@@ -343,20 +562,45 @@ const proof = tree.getProof(leaves[2], 2)
 *   Array of objects containing a position property of type string with values of 'left' or 'right' and a data property of type Buffer.
 
 ___
+<a id="getproofflags"></a>
+
+###  getProofFlags
+
+▸ **getProofFlags**(els: *`any`*, proofs: *`any`*): `any`[]
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| els | `any` |
+| proofs | `any` |
+
+**Returns:** `any`[]
+*   Boolean flags
+
+___
+<a id="getproofindices"></a>
+
+###  getProofIndices
+
+▸ **getProofIndices**(treeIndices: *`any`*, depth: *`any`*): `any`[]
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| treeIndices | `any` |  Tree indices |
+| depth | `any` |  Tree depth; number of layers. |
+
+**Returns:** `any`[]
+*   Proof indices
+
+___
 <a id="getroot"></a>
 
 ###  getRoot
 
 ▸ **getRoot**(): `any`
-
-getRoot
-
-*__desc__*: Returns the Merkle root hash as a Buffer.
-
-*__example__*:
- ```js
-const root = tree.getRoot()
-```
 
 **Returns:** `any`
 
@@ -379,31 +623,11 @@ ___
 **Returns:** `any`
 
 ___
-<a id="totreestring"></a>
-
-###  toTreeString
-
-▸ **toTreeString**(): `any`
-
-**Returns:** `any`
-
-___
 <a id="verify"></a>
 
 ###  verify
 
 ▸ **verify**(proof: *`any`*, targetNode: *`any`*, root: *`any`*): `boolean`
-
-verify
-
-*__desc__*: Returns true if the proof path (array of hashes) can connect the target node to the Merkle root.
-
-*__example__*:
- ```js
-const root = tree.getRoot()
-const proof = tree.getProof(leaves[2])
-const verified = tree.verify(proof, leaves[2], root)
-```
 
 **Parameters:**
 
@@ -414,6 +638,25 @@ const verified = tree.verify(proof, leaves[2], root)
 | root | `any` |  Merkle root Buffer |
 
 **Returns:** `boolean`
+
+___
+<a id="verifymultiproof"></a>
+
+###  verifyMultiProof
+
+▸ **verifyMultiProof**(root: *`any`*, indices: *`any`*, leaves: *`any`*, depth: *`any`*, proof: *`any`*): `any`
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| root | `any` |  Merkle tree root |
+| indices | `any` |  Leave indices |
+| leaves | `any` |  Leaf values at indices. |
+| depth | `any` |  Tree depth |
+| proof | `any` |  Multiproofs given indices |
+
+**Returns:** `any`
 
 ___
 <a id="bufferify"></a>
@@ -431,6 +674,38 @@ ___
 **Returns:** `any`
 
 ___
+<a id="getmultiproof-1"></a>
+
+### `<Static>` getMultiProof
+
+▸ **getMultiProof**(tree: *`any`*, indices: *`any`*): `any`[]
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| tree | `any` |  Tree as a flat array. |
+| indices | `any` |  Tree indices. |
+
+**Returns:** `any`[]
+*   Multiproofs
+
+___
+<a id="ishexstring"></a>
+
+### `<Static>` isHexString
+
+▸ **isHexString**(v: *`any`*): `boolean`
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| v | `any` |
+
+**Returns:** `boolean`
+
+___
 <a id="print-1"></a>
 
 ### `<Static>` print
@@ -439,78 +714,11 @@ ___
 
 **Parameters:**
 
-| Name | Type |
-| ------ | ------ |
-| tree | `any` |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| tree | `any` |  Merkle tree instance. |
 
 **Returns:** `void`
-
-## Interface
-
-## Options
-
-### Properties
-
-* [duplicateOdd](#duplicateodd)
-* [hashLeaves](#hashleaves)
-* [isBitcoinTree](#isbitcointree)
-* [sort](#sort)
-* [sortLeaves](#sortleaves)
-* [sortPairs](#sortpairs)
-
----
-
-## Properties
-
-<a id="duplicateodd"></a>
-
-###  duplicateOdd
-
-**● duplicateOdd**: *`boolean`*
-
-If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash.
-
-___
-<a id="hashleaves"></a>
-
-###  hashLeaves
-
-**● hashLeaves**: *`boolean`*
-
-If set to `true`, the leaves will hashed using the set hashing algorithms.
-
-___
-<a id="isbitcointree"></a>
-
-###  isBitcoinTree
-
-**● isBitcoinTree**: *`boolean`*
-
-If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
-
-___
-<a id="sortleaves"></a>
-
-### sort
-
-**● sort**: *`boolean`*
-
-If set to `true`, the leaves and hashing pairs will be sorted.
-
-###  sortLeaves
-
-**● sortLeaves**: *`boolean`*
-
-If set to `true`, the leaves will be sorted.
-
-___
-<a id="sortpairs"></a>
-
-###  sortPairs
-
-**● sortPairs**: *`boolean`*
-
-If set to `true`, the hashing pairs will be sorted.
 
 ## Test
 
