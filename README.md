@@ -39,7 +39,7 @@ npm install merkletreejs
 
 ### CDN
 
-Available on [sDelivr](https://www.jsdelivr.com/) CDN:
+Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/merkletreejs@latest/merkletree.js"></script>

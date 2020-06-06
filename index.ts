@@ -959,7 +959,7 @@ export class MerkleTree {
 }
 
 if (typeof window !== 'undefined') {
-  (window as any).MerkleTree = MerkleTree
+  ;(window as any).MerkleTree = MerkleTree
 }
 
 export default MerkleTree
