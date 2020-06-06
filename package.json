@@ -11,7 +11,7 @@
     "test": "tape test/*.js",
     "build": "rm -rf dist/ && tsc",
     "lint": "standardx --fix index.ts test/*.js",
-    "docs": "rm -rf docs/ && typedoc --theme markdown index.ts --out docs --mdEngine github --mdDocusaurus --mdHideSources"
+    "docs": "rm -rf docs/ && typedoc --plugin typedoc-plugin-markdown --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts"
   },
   "repository": {
     "type": "git",
@@ -50,8 +50,8 @@
     "standard": "^14.3.4",
     "standardx": "^5.0.0",
     "tape": "^4.9.2",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^1.2.1",
+    "typedoc": "^0.17.7",
+    "typedoc-plugin-markdown": "^2.3.1",
     "typescript": "^3.4.1"
   },
   "engines": {
@@ -72,6 +72,8 @@
   },
   "standardx": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [ "@typescript-eslint/eslint-plugin" ]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   }
 }

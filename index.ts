@@ -28,15 +28,15 @@ type TLayer = any
  * @namespace MerkleTree
  */
 export class MerkleTree {
-  duplicateOdd: boolean
-  hashAlgo: (value: TValue) => THashAlgo
-  hashLeaves: boolean
-  isBitcoinTree: boolean
-  leaves: TLeaf[]
-  layers: TLayer[]
-  sortLeaves: boolean
-  sortPairs: boolean
-  sort: boolean
+  private duplicateOdd: boolean
+  private hashAlgo: (value: TValue) => THashAlgo
+  private hashLeaves: boolean
+  private isBitcoinTree: boolean
+  private leaves: TLeaf[]
+  private layers: TLayer[]
+  private sortLeaves: boolean
+  private sortPairs: boolean
+  private sort: boolean
 
   /**
    * @desc Constructs a Merkle Tree.
