@@ -558,10 +558,11 @@ export class MerkleTree {
     let hash = this._bufferify(targetNode)
     root = this._bufferify(root)
 
-    if (!Array.isArray(proof) ||
-      !proof.length ||
+    if (
+      !Array.isArray(proof) ||
       !targetNode ||
-      !root) {
+      !root
+    ) {
       return false
     }
 

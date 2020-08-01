@@ -488,6 +488,21 @@ test('crypto-js SHA3 leaves SHA256 hash algo', t => {
   t.equal(verifications.every(Boolean), true)
 })
 
+test('crypto-js SHA3 1 leaf SHA256 hash algo', t => {
+  t.plan(4)
+
+  const leaves = ['a'].map(SHA3)
+  const tree = new MerkleTree(leaves, SHA256)
+  t.deepEqual(tree.getLeaves(), leaves.map(MerkleTree.bufferify))
+  const root = tree.getRoot()
+
+  const leaf = leaves[0]
+  const proof = tree.getProof(leaf)
+  t.equal(proof.length, 0)
+  t.equal(MerkleTree.bufferify(leaf).toString('hex'), root.toString('hex'))
+  t.equal(tree.verify(proof, leaf, root), true)
+})
+
 test('crypto-js bufferify', t => {
   t.plan(1)
 
