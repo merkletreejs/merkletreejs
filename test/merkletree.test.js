@@ -837,3 +837,72 @@ test('sha256 getMultiProof - statusim', t => {
   ])
   t.deepEqual(proofFlags, [false, false, false, true])
 })
+
+test('marshal leaves', t => {
+  t.plan(5)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
+  const jsonLeaves = MerkleTree.marshalLeaves(leaves)
+  t.equal(typeof jsonLeaves, 'string')
+
+  const parsed = JSON.parse(jsonLeaves)
+  t.equal(parsed.length, 3)
+  t.equal(parsed[0], '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb')
+  t.equal(parsed[1], '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510')
+  t.equal(parsed[2], '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2')
+})
+
+test('unmarshal leaves', t => {
+  t.plan(4)
+
+  const json = `[
+    "0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb",
+    "0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510",
+    "0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2"
+  ]`
+
+  const leaves = MerkleTree.unmarshalLeaves(json)
+  t.equal(leaves.length, 3)
+  t.equal(leaves[0].toString('hex'), '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb')
+  t.equal(leaves[1].toString('hex'), 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510')
+  t.equal(leaves[2].toString('hex'), '0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2')
+})
+
+test('marshal proof', t => {
+  t.plan(5)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak(x))
+  const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
+  const proof = tree.getProof(leaves[0])
+
+  const jsonProof = MerkleTree.marshalProof(proof)
+  t.equal(typeof jsonProof, 'string')
+
+  const parsed = JSON.parse(jsonProof)
+  t.equal(parsed.length, 2)
+  t.equal(parsed[0].data, '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510')
+  t.equal(parsed[1].data, '0x43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358')
+
+  t.equal(tree.verify(parsed, leaves[0], tree.getRoot()), true)
+})
+
+test('unmarshal proof', t => {
+  t.plan(3)
+
+  const json = `[
+    {
+      "position": "right",
+      "data": "0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"
+    },
+    {
+      "position": "right",
+      "data": "0x43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358"
+    }
+  ]`
+
+  const proof = MerkleTree.unmarshalProof(json)
+
+  t.equal(proof.length, 2)
+  t.equal(proof[0].data.toString('hex'), 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510')
+  t.equal(proof[1].data.toString('hex'), '43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358')
+})

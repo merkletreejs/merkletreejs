@@ -79,7 +79,7 @@ export class MerkleTree {
       leaves = leaves.map(this.hashAlgo)
     }
 
-    this.leaves = leaves.map(this._bufferify)
+    this.leaves = leaves.map(this.bufferify)
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
     }
@@ -183,7 +183,52 @@ export class MerkleTree {
    *```
    */
   getHexLeaves ():string[] {
-    return this.leaves.map(x => this._bufferToHex(x))
+    return this.leaves.map(x => this.bufferToHex(x))
+  }
+
+  /**
+   * marshalLeaves
+   * @desc Returns array of leaves of Merkle Tree as a JSON string.
+   * @param {String[]|Buffer[]} - Merkle tree leaves
+   * @return {String} - List of leaves as JSON string
+   * @example
+   *```js
+   *const jsonStr = MerkleTree.marshalLeaves(leaves)
+   *```
+   */
+  static marshalLeaves (leaves: any[]):string {
+    return JSON.stringify(leaves.map(x => MerkleTree.bufferToHex(x)), null, 2)
+  }
+
+  /**
+   * unmarshalLeaves
+   * @desc Returns array of leaves of Merkle Tree as a Buffers.
+   * @param {String|Object} - JSON stringified leaves
+   * @return {Buffer[]} - Unmarshalled list of leaves
+   * @example
+   *```js
+   *const leaves = MerkleTree.unmarshalLeaves(jsonStr)
+   *```
+   */
+  static unmarshalLeaves (jsonStr: string | object):Buffer[] {
+    let parsed :any = null
+    if (typeof jsonStr === 'string') {
+      parsed = JSON.parse(jsonStr)
+    } else if (jsonStr instanceof Object) {
+      parsed = jsonStr
+    } else {
+      throw new Error('Expected type of string or object')
+    }
+
+    if (!parsed) {
+      return []
+    }
+
+    if (!Array.isArray(parsed)) {
+      throw new Error('Expected JSON string to be array')
+    }
+
+    return parsed.map(x => MerkleTree.bufferify(x))
   }
 
   /**
@@ -211,7 +256,7 @@ export class MerkleTree {
   getHexLayers ():string[] {
     return this.layers.reduce((acc, item, i) => {
       if (Array.isArray(item)) {
-        acc.push(item.map(x => this._bufferToHex(x)))
+        acc.push(item.map(x => this.bufferToHex(x)))
       } else {
         acc.push(item)
       }
@@ -255,7 +300,7 @@ export class MerkleTree {
    *```
    */
   getHexLayersFlat ():string[] {
-    return this.getLayersFlat().map(x => this._bufferToHex(x))
+    return this.getLayersFlat().map(x => this.bufferToHex(x))
   }
 
   /**
@@ -281,7 +326,7 @@ export class MerkleTree {
    *```
    */
   getHexRoot ():string {
-    return this._bufferToHex(this.getRoot())
+    return this.bufferToHex(this.getRoot())
   }
 
   /**
@@ -305,7 +350,7 @@ export class MerkleTree {
    *```
    */
   getProof (leaf: Buffer, index?: number):any[] {
-    leaf = this._bufferify(leaf)
+    leaf = this.bufferify(leaf)
     const proof = []
 
     if (typeof index !== 'number') {
@@ -377,7 +422,78 @@ export class MerkleTree {
    *```
    */
   getHexProof (leaf: Buffer, index?: number):string[] {
-    return this.getProof(leaf, index).map(x => this._bufferToHex(x.data))
+    return this.getProof(leaf, index).map(x => this.bufferToHex(x.data))
+  }
+
+  /**
+   * marshalProof
+   * @desc Returns proof array as JSON string.
+   * @param {String[]|Object[]} proof - Merkle tree proof array
+   * @return {String} - Proof array as JSON string.
+   * @example
+   * ```js
+   *const jsonStr = MerkleTree.marshalProof(proof)
+   *```
+   */
+  static marshalProof (proof: any[]):string {
+    const json = proof.map(x => {
+      if (typeof x === 'string') {
+        return x
+      }
+
+      if (Buffer.isBuffer(x)) {
+        return MerkleTree.bufferToHex(x)
+      }
+
+      return {
+        position: x.position,
+        data: MerkleTree.bufferToHex(x.data)
+      }
+    })
+
+    return JSON.stringify(json, null, 2)
+  }
+
+  /**
+   * unmarshalProof
+   * @desc Returns the proof for a target leaf as a list of Buffers.
+   * @param {String|Object} - Merkle tree leaves
+   * @return {String|Object} - Marshalled proof
+   * @example
+   * ```js
+   *const proof = MerkleTree.unmarshalProof(jsonStr)
+   *```
+   */
+  static unmarshalProof (jsonStr: string | object):any[] {
+    let parsed :any = null
+    if (typeof jsonStr === 'string') {
+      parsed = JSON.parse(jsonStr)
+    } else if (jsonStr instanceof Object) {
+      parsed = jsonStr
+    } else {
+      throw new Error('Expected type of string or object')
+    }
+
+    if (!parsed) {
+      return []
+    }
+
+    if (!Array.isArray(parsed)) {
+      throw new Error('Expected JSON string to be array')
+    }
+
+    return parsed.map(x => {
+      if (typeof x === 'string') {
+        return MerkleTree.bufferify(x)
+      } else if (x instanceof Object) {
+        return {
+          position: x.position,
+          data: MerkleTree.bufferify(x.data)
+        }
+      } else {
+        throw new Error('Expected item to be of type string or object')
+      }
+    })
   }
 
   /**
@@ -494,7 +610,7 @@ export class MerkleTree {
    *```
    */
   getHexMultiProof (tree: Buffer[], indices: number[]):string[] {
-    return this.getMultiProof(tree, indices).map(this._bufferToHex)
+    return this.getMultiProof(tree, indices).map(this.bufferToHex)
   }
 
   /**
@@ -555,8 +671,8 @@ export class MerkleTree {
    *```
    */
   verify (proof: any[], targetNode: Buffer, root: Buffer):boolean {
-    let hash = this._bufferify(targetNode)
-    root = this._bufferify(root)
+    let hash = this.bufferify(targetNode)
+    root = this.bufferify(root)
 
     if (
       !Array.isArray(proof) ||
@@ -571,13 +687,15 @@ export class MerkleTree {
       let data: any = null
       let isLeftNode = null
 
-      // NOTE: case for when proof is hex values only
+      // case for when proof is hex values only
       if (typeof node === 'string') {
-        data = this._bufferify(node)
+        data = this.bufferify(node)
         isLeftNode = true
-      } else {
-        data = node.data
+      } else if (node instanceof Object) {
+        data = this.bufferify(node.data)
         isLeftNode = (node.position === 'left')
+      } else {
+        throw new Error('Expected node to be of type string or object')
       }
 
       const buffers: any[] = []
@@ -630,9 +748,9 @@ export class MerkleTree {
    *```
    */
   verifyMultiProof (root: Buffer, indices: number[], leaves: Buffer[], depth: number, proof: Buffer[]):boolean {
-    root = this._bufferify(root)
-    leaves = leaves.map(this._bufferify)
-    proof = proof.map(this._bufferify)
+    root = this.bufferify(root)
+    leaves = leaves.map(this.bufferify)
+    proof = proof.map(this.bufferify)
 
     const tree = {}
     for (const [index, leaf] of this._zip(indices, leaves)) {
@@ -702,6 +820,9 @@ export class MerkleTree {
     }
 
     return objs[0]
+  }
+
+  toJSON () {
   }
 
   /**
@@ -870,7 +991,21 @@ export class MerkleTree {
    *const hexStr = tree.bufferToHex(Buffer.from('A'))
    *```
    */
-  private _bufferToHex (value: Buffer):string {
+  bufferToHex (value: Buffer):string {
+    return MerkleTree.bufferToHex(value)
+  }
+
+  /**
+   * bufferToHex
+   * @desc Returns a hex string with 0x prefix for given buffer.
+   * @param {Buffer} value
+   * @return {String}
+   * @example
+   *```js
+   *const hexStr = MerkleTree.bufferToHex(Buffer.from('A'))
+   *```
+   */
+  static bufferToHex (value: Buffer):string {
     return '0x' + value.toString('hex')
   }
 
@@ -882,10 +1017,10 @@ export class MerkleTree {
    *
    * @example
    * ```js
-   *const buf = MerkleTree.bufferify('0x1234')
+   *const buf = tree.bufferify('0x1234')
    *```
    */
-  private _bufferify (value: any):Buffer {
+  bufferify (value: any):Buffer {
     return MerkleTree.bufferify(value)
   }
 

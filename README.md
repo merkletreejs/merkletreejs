@@ -128,6 +128,8 @@ Class reprensenting a Merkle Tree
 
 ### Methods
 
+* [bufferToHex](_index_.merkletree.md#buffertohex)
+* [bufferify](_index_.merkletree.md#bufferify)
 * [getDepth](_index_.merkletree.md#getdepth)
 * [getHexLayers](_index_.merkletree.md#gethexlayers)
 * [getHexLayersFlat](_index_.merkletree.md#gethexlayersflat)
@@ -145,13 +147,19 @@ Class reprensenting a Merkle Tree
 * [getProofIndices](_index_.merkletree.md#getproofindices)
 * [getRoot](_index_.merkletree.md#getroot)
 * [print](_index_.merkletree.md#print)
+* [toJSON](_index_.merkletree.md#tojson)
 * [toString](_index_.merkletree.md#tostring)
 * [verify](_index_.merkletree.md#verify)
 * [verifyMultiProof](_index_.merkletree.md#verifymultiproof)
-* [bufferify](_index_.merkletree.md#static-bufferify)
-* [getMultiProof](_index_.merkletree.md#static-getmultiproof)
-* [isHexString](_index_.merkletree.md#static-ishexstring)
-* [print](_index_.merkletree.md#static-print)
+* [bufferToHex](_index_.merkletree.md#static-buffertohex)
+* [static:bufferify](_index_.merkletree.md#static-bufferify)
+* [static:getMultiProof](_index_.merkletree.md#static-getmultiproof)
+* [static:isHexString](_index_.merkletree.md#static-ishexstring)
+* [static:marshalLeaves](_index_.merkletree.md#static-marshalleaves)
+* [static:marshalProof](_index_.merkletree.md#static-marshalproof)
+* [static:print](_index_.merkletree.md#static-print)
+* [static:unmarshalLeaves](_index_.merkletree.md#static-unmarshalleaves)
+* [static:unmarshalProof](_index_.merkletree.md#static-unmarshalproof)
 
 ## Constructors
 
@@ -184,11 +192,57 @@ Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 `leaves` | any[] | - | Array of hashed leaves. Each leaf must be a Buffer. |
 `hashAlgorithm` | any | SHA256 | Algorithm used for hashing leaves and nodes |
-`options` | [Options](../interfaces/_index_.options.md) | {} | Additional options |
+`options` | [Options](#options) | {} | Additional options |
 
 **Returns:** *[MerkleTree](_index_.merkletree.md)*
 
 ## Methods
+
+###  bufferToHex
+
+▸ **bufferToHex**(`value`: Buffer): *string*
+
+bufferToHex
+
+**`desc`** Returns a hex string with 0x prefix for given buffer.
+
+**`example`**
+```js
+const hexStr = tree.bufferToHex(Buffer.from('A'))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | Buffer |
+
+**Returns:** *string*
+
+___
+
+###  bufferify
+
+▸ **bufferify**(`value`: any): *Buffer*
+
+bufferify
+
+**`desc`** Returns a buffer type for the given value.
+
+**`example`**
+```js
+const buf = tree.bufferify('0x1234')
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *Buffer*
+
+___
 
 ###  getDepth
 
@@ -553,6 +607,14 @@ tree.print()
 
 ___
 
+###  toJSON
+
+▸ **toJSON**(): *void*
+
+**Returns:** *void*
+
+___
+
 ###  toString
 
 ▸ **toString**(): *string*
@@ -631,6 +693,29 @@ Name | Type | Description |
 
 ___
 
+### `Static` bufferToHex
+
+▸ **bufferToHex**(`value`: Buffer): *string*
+
+bufferToHex
+
+**`desc`** Returns a hex string with 0x prefix for given buffer.
+
+**`example`**
+```js
+const hexStr = MerkleTree.bufferToHex(Buffer.from('A'))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | Buffer |
+
+**Returns:** *string*
+
+___
+
 ### `Static` bufferify
 
 ▸ **bufferify**(`value`: any): *Buffer*
@@ -705,6 +790,56 @@ Name | Type |
 
 ___
 
+### `Static` marshalLeaves
+
+▸ **marshalLeaves**(`leaves`: any[]): *string*
+
+marshalLeaves
+
+**`desc`** Returns array of leaves of Merkle Tree as a JSON string.
+
+**`example`**
+```js
+const jsonStr = MerkleTree.marshalLeaves(leaves)
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`leaves` | any[] |
+
+**Returns:** *string*
+
+- List of leaves as JSON string
+
+___
+
+### `Static` marshalProof
+
+▸ **marshalProof**(`proof`: any[]): *string*
+
+marshalProof
+
+**`desc`** Returns proof array as JSON string.
+
+**`example`**
+```js
+const jsonStr = MerkleTree.marshalProof(proof)
+```
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`proof` | any[] | Merkle tree proof array |
+
+**Returns:** *string*
+
+- Proof array as JSON string.
+
+___
+
 ### `Static` print
 
 ▸ **print**(`tree`: any): *void*
@@ -725,6 +860,56 @@ Name | Type | Description |
 `tree` | any | Merkle tree instance. |
 
 **Returns:** *void*
+
+___
+
+### `Static` unmarshalLeaves
+
+▸ **unmarshalLeaves**(`jsonStr`: string | object): *Buffer[]*
+
+unmarshalLeaves
+
+**`desc`** Returns array of leaves of Merkle Tree as a Buffers.
+
+**`example`**
+```js
+const leaves = MerkleTree.unmarshalLeaves(jsonStr)
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`jsonStr` | string &#124; object |
+
+**Returns:** *Buffer[]*
+
+- Unmarshalled list of leaves
+
+___
+
+### `Static` unmarshalProof
+
+▸ **unmarshalProof**(`jsonStr`: string | object): *any[]*
+
+unmarshalProof
+
+**`desc`** Returns the proof for a target leaf as a list of Buffers.
+
+**`example`**
+```js
+const proof = MerkleTree.unmarshalProof(jsonStr)
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`jsonStr` | string &#124; object |
+
+**Returns:** *any[]*
+
+- Marshalled proof
 
 # Interface: Options
 
