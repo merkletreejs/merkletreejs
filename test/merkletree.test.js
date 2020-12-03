@@ -88,6 +88,32 @@ test('sha256 with sort pairs option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
+test('sha256 verify with positional hex proof and no pairSort', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: false })
+  t.true(tree.verify(tree.getPositionalHexProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
+})
+
+test('sha256 verify with non-hex proof and no pairSort', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: false })
+
+  t.true(tree.verify(tree.getProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
+})
+
+test('sha256 verify with hex proof and pairSort', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
+
+  t.true(tree.verify(tree.getHexProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
+})
+
 test('keccak with sort leaves and sort pairs option', t => {
   t.plan(1)
 
