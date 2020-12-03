@@ -365,6 +365,32 @@ Name | Type | Description |
 
 ___
 
+###  getPositionalHexProof
+
+▸ **getPositionalHexProof**(`leaf`: Buffer, `index?`: number): *(string | number)[][]*
+
+getPositionalHexProof
+
+**`desc`** Returns the proof for a target leaf as hex strings and corresponding position as binary.
+
+**`example`**
+```js
+const proof = tree.getPositionalHexProof(leaves[2])
+```
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`leaf` | Buffer | Target leaf |
+`index?` | number | - |
+
+**Returns:** *(string | number)[][]*
+
+- Proof array as hex strings with position.
+
+___
+
 ###  getHexRoot
 
 ▸ **getHexRoot**(): *string*
