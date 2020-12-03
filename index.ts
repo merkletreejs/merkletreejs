@@ -690,7 +690,7 @@ export class MerkleTree {
       // case for when proof is hex values only
       if (typeof node === 'string') {
         data = this.bufferify(node)
-        isLeftNode = true
+        isLeftNode = false
       } else if (node instanceof Object) {
         data = this.bufferify(node.data)
         isLeftNode = (node.position === 'left')
