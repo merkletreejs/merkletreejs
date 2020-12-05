@@ -765,7 +765,11 @@ export class MerkleTree {
     while (i < indexqueue.length) {
       const index = indexqueue[i]
       if (index >= 2 && ({}).hasOwnProperty.call(tree, index ^ 1)) {
-        tree[(index / 2) | 0] = this.hashAlgo(Buffer.concat([tree[index - (index % 2)], tree[index - (index % 2) + 1]]))
+        let pair = [tree[index - (index % 2)], tree[index - (index % 2) + 1]]
+        if (this.sortPairs) {
+          pair = pair.sort(Buffer.compare)
+        }
+        tree[(index / 2) | 0] = this.hashAlgo(Buffer.concat(pair))
         indexqueue.push((index / 2) | 0)
       }
       i += 1
