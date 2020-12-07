@@ -696,6 +696,30 @@ test('sha256 getMultiProof', t => {
   t.equal(tree.verifyMultiProof(root, indices, tLeaves, depth, proof), true)
 })
 
+test('sha256 getMultiProof with pairs sorted', t => {
+  t.plan(1)
+
+  const leaves = Array(16).fill(0).map((x, i) => {
+    const b = Buffer.alloc(32)
+    b.writeUIntLE(i, 31, 1)
+    return b
+  })
+
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
+
+  const root = tree.getHexRoot()
+
+  const i = 100
+  const indices = Array(16).fill(0).map((x, j) => j).filter(j => (i >> j) % 2 === 1)
+
+  const proof = tree.getMultiProof(indices)
+
+  const depth = tree.getDepth()
+
+  const tLeaves = indices.map(i => leaves[i])
+  t.equal(tree.verifyMultiProof(root, indices, tLeaves, depth, proof), true)
+})
+
 test('sha256 getMultiProof using tree array', t => {
   t.plan(5)
 
