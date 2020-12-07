@@ -631,7 +631,7 @@ export class MerkleTree {
    *```
    */
   getHexMultiProof (tree: Buffer[], indices: number[]):string[] {
-    return this.getMultiProof(tree, indices).map(this.bufferToHex)
+    return this.getMultiProof(tree, indices).map((x) => this.bufferToHex(x))
   }
 
   /**
@@ -793,6 +793,7 @@ export class MerkleTree {
         if (this.sortPairs) {
           pair = pair.sort(Buffer.compare)
         }
+
         tree[(index / 2) | 0] = this.hashAlgo(Buffer.concat(pair))
         indexqueue.push((index / 2) | 0)
       }
@@ -823,7 +824,7 @@ export class MerkleTree {
    *```
    */
   getLayersAsObject ():any {
-    const layers: any[] = this.getLayers().map((layer: any) => layer.map((value: any) => value.toString('hex')))
+    const layers: any[] = this.getLayers().map((layer: any) => layer.map((value: any) => this.bufferToHex(value, false)))
     const objs = []
     for (let i = 0; i < layers.length; i++) {
       const arr = []
@@ -848,9 +849,6 @@ export class MerkleTree {
     }
 
     return objs[0]
-  }
-
-  toJSON () {
   }
 
   /**
@@ -1019,8 +1017,8 @@ export class MerkleTree {
    *const hexStr = tree.bufferToHex(Buffer.from('A'))
    *```
    */
-  bufferToHex (value: Buffer):string {
-    return MerkleTree.bufferToHex(value)
+  bufferToHex (value: Buffer, withPrefix: boolean = true):string {
+    return MerkleTree.bufferToHex(value, withPrefix)
   }
 
   /**
@@ -1033,8 +1031,8 @@ export class MerkleTree {
    *const hexStr = MerkleTree.bufferToHex(Buffer.from('A'))
    *```
    */
-  static bufferToHex (value: Buffer):string {
-    return '0x' + value.toString('hex')
+  static bufferToHex (value: Buffer, withPrefix: boolean = true):string {
+    return `${withPrefix ? '0x' : ''}${value.toString('hex')}`
   }
 
   /**

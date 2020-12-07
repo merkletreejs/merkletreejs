@@ -93,6 +93,7 @@ test('sha256 verify with positional hex proof and no pairSort', t => {
 
   const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
   const tree = new MerkleTree(leaves, sha256, { sortPairs: false })
+
   t.true(tree.verify(tree.getPositionalHexProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
 })
 
@@ -245,7 +246,7 @@ test('solidity keccak [keccak-256]', t => {
   t.equal(proof_0[1].position, 'right')
   t.equal(proof_0[1].data.toString('hex'), c_hash)
 
-  t.equal(tree.verify(proof_0, leaves[0], root), true)
+  t.true(tree.verify(proof_0, leaves[0], root))
 
   const proof_1 = tree.getProof(leaves[1])
   t.equal(proof_1.length, 2)
@@ -254,14 +255,14 @@ test('solidity keccak [keccak-256]', t => {
   t.equal(proof_1[1].position, 'right')
   t.equal(proof_1[1].data.toString('hex'), c_hash)
 
-  t.equal(tree.verify(proof_1, leaves[1], root), true)
+  t.true(tree.verify(proof_1, leaves[1], root))
 
   const proof_2 = tree.getProof(leaves[2])
   t.equal(proof_2.length, 1)
   t.equal(proof_2[0].position, 'left')
   t.equal(proof_2[0].data.toString('hex'), layer_1)
 
-  t.equal(tree.verify(proof_2, leaves[2], root), true)
+  t.true(tree.verify(proof_2, leaves[2], root))
 })
 
 test('solidity keccak [keccak-256] with duplicate odd option', t => {
@@ -292,7 +293,7 @@ test('solidity keccak [keccak-256] with duplicate odd option', t => {
   t.equal(proof_0[1].position, 'right')
   t.equal(proof_0[1].data.toString('hex'), layer_2)
 
-  t.equal(tree.verify(proof_0, leaves[0], root), true)
+  t.true(tree.verify(proof_0, leaves[0], root))
 
   const proof_1 = tree.getProof(leaves[1])
   t.equal(proof_1.length, 2)
@@ -301,14 +302,14 @@ test('solidity keccak [keccak-256] with duplicate odd option', t => {
   t.equal(proof_1[1].position, 'right')
   t.equal(proof_1[1].data.toString('hex'), layer_2)
 
-  t.equal(tree.verify(proof_1, leaves[1], root), true)
+  t.true(tree.verify(proof_1, leaves[1], root))
 
   const proof_2 = tree.getProof(leaves[2])
   t.equal(proof_2.length, 1)
   t.equal(proof_2[0].position, 'left')
   t.equal(proof_2[0].data.toString('hex'), layer_1)
 
-  t.equal(tree.verify(proof_2, layer_2, root), true)
+  t.true(tree.verify(proof_2, layer_2, root))
 })
 
 test('solidity keccak [keccak-256] with duplicate leaves', t => {
@@ -450,7 +451,7 @@ test('sha-256 with option.isBitcoinTree', t => {
 
   const proof_0 = tree.getProof(leaves[0])
 
-  t.equal(tree.verify(proof_0, leaves[0], root), true)
+  t.true(tree.verify(proof_0, leaves[0], root))
 })
 
 test('keccak - hex strings', t => {
@@ -511,7 +512,7 @@ test('crypto-js SHA3 leaves SHA256 hash algo', t => {
     return tree.verify(proof, leaf, root)
   })
 
-  t.equal(verifications.every(Boolean), true)
+  t.true(verifications.every(Boolean))
 })
 
 test('crypto-js SHA3 1 leaf SHA256 hash algo', t => {
@@ -526,7 +527,7 @@ test('crypto-js SHA3 1 leaf SHA256 hash algo', t => {
   const proof = tree.getProof(leaf)
   t.equal(proof.length, 0)
   t.equal(MerkleTree.bufferify(leaf).toString('hex'), root.toString('hex'))
-  t.equal(tree.verify(proof, leaf, root), true)
+  t.true(tree.verify(proof, leaf, root))
 })
 
 test('crypto-js bufferify', t => {
@@ -575,7 +576,7 @@ test('sha1', t => {
     '0x59f544ee5de8d761b124ccd4e1285d3b02a2a539'
   ])
 
-  t.equal(tree.verify(proof, leaf, root), true)
+  t.true(tree.verify(proof, leaf, root))
 })
 
 test('sha56 getHexLayers', t => {
@@ -719,7 +720,7 @@ test('sha256 getMultiProof', t => {
   const depth = tree.getDepth()
 
   const tLeaves = indices.map(i => leaves[i])
-  t.equal(tree.verifyMultiProof(root, indices, tLeaves, depth, proof), true)
+  t.true(tree.verifyMultiProof(root, indices, tLeaves, depth, proof))
 })
 
 test('sha256 getMultiProof with pairs sorted', t => {
@@ -732,18 +733,16 @@ test('sha256 getMultiProof with pairs sorted', t => {
   })
 
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
-
   const root = tree.getHexRoot()
 
   const i = 100
   const indices = Array(16).fill(0).map((x, j) => j).filter(j => (i >> j) % 2 === 1)
 
   const proof = tree.getMultiProof(indices)
-
   const depth = tree.getDepth()
-
   const tLeaves = indices.map(i => leaves[i])
-  t.equal(tree.verifyMultiProof(root, indices, tLeaves, depth, proof), true)
+
+  t.true(tree.verifyMultiProof(root, indices, tLeaves, depth, proof))
 })
 
 test('sha256 getMultiProof using tree array', t => {
@@ -813,7 +812,7 @@ test('sha256 getMultiProof using tree array', t => {
 
   const tRoot = treeFlat[1]
   const tLeaves = indices.map(i => leaves[i])
-  t.equal(tree.verifyMultiProof(tRoot, indices, tLeaves, depth, proof), true)
+  t.true(tree.verifyMultiProof(tRoot, indices, tLeaves, depth, proof))
 })
 
 test('sha256 getMultiProof', t => {
@@ -933,7 +932,7 @@ test('marshal proof', t => {
   t.equal(parsed[0].data, '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510')
   t.equal(parsed[1].data, '0x43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358')
 
-  t.equal(tree.verify(parsed, leaves[0], tree.getRoot()), true)
+  t.true(tree.verify(parsed, leaves[0], tree.getRoot()))
 })
 
 test('unmarshal proof', t => {
