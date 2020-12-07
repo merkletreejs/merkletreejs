@@ -426,6 +426,27 @@ export class MerkleTree {
   }
 
   /**
+  * getPositionalHexProof
+  * @desc Returns the proof for a target leaf as hex strings and the position in binary (left == 0).
+  * @param {Buffer} leaf - Target leaf
+  * @param {Number} [index] - Target leaf index in leaves array.
+  * Use if there are leaves containing duplicate data in order to distinguish it.
+  * @return {(string | number)[][]} - Proof array as hex strings. position at index 0
+  * @example
+  * ```js
+  *const proof = tree.getPositionalHexProof(leaves[2])
+  *```
+  */
+  getPositionalHexProof (leaf: Buffer, index?: number): (string | number)[][] {
+    return this.getProof(leaf, index).map(x => {
+      return [
+        x.position === 'left' ? 0 : 1,
+        this.bufferToHex(x.data)
+      ]
+    })
+  }
+
+  /**
    * marshalProof
    * @desc Returns proof array as JSON string.
    * @param {String[]|Object[]} proof - Merkle tree proof array
@@ -691,6 +712,9 @@ export class MerkleTree {
       if (typeof node === 'string') {
         data = this.bufferify(node)
         isLeftNode = true
+      } else if (Array.isArray(node)) {
+        isLeftNode = (node[0] === 0)
+        data = this.bufferify(node[1])
       } else if (node instanceof Object) {
         data = this.bufferify(node.data)
         isLeftNode = (node.position === 'left')
