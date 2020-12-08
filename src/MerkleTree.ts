@@ -638,7 +638,7 @@ export class MerkleTree {
    * getProofFlags
    * @desc Returns list of booleans where proofs should be used instead of hashing.
    * Proof flags are used in the Solidity multiproof verifiers.
-   * @param {Buffer[]} leaves
+   * @param {Number[]|Buffer[]} leaves
    * @param {Buffer[]} proofs
    * @return {Boolean[]} - Boolean flags
    * @example
@@ -648,8 +648,18 @@ export class MerkleTree {
    *const proofFlags = tree.getProofFlags(leaves, proof)
    *```
    */
-  getProofFlags (leaves: Buffer[], proofs: Buffer[]):boolean[] {
-    let ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+  getProofFlags (leaves: any[], proofs: Buffer[]):boolean[] {
+    if (!Array.isArray(leaves) || leaves.length <= 0) {
+      throw new Error('Invalid Inputs!')
+    }
+
+    let ids
+    if (!isNaN(leaves[0])) {
+      ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
+    } else {
+      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+    }
+
     if (!ids.every((idx) => idx !== -1)) {
       throw new Error('Element does not exist in Merkle tree')
     }
