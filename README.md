@@ -1054,6 +1054,8 @@ Pull requests are welcome!
 
 For contributions please create a new branch and submit a pull request for review.
 
+_Many thanks to all the [contributors](https://github.com/miguelmota/merkletreejs/graphs/contributors) that made this library better._
+
 ## License
 
 [MIT](LICENSE)
