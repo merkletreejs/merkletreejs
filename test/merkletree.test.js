@@ -854,14 +854,11 @@ test('sha256 getProofFlag with indices', t => {
   t.plan(2)
 
   const leaves = ['a', 'b', 'c', 'd'].map(sha256)
-
-  const tree = new MerkleTree(leaves, sha256, {sortPairs: true})
-
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
   const root = tree.getHexRoot()
   t.equal(root, '0x4c6aae040ffada3d02598207b8485fcbe161c03f4cb3f660e4d341e7496ff3b2')
 
   const treeFlat = tree.getLayersFlat()
-
   const indices = [1, 2]
   const proof = tree.getMultiProof(treeFlat, indices)
 

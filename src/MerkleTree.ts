@@ -3,7 +3,7 @@ import CryptoJS from 'crypto-js'
 import SHA256 from 'crypto-js/sha256'
 import treeify from 'treeify'
 
-interface Options {
+export interface Options {
   /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */
   duplicateOdd?: boolean
   /** If set to `true`, the leaves will hashed using the set hashing algorithms. */
@@ -254,7 +254,7 @@ export class MerkleTree {
    *```
    */
   getHexLayers ():string[] {
-    return this.layers.reduce((acc, item, i) => {
+    return this.layers.reduce((acc: string[][], item: Buffer[]) => {
       if (Array.isArray(item)) {
         acc.push(item.map(x => this.bufferToHex(x)))
       } else {
@@ -275,7 +275,7 @@ export class MerkleTree {
    *```
    */
   getLayersFlat ():Buffer[] {
-    const layers = this.layers.reduce((acc, item, i) => {
+    const layers = this.layers.reduce((acc, item) => {
       if (Array.isArray(item)) {
         acc.unshift(...item)
       } else {
@@ -353,7 +353,7 @@ export class MerkleTree {
     leaf = this.bufferify(leaf)
     const proof = []
 
-    if (typeof index !== 'number') {
+    if (!Number.isInteger(index)) {
       index = -1
 
       for (let i = 0; i < this.leaves.length; i++) {
@@ -579,7 +579,7 @@ export class MerkleTree {
       indices = tree
       tree = this.getLayersFlat()
 
-      if (!indices.every(x => typeof x === 'number')) {
+      if (!indices.every(Number.isInteger)) {
         let els = indices
         if (this.sortPairs) {
           els = els.sort(Buffer.compare)
@@ -653,14 +653,14 @@ export class MerkleTree {
       throw new Error('Invalid Inputs!')
     }
 
-    let ids
-    if (!isNaN(leaves[0])) {
+    let ids : number[]
+    if (leaves.every(Number.isInteger)) {
       ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
     } else {
       ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
     }
 
-    if (!ids.every((idx) => idx !== -1)) {
+    if (!ids.every((idx: number) => idx !== -1)) {
       throw new Error('Element does not exist in Merkle tree')
     }
 
@@ -1072,7 +1072,7 @@ export class MerkleTree {
    *```
    */
   private _bufferifyFn (f: any):any {
-    return function (value) {
+    return function (value: any) {
       const v = f(value)
       if (Buffer.isBuffer(v)) {
         return v
