@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -67,8 +67,6 @@
   "dependencies": {
     "buffer-reverse": "^1.0.1",
     "crypto-js": "^3.1.9-1",
-    "is-buffer": "^2.0.3",
-    "merkle-lib": "^2.0.10",
     "treeify": "^1.1.0"
   },
   "eslintConfig": {
