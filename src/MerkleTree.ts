@@ -349,7 +349,7 @@ export class MerkleTree {
    *const proof = tree.getProof(leaves[2], 2)
    *```
    */
-  getProof (leaf: Buffer, index?: number):any[] {
+  getProof (leaf: Buffer | string, index?: number):any[] {
     leaf = this.bufferify(leaf)
     const proof = []
 
@@ -421,7 +421,7 @@ export class MerkleTree {
    *const proof = tree.getHexProof(leaves[2])
    *```
    */
-  getHexProof (leaf: Buffer, index?: number):string[] {
+  getHexProof (leaf: Buffer | string, index?: number):string[] {
     return this.getProof(leaf, index).map(x => this.bufferToHex(x.data))
   }
 
@@ -437,7 +437,7 @@ export class MerkleTree {
   *const proof = tree.getPositionalHexProof(leaves[2])
   *```
   */
-  getPositionalHexProof (leaf: Buffer, index?: number): (string | number)[][] {
+  getPositionalHexProof (leaf: Buffer | string, index?: number): (string | number)[][] {
     return this.getProof(leaf, index).map(x => {
       return [
         x.position === 'left' ? 0 : 1,
@@ -630,7 +630,7 @@ export class MerkleTree {
    *const proof = tree.getHexMultiProof(indices)
    *```
    */
-  getHexMultiProof (tree: Buffer[], indices: number[]):string[] {
+  getHexMultiProof (tree: Buffer[] | string[], indices: number[]):string[] {
     return this.getMultiProof(tree, indices).map((x) => this.bufferToHex(x))
   }
 
@@ -648,7 +648,7 @@ export class MerkleTree {
    *const proofFlags = tree.getProofFlags(leaves, proof)
    *```
    */
-  getProofFlags (leaves: any[], proofs: Buffer[]):boolean[] {
+  getProofFlags (leaves: any[], proofs: Buffer[] | string[]):boolean[] {
     if (!Array.isArray(leaves) || leaves.length <= 0) {
       throw new Error('Invalid Inputs!')
     }
@@ -664,6 +664,8 @@ export class MerkleTree {
       throw new Error('Element does not exist in Merkle tree')
     }
 
+    const _proofs: Buffer[] = (proofs as any[]).map(this.bufferify)
+
     const tested = []
     const flags = []
     for (let index = 0; index < this.layers.length; index++) {
@@ -672,7 +674,7 @@ export class MerkleTree {
         const skipped = tested.includes(layer[idx])
         if (!skipped) {
           const pairElement = this._getPairNode(layer, idx)
-          const proofUsed = proofs.includes(layer[idx]) || proofs.includes(pairElement)
+          const proofUsed = _proofs.includes(layer[idx]) || _proofs.includes(pairElement)
           pairElement && flags.push(!proofUsed)
           tested.push(layer[idx])
           tested.push(pairElement)
@@ -701,7 +703,7 @@ export class MerkleTree {
    *const verified = tree.verify(proof, leaves[2], root)
    *```
    */
-  verify (proof: any[], targetNode: Buffer, root: Buffer):boolean {
+  verify (proof: any[], targetNode: Buffer | string, root: Buffer | string):boolean {
     let hash = this.bufferify(targetNode)
     root = this.bufferify(root)
 
@@ -725,6 +727,9 @@ export class MerkleTree {
       } else if (Array.isArray(node)) {
         isLeftNode = (node[0] === 0)
         data = this.bufferify(node[1])
+      } else if (Buffer.isBuffer(node)) {
+        data = node
+        isLeftNode = true
       } else if (node instanceof Object) {
         data = this.bufferify(node.data)
         isLeftNode = (node.position === 'left')
@@ -781,10 +786,10 @@ export class MerkleTree {
    *const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
    *```
    */
-  verifyMultiProof (root: Buffer, indices: number[], leaves: Buffer[], depth: number, proof: Buffer[]):boolean {
+  verifyMultiProof (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], depth: number, proof: Buffer[] | string[]):boolean {
     root = this.bufferify(root)
-    leaves = leaves.map(this.bufferify)
-    proof = proof.map(this.bufferify)
+    leaves = (leaves as any[]).map(this.bufferify)
+    proof = (proof as any[]).map(this.bufferify)
 
     const tree = {}
     for (const [index, leaf] of this._zip(indices, leaves)) {
@@ -913,7 +918,7 @@ export class MerkleTree {
    *const proof = MerkleTree.getMultiProof(flatTree, indices)
    *```
    */
-  static getMultiProof (tree: Buffer[], indices: number[]):Buffer[] {
+  static getMultiProof (tree: Buffer[] | string[], indices: number[]):Buffer[] {
     const t = new MerkleTree([])
     return t.getMultiProof(tree, indices)
   }
