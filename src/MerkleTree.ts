@@ -1077,14 +1077,14 @@ export class MerkleTree {
    *```
    */
   private _bufferifyFn (f: any):any {
-    return function (value: any) {
+    return (value: any) => {
       const v = f(value)
       if (Buffer.isBuffer(v)) {
         return v
       }
 
       if (this._isHexString(v)) {
-        return Buffer.from(v, 'hex')
+        return Buffer.from(v.replace('0x', ''), 'hex')
       }
 
       // crypto-js support
