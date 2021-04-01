@@ -3,6 +3,13 @@ import CryptoJS from 'crypto-js'
 import SHA256 from 'crypto-js/sha256'
 import treeify from 'treeify'
 
+type TValue = Buffer | string | number | null | undefined
+type THashAlgoResult = Buffer | string
+type THashAlgo = (value: TValue) => Buffer
+type TLeaf = Buffer
+type TLayer = any
+type TFillDefaultHash = (idx?: number, hashFn?: THashAlgo) => THashAlgoResult
+
 export interface Options {
   /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */
   duplicateOdd?: boolean
@@ -16,34 +23,32 @@ export interface Options {
   sortPairs?: boolean
   /** If set to `true`, the leaves and hashing pairs will be sorted. */
   sort?: boolean
+  /** If defined, the resulting hash of this function will be used to fill in odd numbered layers. */
+  fillDefaultHash?: TFillDefaultHash
 }
-
-type THashAlgo = any
-type TValue = any
-type TLeaf = any
-type TLayer = any
 
 /**
  * Class reprensenting a Merkle Tree
  * @namespace MerkleTree
  */
 export class MerkleTree {
-  private duplicateOdd: boolean
-  private hashAlgo: (value: TValue) => THashAlgo
-  private hashLeaves: boolean
-  private isBitcoinTree: boolean
-  private leaves: TLeaf[]
-  private layers: TLayer[]
-  private sortLeaves: boolean
-  private sortPairs: boolean
-  private sort: boolean
+  private duplicateOdd: boolean = false
+  private hashFn: THashAlgo
+  private hashLeaves: boolean = false
+  private isBitcoinTree: boolean = false
+  private leaves: TLeaf[] = []
+  private layers: TLayer[] = []
+  private sortLeaves: boolean = false
+  private sortPairs: boolean = false
+  private sort: boolean = false
+  private fillDefaultHash: TFillDefaultHash | null = null
 
   /**
    * @desc Constructs a Merkle Tree.
    * All nodes and leaves are stored as Buffers.
    * Lonely leaf nodes are promoted to the next level up without being hashed again.
    * @param {Buffer[]} leaves - Array of hashed leaves. Each leaf must be a Buffer.
-   * @param {Function} hashAlgorithm - Algorithm used for hashing leaves and nodes
+   * @param {Function} hashFunction - Algorithm used for hashing leaves and nodes
    * @param {Object} options - Additional options
    * @example
    *```js
@@ -60,11 +65,19 @@ export class MerkleTree {
    *const tree = new MerkleTree(leaves, sha256)
    *```
    */
-  constructor (leaves: any[], hashAlgorithm = SHA256, options: Options = {}) {
+  constructor (leaves: any[], hashFn = SHA256, options: Options = {}) {
     this.isBitcoinTree = !!options.isBitcoinTree
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
     this.sortPairs = !!options.sortPairs
+
+    if (options.fillDefaultHash) {
+      if (typeof options.fillDefaultHash === 'function') {
+        this.fillDefaultHash = options.fillDefaultHash
+      } else {
+        throw new Error('method "fillDefaultHash" must be a function')
+      }
+    }
 
     this.sort = !!options.sort
     if (this.sort) {
@@ -74,14 +87,22 @@ export class MerkleTree {
 
     this.duplicateOdd = !!options.duplicateOdd
 
-    this.hashAlgo = this._bufferifyFn(hashAlgorithm)
+    this.hashFn = this._bufferifyFn(hashFn)
     if (this.hashLeaves) {
-      leaves = leaves.map(this.hashAlgo)
+      leaves = leaves.map(this.hashFn)
     }
 
     this.leaves = leaves.map(this.bufferify)
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
+    }
+
+    if (this.fillDefaultHash) {
+      for (let i = 0; i < Math.pow(2, Math.ceil(Math.log2(this.leaves.length))); i++) {
+        if (i >= this.leaves.length) {
+          this.leaves.push(this.bufferify(this.fillDefaultHash(i, this.hashFn)))
+        }
+      }
     }
 
     this.layers = [this.leaves]
@@ -104,13 +125,16 @@ export class MerkleTree {
             if (this.isBitcoinTree) {
               // Bitcoin method of duplicating the odd ending nodes
               data = Buffer.concat([reverse(data), reverse(data)])
-              hash = this.hashAlgo(data)
-              hash = reverse(this.hashAlgo(hash))
+              hash = this.hashFn(data)
+              hash = reverse(this.hashFn(hash))
 
               this.layers[layerIndex].push(hash)
               continue
             } else {
-              if (!this.duplicateOdd) {
+              if (this.duplicateOdd) {
+                // continue with creating layer
+              } else {
+                // push copy of hash and continue iteration
                 this.layers[layerIndex].push(nodes[i])
                 continue
               }
@@ -134,12 +158,11 @@ export class MerkleTree {
         }
 
         data = Buffer.concat(combined)
-
-        let hash = this.hashAlgo(data)
+        let hash = this.hashFn(data)
 
         // double hash if bitcoin tree
         if (this.isBitcoinTree) {
-          hash = reverse(this.hashAlgo(hash))
+          hash = reverse(this.hashFn(hash))
         }
 
         this.layers[layerIndex].push(hash)
@@ -161,7 +184,7 @@ export class MerkleTree {
   getLeaves (values?: any[]):Buffer[] {
     if (Array.isArray(values)) {
       if (this.hashLeaves) {
-        values = values.map(this.hashAlgo)
+        values = values.map(this.hashFn)
         if (this.sortLeaves) {
           values = values.sort(Buffer.compare)
         }
@@ -744,21 +767,21 @@ export class MerkleTree {
 
         buffers[isLeftNode ? 'unshift' : 'push'](reverse(data))
 
-        hash = this.hashAlgo(Buffer.concat(buffers))
-        hash = reverse(this.hashAlgo(hash))
+        hash = this.hashFn(Buffer.concat(buffers))
+        hash = reverse(this.hashFn(hash))
       } else {
         if (this.sortPairs) {
           if (Buffer.compare(hash, data) === -1) {
             buffers.push(hash, data)
-            hash = this.hashAlgo(Buffer.concat(buffers))
+            hash = this.hashFn(Buffer.concat(buffers))
           } else {
             buffers.push(data, hash)
-            hash = this.hashAlgo(Buffer.concat(buffers))
+            hash = this.hashFn(Buffer.concat(buffers))
           }
         } else {
           buffers.push(hash)
           buffers[isLeftNode ? 'unshift' : 'push'](data)
-          hash = this.hashAlgo(Buffer.concat(buffers))
+          hash = this.hashFn(Buffer.concat(buffers))
         }
       }
     }
@@ -809,7 +832,7 @@ export class MerkleTree {
           pair = pair.sort(Buffer.compare)
         }
 
-        tree[(index / 2) | 0] = this.hashAlgo(Buffer.concat(pair))
+        tree[(index / 2) | 0] = this.hashFn(Buffer.concat(pair))
         indexqueue.push((index / 2) | 0)
       }
       i += 1
