@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 
 const test = require('tape')
-const { keccak } = require('ethereumjs-util')
+const { keccak256 } = require('ethereumjs-util')
 const { MerkleMountainRange } = require('../')
 const { soliditySha3 } = require('web3-utils')
 
@@ -59,7 +59,7 @@ test('merkle mountain range', t => {
     return hash
   }
 
-  const tree = new MerkleMountainRange(keccak, leaves, hashLeaf, peakBagging, hashBranch)
+  const tree = new MerkleMountainRange(keccak256, leaves, hashLeaf, peakBagging, hashBranch)
   const root = tree.getHexRoot()
 
   const proof = tree.getMerkleProof(2)

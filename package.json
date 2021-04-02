@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "test": "tape test/*.js",
+    "clean": "rimraf dist",
     "build": "rm -rf dist/ && tsc && npm run build:browser",
     "build:browser": "browserify -t [ babelify --presets [ @babel/preset-env ] ] dist/index.js | uglifyjs > merkletree.js",
     "lint": "standardx --fix src/*.ts test/*.js",
@@ -53,6 +54,7 @@
     "browserify": "^16.5.1",
     "crypto": "0.0.3",
     "ethereumjs-util": "^7.0.9",
+    "rimraf": "^2.6.3",
     "sha1": "^1.1.1",
     "standard": "^14.3.4",
     "standardx": "^5.0.0",
