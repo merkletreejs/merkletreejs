@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.2.13",
+  "version": "0.2.16",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -52,7 +52,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "crypto": "0.0.3",
-    "ethereumjs-util": "6.1.0",
+    "ethereumjs-util": "^7.0.9",
     "sha1": "^1.1.1",
     "standard": "^14.3.4",
     "standardx": "^5.0.0",

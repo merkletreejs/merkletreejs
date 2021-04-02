@@ -37,14 +37,11 @@ test('merkle mountain range', t => {
   }
 
   const peakBagging = (size, peaks) => {
-    // keccak256(abi.encodePacked(size, keccak256(abi.encodePacked(size, peaks))));
     const a = [{ t: 'uint256', v: size }, ...peaks.map(x => ({ t: 'bytes32', v: x.toString('hex') }))]
     const x = soliditySha3(...a)
     const b = [{ t: 'uint256', v: size }, { t: 'bytes32', v: x.toString('hex') }]
     const res = soliditySha3(...b)
-
     return res
-    // return keccak256(abi.encodePacked(size, keccak256(abi.encodePacked(size, peaks))));
   }
 
   const hashBranch = (index, left, right) => {
