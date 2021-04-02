@@ -11,12 +11,12 @@ export class MerkleMountainRange extends Base {
   hashLeafFn: any
   peakBaggingFn: any
   hashBranchFn: any
-  private hashAlgo: any
+  private hashFn: any
 
-  constructor (hashAlgorithm = SHA256, leaves: any[] = [], hashLeafFn?: any, peakBaggingFn?: any, hashBranchFn?: any) {
+  constructor (hashFn = SHA256, leaves: any[] = [], hashLeafFn?: any, peakBaggingFn?: any, hashBranchFn?: any) {
     super()
     leaves = leaves.map(this.bufferify)
-    this.hashAlgo = this._bufferifyFn(hashAlgorithm)
+    this.hashFn = this._bufferifyFn(hashFn)
     this.hashLeafFn = hashLeafFn
     this.peakBaggingFn = peakBaggingFn
     this.hashBranchFn = hashBranchFn
@@ -28,9 +28,10 @@ export class MerkleMountainRange extends Base {
 
   append (data: any) {
     data = this.bufferify(data)
-    const dataHash = this.hashAlgo(data)
-    if (this.bufferToHex(this.hashAlgo(this.data[dataHash])) !== this.bufferToHex(dataHash)) {
-      this.data[this.bufferToHex(dataHash)] = data
+    const dataHash = this.hashFn(data)
+    const dataHashHex = this.bufferToHex(dataHash)
+    if (!this.data[dataHashHex] || this.bufferToHex(this.hashFn(this.data[dataHashHex])) !== dataHashHex) {
+      this.data[dataHashHex] = data
     }
 
     const leaf = this.hashLeaf(this.size + 1, dataHash)
@@ -53,18 +54,19 @@ export class MerkleMountainRange extends Base {
     this.root = this.peakBagging(this.width, peaks)
   }
 
-  hashLeaf (index: number, dataHash: any) {
+  hashLeaf (index: number, dataHash: Buffer | string) {
+    dataHash = this.bufferify(dataHash)
     if (this.hashLeafFn) {
       return this.bufferify(this.hashLeafFn(index, dataHash))
     }
-    return this.hashAlgo(Buffer.concat([this.bufferify(index), this.bufferify(dataHash)]))
+    return this.hashFn(Buffer.concat([this.bufferify(index), dataHash]))
   }
 
   hashBranch (index: number, left: any, right: any): any {
     if (this.hashBranchFn) {
       return this.bufferify(this.hashBranchFn(index, left, right))
     }
-    return this.hashAlgo(Buffer.concat([this.bufferify(index), this.bufferify(left), this.bufferify(right)]))
+    return this.hashFn(Buffer.concat([this.bufferify(index), this.bufferify(left), this.bufferify(right)]))
   }
 
   getPeaks () {
@@ -129,7 +131,7 @@ export class MerkleMountainRange extends Base {
       return this.bufferify(this.peakBaggingFn(size, peaks))
     }
 
-    return this.hashAlgo(Buffer.concat([this.bufferify(size), ...peaks.map(this.bufferify)]))
+    return this.hashFn(Buffer.concat([this.bufferify(size), ...peaks.map(this.bufferify)]))
   }
 
   getSize (width: number): number {
@@ -253,7 +255,8 @@ export class MerkleMountainRange extends Base {
     }
   }
 
-  verify (root: any, width: number, index: number, value: any, peaks: any[], siblings: any[]) {
+  verify (root: any, width: number, index: number, value: Buffer | string, peaks: any[], siblings: any[]) {
+    value = this.bufferify(value)
     const size = this.getSize(width)
     if (size < index) {
       throw new Error('Index is out of range')
@@ -308,7 +311,7 @@ export class MerkleMountainRange extends Base {
       cursor = path[height]
       if (height === 0) {
         // cusor is on the leaf
-        node = this.hashLeaf(cursor, this.hashAlgo(value))
+        node = this.hashLeaf(cursor, this.hashFn(value))
       } else if (cursor - 1 === path[height - 1]) {
         // cursor is on a parent and a siblings is on the left
         node = this.hashBranch(cursor, siblings[height - 1], node)
