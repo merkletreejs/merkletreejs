@@ -2,6 +2,9 @@ import Base from './Base'
 import SHA256 from 'crypto-js/sha256'
 
 // @credit: https://github.com/wanseob/solidity-mmr
+/**
+ * @desc The index of this MMR implementation starts from 1 not 0.
+ */
 export class MerkleMountainRange extends Base {
   root: Buffer = Buffer.alloc(0)
   size: number = 0
@@ -26,7 +29,11 @@ export class MerkleMountainRange extends Base {
     }
   }
 
-  append (data: any) {
+  /**
+   * @desc This only stores the hashed value of the leaf.
+   * If you need to retrieve the detail data later, use a map to store them.
+   */
+  append (data: Buffer | string) {
     data = this.bufferify(data)
     const dataHash = this.hashFn(data)
     const dataHashHex = this.bufferToHex(dataHash)
@@ -54,6 +61,10 @@ export class MerkleMountainRange extends Base {
     this.root = this.peakBagging(this.width, peaks)
   }
 
+  /**
+   * @desc It returns the hash of a leaf node with hash(M | DATA )
+   *       M is the index of the node.
+   */
   hashLeaf (index: number, dataHash: Buffer | string) {
     dataHash = this.bufferify(dataHash)
     if (this.hashLeafFn) {
@@ -62,6 +73,10 @@ export class MerkleMountainRange extends Base {
     return this.hashFn(Buffer.concat([this.bufferify(index), dataHash]))
   }
 
+  /**
+   * @desc It returns the hash a parent node with hash(M | Left child | Right child)
+   *       M is the index of the node.
+   */
   hashBranch (index: number, left: any, right: any): any {
     if (this.hashBranchFn) {
       return this.bufferify(this.hashBranchFn(index, left, right))
@@ -86,6 +101,10 @@ export class MerkleMountainRange extends Base {
     return this.getSize(width - 1) + 1
   }
 
+  /**
+   * @desc It returns all peaks of the smallest merkle mountain range tree which includes
+   *       the given index(size).
+   */
   getPeakIndexes (width: number): number[] {
     const numPeaks = this.numOfPeaks(width)
     const peakIndexes = []
@@ -103,7 +122,7 @@ export class MerkleMountainRange extends Base {
     }
 
     if (count !== peakIndexes.length) {
-      throw new Error('Invalid bit calculation')
+      throw new Error('invalid bit calculation')
     }
 
     return peakIndexes
@@ -124,7 +143,11 @@ export class MerkleMountainRange extends Base {
   peakBagging (width: number, peaks: any[]): any {
     const size = this.getSize(width)
     if (this.numOfPeaks(width) !== peaks.length) {
-      throw new Error('Received invalid number of peaks')
+      throw new Error('received invalid number of peaks')
+    }
+
+    if (width === 0 && !peaks.length) {
+      return Buffer.alloc(0)
     }
 
     if (this.peakBaggingFn) {
@@ -134,10 +157,16 @@ export class MerkleMountainRange extends Base {
     return this.hashFn(Buffer.concat([this.bufferify(size), ...peaks.map(this.bufferify)]))
   }
 
+  /**
+   * @desc It returns the size of the tree.
+   */
   getSize (width: number): number {
     return (width << 1) - this.numOfPeaks(width)
   }
 
+  /**
+   * @desc It returns the root value of the tree.
+   */
   getRoot (): any {
     return this.root
   }
@@ -146,10 +175,16 @@ export class MerkleMountainRange extends Base {
     return this.bufferToHex(this.getRoot())
   }
 
+  /**
+   * @dev It returns the hash value of a node for the given position. Note that the index starts from 1.
+   */
   getNode (index: number): any {
     return this.hashes[index]
   }
 
+  /**
+   * @desc It returns the height of the highest peak.
+   */
   mountainHeight (size: number): number {
     let height = 1
     while (1 << height <= size + height) {
@@ -158,6 +193,9 @@ export class MerkleMountainRange extends Base {
     return height - 1
   }
 
+  /**
+   * @desc It returns the height of the index.
+   */
   heightAt (index: number): number {
     let reducedIndex = index
     let peakIndex = 0
@@ -174,41 +212,35 @@ export class MerkleMountainRange extends Base {
     return height - (peakIndex - reducedIndex)
   }
 
+  /**
+   * @desc It returns whether the index is the leaf node or not
+   */
   isLeaf (index: number): boolean {
     return this.heightAt(index) === 1
   }
 
+  /**
+   * @desc It returns the children when it is a parent node.
+   */
   getChildren (index: number) {
     const left = index - (1 << (this.heightAt(index) - 1))
     const right = index - 1
     if (left === right) {
-      throw new Error('Not a parent')
+      throw new Error('not a parent')
     }
 
     return [left, right]
   }
 
-  _getOrCreateNode (index: number) {
-    if (index > this.size) {
-      throw new Error('Out of range')
-    }
-
-    if (!this.hashes[index]) {
-      const [leftIndex, rightIndex] = this.getChildren(index)
-      const leftHash = this._getOrCreateNode(leftIndex)
-      const rightHash = this._getOrCreateNode(rightIndex)
-      this.hashes[index] = this.hashBranch(index, leftHash, rightHash)
-    }
-
-    return this.hashes[index]
-  }
-
+  /**
+   * @desc It returns a merkle proof for a leaf. Note that the index starts from 1.
+   */
   getMerkleProof (index: number) {
     if (index >= this.size) {
-      throw new Error('Out of range')
+      throw new Error('out of range')
     }
     if (!this.isLeaf(index)) {
-      throw new Error('Not a leaf')
+      throw new Error('not a leaf')
     }
 
     const root = this.root
@@ -255,16 +287,19 @@ export class MerkleMountainRange extends Base {
     }
   }
 
+  /**
+   * @desc It returns true when the given params verifies that the given value exists in the tree or reverts the transaction.
+   */
   verify (root: any, width: number, index: number, value: Buffer | string, peaks: any[], siblings: any[]) {
     value = this.bufferify(value)
     const size = this.getSize(width)
     if (size < index) {
-      throw new Error('Index is out of range')
+      throw new Error('index is out of range')
     }
 
     // check the root equals the peak bagging hash
     if (!root.equals(this.peakBagging(width, peaks))) {
-      throw new Error('Invalid root hash from the peaks')
+      throw new Error('invalid root hash from the peaks')
     }
 
     // find the mountain where the target index belongs to
@@ -332,19 +367,124 @@ export class MerkleMountainRange extends Base {
   }
 
   peaksToPeakMap (width: number, peaks: any[]) {
-    throw new Error('not implemented')
+    const peakMap = {}
+    let bitIndex = 0
+    let peakRef = 0
+    let count = peaks.length
+    for (let height = 1; height <= 32; height++) {
+      // index starts from the right most bit
+      bitIndex = 32 - height
+      peakRef = 1 << (height - 1)
+      if ((width & peakRef) !== 0) {
+        peakMap[bitIndex] = peaks[--count]
+      } else {
+        peakMap[bitIndex] = 0
+      }
+    }
+
+    if (count !== 0) {
+      throw new Error('invalid number of peaks')
+    }
+
+    return peakMap
   }
 
   peakMapToPeaks (width: number, peakMap: any) {
-    throw new Error('not implemented')
+    const arrLength = this.numOfPeaks(width)
+    const peaks = new Array(arrLength)
+    let count = 0
+    for (let i = 0; i < 32; i++) {
+      if (peakMap[i] !== 0) {
+        peaks[count++] = peakMap[i]
+      }
+    }
+
+    if (count !== arrLength) {
+      throw new Error('invalid number of peaks')
+    }
+
+    return peaks
   }
 
   peakUpdate (width: number, prevPeakMap: any, itemHash: any) {
-    throw new Error('not implemented')
+    const nextPeakMap = {}
+    const newWidth = width + 1
+    let cursorIndex = this.getLeafIndex(newWidth)
+    let cursorNode = this.hashLeaf(cursorIndex, itemHash)
+    let bitIndex = 0
+    let peakRef = 0
+    let prevPeakExist = false
+    let nextPeakExist = false
+    let obtained = false
+
+    for (let height = 1; height <= 32; height++) {
+      // index starts from the right most bit
+      bitIndex = 32 - height
+      if (obtained) {
+        nextPeakMap[bitIndex] = prevPeakMap[bitIndex]
+      } else {
+        peakRef = 1 << (height - 1)
+        prevPeakExist = (width & peakRef) !== 0
+        nextPeakExist = (newWidth & peakRef) !== 0
+
+        // get new cursor node with hashing the peak and the current cursor
+        cursorIndex++
+        if (prevPeakExist) {
+          cursorNode = this.hashBranch(cursorIndex, prevPeakMap[bitIndex], cursorNode)
+        }
+        // if new peak exists for the bit index
+        if (nextPeakExist) {
+          // if prev peak exists for the bit index
+          if (prevPeakExist) {
+            nextPeakMap[bitIndex] = prevPeakMap[bitIndex]
+          } else {
+            nextPeakMap[bitIndex] = cursorNode
+          }
+          obtained = true
+        } else {
+          nextPeakMap[bitIndex] = 0
+        }
+      }
+    }
+
+    return nextPeakMap
   }
 
   rollUp (root: any, width: number, peaks: any[], itemHashes: any[]) {
-    throw new Error('not implemented')
+    // check the root equals the peak bagging hash
+    if (!root.equals(this.peakBagging(width, peaks))) {
+      throw new Error('invalid root hash from the peaks')
+    }
+
+    let tmpWidth = width
+    let tmpPeakMap = this.peaksToPeakMap(width, peaks)
+    for (let i = 0; i < itemHashes.length; i++) {
+      tmpPeakMap = this.peakUpdate(tmpWidth, tmpPeakMap, itemHashes[i])
+      tmpWidth++
+    }
+
+    return this.peakBagging(tmpWidth, this.peakMapToPeaks(tmpWidth, tmpPeakMap))
+  }
+
+  /**
+   * @desc It returns the hash value of the node for the index.
+   *      If the hash already exists it simply returns the stored value. On the other hand,
+   *      it computes hashes recursively downward.
+   *      Only appending an item calls this function.
+   */
+  private _getOrCreateNode (index: number) {
+    if (index > this.size) {
+      throw new Error('out of range')
+    }
+
+    if (!this.hashes[index]) {
+      const [leftIndex, rightIndex] = this.getChildren(index)
+      const leftHash = this._getOrCreateNode(leftIndex)
+      const rightHash = this._getOrCreateNode(rightIndex)
+      this.hashes[index] = this.hashBranch(index, leftHash, rightHash)
+    }
+
+    return this.hashes[index]
   }
 }
 
