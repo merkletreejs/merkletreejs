@@ -4,11 +4,11 @@ import Base from './Base'
 import treeify from 'treeify'
 
 type TValue = Buffer | string | number | null | undefined
-type THashAlgoResult = Buffer | string
-type THashAlgo = (value: TValue) => Buffer
+type THashFnResult = Buffer | string
+type THashFn = (value: TValue) => Buffer
 type TLeaf = Buffer
 type TLayer = any
-type TFillDefaultHash = (idx?: number, hashFn?: THashAlgo) => THashAlgoResult
+type TFillDefaultHash = (idx?: number, hashFn?: THashFn) => THashFnResult
 
 export interface Options {
   /** If set to `true`, an odd node will be duplicated and combined to make a pair to generate the layer hash. */
@@ -24,7 +24,7 @@ export interface Options {
   /** If set to `true`, the leaves and hashing pairs will be sorted. */
   sort?: boolean
   /** If defined, the resulting hash of this function will be used to fill in odd numbered layers. */
-  fillDefaultHash?: TFillDefaultHash
+  fillDefaultHash?: TFillDefaultHash | Buffer | string
 }
 
 /**
@@ -33,7 +33,7 @@ export interface Options {
  */
 export class MerkleTree extends Base {
   private duplicateOdd: boolean = false
-  private hashFn: THashAlgo
+  private hashFn: THashFn
   private hashLeaves: boolean = false
   private isBitcoinTree: boolean = false
   private leaves: TLeaf[] = []
@@ -75,8 +75,10 @@ export class MerkleTree extends Base {
     if (options.fillDefaultHash) {
       if (typeof options.fillDefaultHash === 'function') {
         this.fillDefaultHash = options.fillDefaultHash
+      } else if (Buffer.isBuffer(options.fillDefaultHash) || typeof options.fillDefaultHash === 'string') {
+        this.fillDefaultHash = (idx?: number, hashFn?: THashFn):THashFnResult => options.fillDefaultHash as THashFnResult
       } else {
-        throw new Error('method "fillDefaultHash" must be a function')
+        throw new Error('method "fillDefaultHash" must be a function, Buffer, or string')
       }
     }
 
