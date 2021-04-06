@@ -11,10 +11,10 @@
   "scripts": {
     "test": "tape test/*.js",
     "clean": "rimraf dist",
-    "build": "rm -rf dist/ && tsc && npm run build:browser",
+    "build": "npm run clean && tsc && npm run build:browser",
     "build:browser": "browserify -t [ babelify --presets [ @babel/preset-env ] ] dist/index.js | uglifyjs > merkletree.js",
     "lint": "standardx --fix src/*.ts test/*.js",
-    "docs": "rm -rf docs/ && typedoc --plugin typedoc-plugin-markdown -hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts",
+    "docs": "rimraf docs/ && typedoc --plugin typedoc-plugin-markdown --hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts",
     "prepare": "npm run lint && npm run build"
   },
   "repository": {
