@@ -19,6 +19,7 @@
 ## Contents
 
 - [Install](#install)
+- [Example](#example)
 - [Getting started](#Getting-started)
 - [Diagrams](#diagrams)
 - [Documentation](#documentation)
@@ -44,6 +45,10 @@ Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/merkletreejs@latest/merkletree.js"></script>
 ```
+
+## Example
+
+[https://lab.miguelmota.com/merkletreejs](https://lab.miguelmota.com/merkletreejs)
 
 ## Getting started
 
