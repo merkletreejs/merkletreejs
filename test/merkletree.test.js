@@ -165,7 +165,7 @@ test('sha256 with hash leaves option and duplicate odd option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
-test('crypto-js - sha256 with keccak256 leaves', t => {
+test('crypto-js - sha256 with sha256 leaves', t => {
   t.plan(1)
 
   const leaves = ['a', 'b', 'c'].map(SHA256)

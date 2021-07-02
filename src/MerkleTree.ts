@@ -92,10 +92,10 @@ export class MerkleTree extends Base {
 
     this.hashFn = this._bufferifyFn(hashFn)
     if (this.hashLeaves) {
-      leaves = leaves.map(this.hashFn)
+      leaves = leaves.map(x => this.hashFn(x))
     }
 
-    this.leaves = leaves.map(this.bufferify)
+    this.leaves = leaves.map(x => this.bufferify(x))
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
     }
@@ -187,7 +187,7 @@ export class MerkleTree extends Base {
   getLeaves (values?: any[]):Buffer[] {
     if (Array.isArray(values)) {
       if (this.hashLeaves) {
-        values = values.map(this.hashFn)
+        values = values.map(x => this.hashFn(x))
         if (this.sortLeaves) {
           values = values.sort(Buffer.compare)
         }
@@ -690,7 +690,7 @@ export class MerkleTree extends Base {
       throw new Error('Element does not exist in Merkle tree')
     }
 
-    const _proofs: Buffer[] = (proofs as any[]).map(this.bufferify)
+    const _proofs: Buffer[] = (proofs as any[]).map(x => this.bufferify(x))
 
     const tested = []
     const flags = []
@@ -814,8 +814,8 @@ export class MerkleTree extends Base {
    */
   verifyMultiProof (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], depth: number, proof: Buffer[] | string[]):boolean {
     root = this.bufferify(root)
-    leaves = (leaves as any[]).map(this.bufferify)
-    proof = (proof as any[]).map(this.bufferify)
+    leaves = (leaves as any[]).map(x => this.bufferify(x))
+    proof = (proof as any[]).map(x => this.bufferify(x))
 
     const tree = {}
     for (const [index, leaf] of this._zip(indices, leaves)) {

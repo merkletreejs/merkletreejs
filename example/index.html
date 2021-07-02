@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes">
+  <title>MerkleTree.js example</title>
+  <style>
+    body {
+      padding-bottom: 4rem;
+    }
+    label {
+      display: inline-block;
+    }
+    textarea {
+      width: 100%;
+    }
+    #output {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>MerleTree.js example</h1>
+  <form id="form">
+    <div>
+      <label>Leaves <small>(input json array or newline separated)</small></label>
+      <textarea id="input" rows="10">
+0xca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
+0x3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d
+0x2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6
+      </textarea>
+    </div>
+    <div>
+      <label>Hash function</label>
+      <div>
+        <input type="radio" name="hash" value="sha256" id="sha256" checked>
+        <label for="sha256">SHA-256</label>
+        <input type="radio" name="hash" value="keccak256" id="keccak256">
+        <label for="keccak256">Keccak-256</label>
+      <div>
+    </div>
+    <div>
+      <label>Options</label>
+      <div>
+        <input type="checkbox" name="option" value="hashLeaves" id="hashLeaves">
+        <label for="hashLeaves">hashLeaves</label>
+        <input type="checkbox" name="option" value="sortLeaves" id="sortLeaves">
+        <label for="sortLeaves">sortLeaves</label>
+        <input type="checkbox" name="option" value="sortPairs" id="sortPairs">
+        <label for="sortPairs">sortPairs</label>
+        <input type="checkbox" name="option" value="duplicateOdd" id="duplicateOdd">
+        <label for="duplicateOdd">duplicateOdd</label>
+        <input type="checkbox" name="option" value="isBitcoinTree" id="isBitcoinTree">
+        <label for="isBitcoinTree">isBitcoinTree</label>
+        <input type="checkbox" name="option" value="fillDefaultHash" id="fillDefaultHash">
+        <label for="fillDefaultHash">fillDefaultHash</label>
+      </div>
+    </div>
+    <div id="fillDefaultHashView" style="display:none">
+      <label>Fill default hash</label>
+      <small>
+        <a href='#' id="addressZero">addressZero</a>
+        <a href='#' id="hashAddressZero">hash(addressZero)</a>
+      </small>
+      <textarea id="fillDefaultHashValue" rows="1"></textarea>
+    </div>
+    <div>
+    <div>
+      <button type="submit" id="submit">Compute</button>
+    </div>
+  </div>
+  <div id="output">
+    <label>Root</label>
+    <textarea id="root" rows="1"></textarea>
+  </div>
+  <div>
+    <label>Leaves</label>
+    <textarea id="leaves" rows="10"></textarea>
+  </div>
+  <div>
+    <label>Layers</label>
+    <textarea id="layers" rows="10"></textarea>
+  </div>
+  <div>
+    <label>Flat Layers</label>
+    <textarea id="flatLayers" rows="10"></textarea>
+  </div>
+  <div>
+    <label>Tree</label>
+    <pre id="tree"></pre>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/keccak256@latest/keccak256.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+  <script src="../merkletree.js"></script>
+  <script src="main.js"></script>
+  <a href="https://github.com/miguelmota/merkletreejs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+</body>
+</html>
