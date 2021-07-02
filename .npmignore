@@ -3,3 +3,4 @@ test
 index.ts
 !dist
 !merkletree.js
+example
