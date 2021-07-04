@@ -8,10 +8,19 @@
     body {
       padding-bottom: 4rem;
     }
+    form {
+      display: block;
+      border: 1px dashed black;
+      padding: 0.2rem;
+      margin-bottom: 2rem;
+    }
     label {
       display: inline-block;
     }
     textarea {
+      width: 100%;
+    }
+    input[type="text"] {
       width: 100%;
     }
     #output {
@@ -21,73 +30,112 @@
 </head>
 <body>
   <h1>MerleTree.js example</h1>
-  <form id="form">
-    <div>
-      <label>Leaves <small>(input json array or newline separated)</small></label>
-      <textarea id="input" rows="10">
+  <div>
+    <form id="form">
+      <div>
+        <label>Leaves <small>(input json array or newline separated)</small></label>
+        <textarea id="input" rows="10">
 0xca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
 0x3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d
 0x2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6
-      </textarea>
-    </div>
-    <div>
-      <label>Hash function</label>
-      <div>
-        <input type="radio" name="hash" value="sha256" id="sha256" checked>
-        <label for="sha256">SHA-256</label>
-        <input type="radio" name="hash" value="keccak256" id="keccak256">
-        <label for="keccak256">Keccak-256</label>
-      <div>
-    </div>
-    <div>
-      <label>Options</label>
-      <div>
-        <input type="checkbox" name="option" value="hashLeaves" id="hashLeaves">
-        <label for="hashLeaves">hashLeaves</label>
-        <input type="checkbox" name="option" value="sortLeaves" id="sortLeaves">
-        <label for="sortLeaves">sortLeaves</label>
-        <input type="checkbox" name="option" value="sortPairs" id="sortPairs">
-        <label for="sortPairs">sortPairs</label>
-        <input type="checkbox" name="option" value="duplicateOdd" id="duplicateOdd">
-        <label for="duplicateOdd">duplicateOdd</label>
-        <input type="checkbox" name="option" value="isBitcoinTree" id="isBitcoinTree">
-        <label for="isBitcoinTree">isBitcoinTree</label>
-        <input type="checkbox" name="option" value="fillDefaultHash" id="fillDefaultHash">
-        <label for="fillDefaultHash">fillDefaultHash</label>
+        </textarea>
       </div>
-    </div>
-    <div id="fillDefaultHashView" style="display:none">
-      <label>Fill default hash</label>
-      <small>
-        <a href='#' id="addressZero">addressZero</a>
-        <a href='#' id="hashAddressZero">hash(addressZero)</a>
-      </small>
-      <textarea id="fillDefaultHashValue" rows="1"></textarea>
-    </div>
-    <div>
-    <div>
-      <button type="submit" id="submit">Compute</button>
-    </div>
+      <div>
+        <label>Hash function</label>
+        <div>
+          <input type="radio" name="hash" value="sha256" id="sha256" checked>
+          <label for="sha256">SHA-256</label>
+          <input type="radio" name="hash" value="keccak256" id="keccak256">
+          <label for="keccak256">Keccak-256</label>
+        </div>
+      </div>
+      <div>
+        <label>Options</label>
+        <div>
+          <input type="checkbox" name="option" value="hashLeaves" id="hashLeaves">
+          <label for="hashLeaves">hashLeaves</label>
+          <input type="checkbox" name="option" value="sortLeaves" id="sortLeaves">
+          <label for="sortLeaves">sortLeaves</label>
+          <input type="checkbox" name="option" value="sortPairs" id="sortPairs">
+          <label for="sortPairs">sortPairs</label>
+          <input type="checkbox" name="option" value="duplicateOdd" id="duplicateOdd">
+          <label for="duplicateOdd">duplicateOdd</label>
+          <input type="checkbox" name="option" value="isBitcoinTree" id="isBitcoinTree">
+          <label for="isBitcoinTree">isBitcoinTree</label>
+          <input type="checkbox" name="option" value="fillDefaultHash" id="fillDefaultHash">
+          <label for="fillDefaultHash">fillDefaultHash</label>
+        </div>
+      </div>
+      <div id="fillDefaultHashView" style="display:none">
+        <label>Fill default hash</label>
+        <small>
+          <a href='#' id="addressZero">addressZero</a>
+          <a href='#' id="hashAddressZero">hash(addressZero)</a>
+        </small>
+        <input type="text" id="fillDefaultHashValue" />
+      </div>
+      <div>
+        <button type="submit">Compute</button>
+      </div>
+    </form>
+  </div>
+  <div>
+    <form id="verifyForm">
+      <label>Proof</label>
+      <div>
+        <textarea id="verifyProof" rows="3"></textarea>
+      </div>
+      <label>Leaf</label>
+      <div>
+        <input type="text" id="verifyLeaf" />
+      </div>
+      <label>Root</label>
+      <div>
+        <input type="text" id="verifyRoot" />
+      </div>
+      <div>
+        <button type="submit">Verify</button>
+      </div>
+      <label>Verified</label>
+      <div>
+        <pre id="verified"></pre>
+      </div>
+    </form>
+  </div>
+  <div>
+    <form id="proofForm">
+      <div>
+        <label>Proof</label>
+        <div>
+          <select id="leaveSelect"></select>
+        </div>
+      </div>
+      <div>
+        <pre id="proof"></pre>
+      </div>
+    </form>
   </div>
   <div id="output">
-    <label>Root</label>
-    <textarea id="root" rows="1"></textarea>
-  </div>
-  <div>
-    <label>Leaves</label>
-    <textarea id="leaves" rows="10"></textarea>
-  </div>
-  <div>
-    <label>Layers</label>
-    <textarea id="layers" rows="10"></textarea>
-  </div>
-  <div>
-    <label>Flat Layers</label>
-    <textarea id="flatLayers" rows="10"></textarea>
-  </div>
-  <div>
-    <label>Tree</label>
-    <pre id="tree"></pre>
+    <div>
+      <label>Root</label>
+      <pre id="root"></pre>
+    </div>
+    <div>
+      <label>Leaves</label>
+      <pre id="leaves"></pre>
+    </div>
+    <div>
+      <label>Layers</label>
+      <pre id="layers"></pre>
+    </div>
+    <div>
+      <label>Flat Layers</label>
+      <pre id="flatLayers"></pre>
+    </div>
+    <div>
+      <label>Tree</label>
+      <pre id="tree"></pre>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/keccak256@latest/keccak256.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>

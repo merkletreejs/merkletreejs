@@ -14,6 +14,7 @@
     "build": "npm run clean && tsc && npm run build:browser",
     "build:browser": "browserify -t [ babelify --presets [ @babel/preset-env ] ] dist/index.js | uglifyjs > merkletree.js",
     "lint": "standardx --fix src/*.ts test/*.js",
+    "lint:example": "standardx --fix example/*.js",
     "docs": "rimraf docs/ && typedoc --plugin typedoc-plugin-markdown --hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts",
     "prepare": "npm run lint && npm run build"
   },
