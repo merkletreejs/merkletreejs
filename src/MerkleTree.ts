@@ -48,7 +48,7 @@ export class MerkleTree extends Base {
    * All nodes and leaves are stored as Buffers.
    * Lonely leaf nodes are promoted to the next level up without being hashed again.
    * @param {Buffer[]} leaves - Array of hashed leaves. Each leaf must be a Buffer.
-   * @param {Function} hashFunction - Algorithm used for hashing leaves and nodes
+   * @param {Function} hashFunction - Hash function to use for hashing leaves and nodes
    * @param {Object} options - Additional options
    * @example
    *```js
@@ -376,6 +376,9 @@ export class MerkleTree extends Base {
    *```
    */
   getProof (leaf: Buffer | string, index?: number):any[] {
+    if (typeof leaf === 'undefined') {
+      throw new Error('leaf is required')
+    }
     leaf = this.bufferify(leaf)
     const proof = []
 
@@ -890,6 +893,27 @@ export class MerkleTree extends Base {
     }
 
     return objs[0]
+  }
+
+  /**
+   * verify
+   * @desc Returns true if the proof path (array of hashes) can connect the target node
+   * to the Merkle root.
+   * @param {Object[]} proof - Array of proof objects that should connect
+   * target node to Merkle root.
+   * @param {Buffer} targetNode - Target node Buffer
+   * @param {Buffer} root - Merkle root Buffer
+   * @param {Function} hashFunction - Hash function for hashing leaves and nodes
+   * @param {Object} options - Additional options
+   * @return {Boolean}
+   * @example
+   *```js
+   *const verified = MerkleTree.verify(proof, leaf, root, sha256, options)
+   *```
+   */
+  static verify (proof: any[], targetNode: Buffer | string, root: Buffer | string, hashFn = SHA256, options: Options = {}):boolean {
+    const tree = new MerkleTree([], hashFn, options)
+    return tree.verify(proof, targetNode, root)
   }
 
   /**

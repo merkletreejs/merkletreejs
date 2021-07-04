@@ -42,7 +42,7 @@ var tree
 function compute () {
   const value = getInputValue()
   const leaves = parseInput(value)
-  const hash = getHashFn()
+  const hashFn = getHashFn()
   const fillDefaultHash = getDefaultFillHashInput()
   const _options = Object.assign({}, options, {
     fillDefaultHash: options.fillDefaultHash ? fillDefaultHash : undefined
@@ -50,7 +50,7 @@ function compute () {
   console.log('input leaves:', leaves)
   console.log('hash:', getHashType())
   console.log('options:', _options)
-  tree = new window.MerkleTree(leaves, hash, _options)
+  tree = new window.MerkleTree(leaves, hashFn, _options)
   const hexRoot = tree.getHexRoot()
   const hexLeaves = tree.getHexLeaves()
   const hexLayers = tree.getHexLayers()
@@ -111,13 +111,11 @@ function setVerified (verified) {
 
 function verify () {
   setVerified('')
-  if (!tree) {
-    return
-  }
   const proof = getVerifyProof()
   const leaf = getVerifyLeaf()
   const root = getVerifyRoot()
-  const verified = tree.verify(proof, leaf, root)
+  const hashFn = getHashFn()
+  const verified = window.MerkleTree.verify(proof, leaf, root, hashFn, options)
   setVerified(`${verified}`)
 }
 

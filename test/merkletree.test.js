@@ -88,6 +88,21 @@ test('sha256 with sort pairs option', t => {
   t.equal(tree.getRoot().toString('hex'), root)
 })
 
+test('sha256 - static verify', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(x => sha256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+  const leaf = sha256(Buffer.from('a'))
+  const badLeaf = sha256(Buffer.from('o'))
+  const proof = tree.getProof(leaf)
+  const badProof = tree.getProof(badLeaf)
+  const root = tree.getRoot()
+
+  t.equal(MerkleTree.verify(proof, leaf, root, sha256), true)
+  t.equal(MerkleTree.verify(badProof, leaf, root, sha256), false)
+})
+
 test('sha256 verify with positional hex proof and no pairSort', t => {
   t.plan(1)
 

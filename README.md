@@ -170,7 +170,7 @@ Class reprensenting a Merkle Tree
 
 ###  constructor
 
-\+ **new MerkleTree**(`leaves`: any[], `hashAlgorithm`: any, `options`: [Options](#options)): *[MerkleTree](_index_.merkletree.md)*
+\+ **new MerkleTree**(`leaves`: any[], `hashFn`: any, `options`: [Options](#options)): *[MerkleTree](_index_.merkletree.md)*
 
 **`desc`** Constructs a Merkle Tree.
 All nodes and leaves are stored as Buffers.
@@ -196,7 +196,7 @@ const tree = new MerkleTree(leaves, sha256)
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
 `leaves` | any[] | - | Array of hashed leaves. Each leaf must be a Buffer. |
-`hashAlgorithm` | any | SHA256 | Algorithm used for hashing leaves and nodes |
+`hashFn` | any | SHA256 | Hash function to use for hashing leaves and nodes |
 `options` | [Options](#options) | {} | Additional options |
 
 **Returns:** *[MerkleTree](_index_.merkletree.md)*
@@ -973,7 +973,7 @@ ___
 
 • **hashLeaves**? : *boolean*
 
-If set to `true`, the leaves will hashed using the set hashing algorithms.
+If set to `true`, the leaves will hashed using the set hashing functions.
 
 ___
 
@@ -1025,7 +1025,7 @@ npm test
 
 ## Notes
 
-As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing algorithm function for leaves and nodes, so that `H(x) != H'(x)`.
+As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
 
 Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this.
 
