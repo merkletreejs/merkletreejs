@@ -29,8 +29,8 @@ var hashFns = {
 
 var options = {
   hashLeaves: false,
-  sortLeaves: false,
-  sortPairs: false,
+  sortLeaves: true,
+  sortPairs: true,
   duplicateOdd: false,
   isBitcoinTree: false
 }
@@ -368,9 +368,9 @@ function load () {
     const value = JSON.parse(localStorage.getItem('options'))
     if (value) {
       options = value
-      for (const option in options) {
-        setOptionValue(option, options[option])
-      }
+    }
+    for (const option in options) {
+      setOptionValue(option, options[option])
     }
   } catch (err) {
     console.error(err)
