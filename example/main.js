@@ -288,6 +288,7 @@ $verifyForm.addEventListener('submit', function (event) {
 })
 
 $input.addEventListener('input', function (event) {
+  event.preventDefault()
   const value = event.target.value.trim()
   setInputValue(value, true)
 })
@@ -295,6 +296,7 @@ $input.addEventListener('input', function (event) {
 var $hashes = document.querySelectorAll('input[name="hash"]')
 $hashes.forEach(function ($hash) {
   $hash.addEventListener('change', function (event) {
+    event.preventDefault()
     const value = event.target.value.trim()
     setHashValue(value)
   })
@@ -302,6 +304,7 @@ $hashes.forEach(function ($hash) {
 
 $options.forEach(function ($option) {
   $option.addEventListener('change', function (event) {
+    event.preventDefault()
     const value = event.target.value.trim()
     const checked = event.target.checked
     setOptionValue(value, checked, true)
@@ -309,15 +312,18 @@ $options.forEach(function ($option) {
 })
 
 $fillDefaultHash.addEventListener('input', function (event) {
+  event.preventDefault()
   const value = event.target.value.trim()
   setFillDefaultHash(value)
 })
 
 $addressZero.addEventListener('click', function (event) {
+  event.preventDefault()
   setFillDefaultHash(addressZero)
 })
 
 $hashAddressZero.addEventListener('click', function (event) {
+  event.preventDefault()
   const $hash = document.querySelector('input[name="hash"]:checked')
   const hash = hashFns[$hash.value]
   const result = '0x' + hash(addressZero).toString('hex')
@@ -325,20 +331,24 @@ $hashAddressZero.addEventListener('click', function (event) {
 })
 
 $leaveSelect.addEventListener('change', function (event) {
+  event.preventDefault()
   updateProof(Number(event.target.value.trim()))
 })
 
 $verifyProof.addEventListener('input', function (event) {
+  event.preventDefault()
   const value = event.target.value.trim()
   setVerifyProof(value, true)
 })
 
 $verifyLeaf.addEventListener('input', function (event) {
+  event.preventDefault()
   const value = event.target.value.trim()
   setVerifyLeaf(value, true)
 })
 
 $verifyRoot.addEventListener('input', function (event) {
+  event.preventDefault()
   const value = event.target.value.trim()
   setVerifyRoot(value, true)
 })
