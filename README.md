@@ -76,10 +76,10 @@ console.log(tree.verify(badProof, leaf, root)) // false
 Print tree to console:
 
 ```js
-MerkleTree.print(tree)
+console.log(tree.toString())
 ```
 
-Output
+Output:
 
 ```bash
 └─ 7075152d03a5cd92104887b476862778ec0c87be5c2fa1c0a90f87c49fad6eff
@@ -1022,6 +1022,10 @@ npm test
 
 - Q: How do you verify merkle [multiproofs](https://github.com/ethereum/eth2.0-specs/blob/dev/ssz/merkle-proofs.md#merkle-multiproofs) in Solidity?
   - A: Check out the example repo [merkletreejs-multiproof-solidity](https://github.com/miguelmota/merkletreejs-multiproof-solidity) on how to generate merkle multiproofs with this library and verify them in Solidity.
+
+- Q: Is there a CLI version?
+
+  - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).
 
 ## Notes
 
