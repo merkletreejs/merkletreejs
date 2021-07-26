@@ -236,7 +236,7 @@ export class MerkleMountainRange extends Base {
    * @desc It returns a merkle proof for a leaf. Note that the index starts from 1.
    */
   getMerkleProof (index: number) {
-    if (index >= this.size) {
+    if (index > this.size) {
       throw new Error('out of range')
     }
     if (!this.isLeaf(index)) {
@@ -276,7 +276,7 @@ export class MerkleMountainRange extends Base {
       cursor = index <= left ? left : right
 
       // remaining node is the sibling
-      siblings[height - 1] = this.hashes[index < left ? right : left]
+      siblings[height - 1] = this.hashes[index <= left ? right : left]
     }
 
     return {
