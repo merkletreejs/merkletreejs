@@ -396,46 +396,28 @@ export class MerkleTree extends Base {
       return []
     }
 
-    if (this.isBitcoinTree && index === (this.leaves.length - 1)) {
-      // Proof Generation for Bitcoin Trees
+    for (let i = 0; i < this.layers.length; i++) {
+      const layer = this.layers[i]
+      const isRightNode = index % 2
+      const pairIndex = (isRightNode ? index - 1
+        : this.isBitcoinTree && index === layer.length - 1 && i < this.layers.length - 1
+          // Proof Generation for Bitcoin Trees
+          ? index
+          // Proof Generation for Non-Bitcoin Trees
+          : index + 1)
 
-      for (let i = 0; i < this.layers.length - 1; i++) {
-        const layer = this.layers[i]
-        const isRightNode = index % 2
-        const pairIndex = (isRightNode ? index - 1 : index)
-
-        if (pairIndex < layer.length) {
-          proof.push({
-            data: layer[pairIndex]
-          })
-        }
-
-        // set index to parent index
-        index = (index / 2) | 0
+      if (pairIndex < layer.length) {
+        proof.push({
+          position: isRightNode ? 'left' : 'right',
+          data: layer[pairIndex]
+        })
       }
 
-      return proof
-    } else {
-      // Proof Generation for Non-Bitcoin Trees
-
-      for (let i = 0; i < this.layers.length; i++) {
-        const layer = this.layers[i]
-        const isRightNode = index % 2
-        const pairIndex = (isRightNode ? index - 1 : index + 1)
-
-        if (pairIndex < layer.length) {
-          proof.push({
-            position: isRightNode ? 'left' : 'right',
-            data: layer[pairIndex]
-          })
-        }
-
-        // set index to parent index
-        index = (index / 2) | 0
-      }
-
-      return proof
+      // set index to parent index
+      index = (index / 2) | 0
     }
+
+    return proof
   }
 
   /**

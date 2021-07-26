@@ -351,7 +351,7 @@ test('solidity keccak256 with duplicate leaves', t => {
 })
 
 test('sha-256 with option.isBitcoinTree', t => {
-  t.plan(2)
+  t.plan(100)
 
   /* Derived from:
    * http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html
@@ -464,9 +464,10 @@ test('sha-256 with option.isBitcoinTree', t => {
   const root = Buffer.from('871714dcbae6c8193a2bb9b2a69fe1c0440399f38d94b3a0f1b447275a29978a', 'hex')
   t.equal(tree.getRoot().toString('hex'), root.toString('hex'))
 
-  const proof_0 = tree.getProof(leaves[0])
-
-  t.true(tree.verify(proof_0, leaves[0], root))
+  for (let i = 0; i < leaves.length; i++) {
+    const proof_0 = tree.getProof(leaves[i])
+    t.true(tree.verify(proof_0, leaves[i], root), 'proof verification for ' + i)
+  }
 })
 
 test('keccak256 - hex strings', t => {
