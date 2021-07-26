@@ -465,8 +465,8 @@ test('sha-256 with option.isBitcoinTree', t => {
   t.equal(tree.getRoot().toString('hex'), root.toString('hex'))
 
   for (let i = 0; i < leaves.length; i++) {
-    const proof_0 = tree.getProof(leaves[i])
-    t.true(tree.verify(proof_0, leaves[i], root), 'proof verification for ' + i)
+    const proof = tree.getProof(leaves[i])
+    t.true(tree.verify(proof, leaves[i], root), 'proof verification for ' + i)
   }
 })
 
