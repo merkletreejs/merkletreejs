@@ -11,6 +11,7 @@
   "scripts": {
     "test": "tape test/*.js",
     "clean": "rimraf dist",
+    "dev": "tsc -w",
     "build": "npm run clean && tsc && npm run build:browser",
     "build:browser": "browserify -t [ babelify --presets [ @babel/preset-env ] ] dist/index.js | uglifyjs > merkletree.js",
     "lint": "standardx --fix src/*.ts test/*.js",

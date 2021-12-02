@@ -199,6 +199,20 @@ export class MerkleTree extends Base {
     return this.leaves
   }
 
+  // TODO: docs
+  getLeaf (index: number):Buffer {
+    if (index < 0 || index > this.leaves.length - 1) {
+      return Buffer.from([])
+    }
+
+    return this.leaves[index]
+  }
+
+  // TODO: docs
+  getLeafCount (): number {
+    return this.leaves.length
+  }
+
   /**
    * getHexLeaves
    * @desc Returns array of leaves of Merkle Tree as hex strings.
@@ -329,6 +343,11 @@ export class MerkleTree extends Base {
     return this.getLayersFlat().map(x => this.bufferToHex(x))
   }
 
+  // TODO: docs
+  getLayerCount ():number {
+    return this.getLayers().length
+  }
+
   /**
    * getRoot
    * @desc Returns the Merkle root hash as a Buffer.
@@ -339,6 +358,10 @@ export class MerkleTree extends Base {
    *```
    */
   getRoot ():Buffer {
+    if (this.layers.length === 0) {
+      return Buffer.from([])
+    }
+
     return this.layers[this.layers.length - 1][0] || Buffer.from([])
   }
 
@@ -915,6 +938,12 @@ export class MerkleTree extends Base {
   static getMultiProof (tree: Buffer[] | string[], indices: number[]):Buffer[] {
     const t = new MerkleTree([])
     return t.getMultiProof(tree, indices)
+  }
+
+  // TODO: docs
+  resetTree ():void {
+    this.leaves = []
+    this.layers = []
   }
 
   /**

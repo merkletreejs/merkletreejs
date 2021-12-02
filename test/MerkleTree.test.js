@@ -1007,3 +1007,38 @@ test('fillDefaultHashes', t => {
 
   t.equal(tree.getHexRoot(), '0x11f470d712bb3a84f0b01cb7c73493ec7d06eda480f567c99b9a6dc773679a72')
 })
+
+test('getleafCount', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+
+  t.equal(tree.getLeafCount(), 3)
+})
+
+test('getleaf', t => {
+  t.plan(5)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+
+  t.deepEqual(tree.getLeaf(-1), Buffer.from([]))
+  t.deepEqual(tree.getLeaf(0), leaves[0])
+  t.deepEqual(tree.getLeaf(1), leaves[1])
+  t.deepEqual(tree.getLeaf(2), leaves[2])
+  t.deepEqual(tree.getLeaf(3), Buffer.from([]))
+})
+
+test('resetTree', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+
+  t.equal(tree.getLeafCount(), 3)
+
+  tree.resetTree()
+
+  t.equal(tree.getLeafCount(), 0)
+})
