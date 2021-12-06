@@ -60,7 +60,7 @@ export class MerkleTree extends Base {
    *  return crypto.createHash('sha256').update(data).digest()
    *}
    *
-   *const leaves = ['a', 'b', 'c'].map(x => keccak(x))
+   *const leaves = ['a', 'b', 'c'].map(value => keccak(value))
    *
    *const tree = new MerkleTree(leaves, sha256)
    *```
@@ -96,10 +96,10 @@ export class MerkleTree extends Base {
 
   private processLeaves (leaves: TLeaf[]) {
     if (this.hashLeaves) {
-      leaves = leaves.map(x => this.hashFn(x))
+      leaves = leaves.map(leaf => this.hashFn(leaf))
     }
 
-    this.leaves = leaves.map(x => this.bufferify(x))
+    this.leaves = leaves.map(leaf => this.bufferify(leaf))
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
     }
@@ -180,6 +180,40 @@ export class MerkleTree extends Base {
   }
 
   /**
+   * addLeaf
+   * @desc Adds a leaf to the tree and re-calculates layers.
+   * @param {String|Buffer} - Leaf
+   * @param {Boolean} - Set to true if the leaf should be hashed before being added to tree.
+   * @example
+   *```js
+   *tree.addLeaf(newLeaf)
+   *```
+   */
+  addLeaf (leaf: TLeaf, shouldHash: boolean = false) {
+    if (shouldHash) {
+      leaf = this.hashFn(leaf)
+    }
+    this.processLeaves([...this.leaves, leaf])
+  }
+
+  /**
+   * addLeaves
+   * @desc Adds multiple leaves to the tree and re-calculates layers.
+   * @param {String[]|Buffer[]} - Array of leaves
+   * @param {Boolean} - Set to true if the leaves should be hashed before being added to tree.
+   * @example
+   *```js
+   *tree.addLeaves(newLeaves)
+   *```
+   */
+  addLeaves (leaves: TLeaf[], shouldHash: boolean = false) {
+    if (shouldHash) {
+      leaves = leaves.map(leaf => this.hashFn(leaf))
+    }
+    this.processLeaves([...this.leaves, ...leaves])
+  }
+
+  /**
    * getLeaves
    * @desc Returns array of leaves of Merkle Tree.
    * @return {Buffer[]}
@@ -191,19 +225,28 @@ export class MerkleTree extends Base {
   getLeaves (values?: any[]):Buffer[] {
     if (Array.isArray(values)) {
       if (this.hashLeaves) {
-        values = values.map(x => this.hashFn(x))
+        values = values.map(value => this.hashFn(value))
         if (this.sortLeaves) {
           values = values.sort(Buffer.compare)
         }
       }
 
-      return this.leaves.filter(x => this._bufferIndexOf(values, x) !== -1)
+      return this.leaves.filter(leaf => this._bufferIndexOf(values, leaf) !== -1)
     }
 
     return this.leaves
   }
 
-  // TODO: docs
+  /**
+   * getLeaf
+   * @desc Returns the leaf at the given index.
+   * @param {Number} - Index number
+   * @return {Buffer}
+   * @example
+   *```js
+   *const leaf = tree.getLeaf(1)
+   *```
+   */
   getLeaf (index: number):Buffer {
     if (index < 0 || index > this.leaves.length - 1) {
       return Buffer.from([])
@@ -212,8 +255,18 @@ export class MerkleTree extends Base {
     return this.leaves[index]
   }
 
-  // TODO: docs
-  getLeafIndex (target: Buffer):number {
+  /**
+   * getLeafIndex
+   * @desc Returns the index of the given leaf, or -1 if the leaf is not found.
+   * @param {String|Buffer} - Target leaf
+   * @return {number}
+   * @example
+   *```js
+   *const leaf = Buffer.from('abc')
+   *const index = tree.getLeafIndex(leaf)
+   *```
+   */
+  getLeafIndex (target: TLeaf):number {
     target = this.bufferify(target)
     const leaves = this.getLeaves()
     for (let i = 0; i < leaves.length; i++) {
@@ -226,7 +279,15 @@ export class MerkleTree extends Base {
     return -1
   }
 
-  // TODO: docs
+  /**
+   * getLeafCount
+   * @desc Returns the total number of leaves.
+   * @return {number}
+   * @example
+   *```js
+   *const count = tree.getLeafCount()
+   *```
+   */
   getLeafCount (): number {
     return this.leaves.length
   }
@@ -241,7 +302,7 @@ export class MerkleTree extends Base {
    *```
    */
   getHexLeaves ():string[] {
-    return this.leaves.map(x => this.bufferToHex(x))
+    return this.leaves.map(leaf => this.bufferToHex(leaf))
   }
 
   /**
@@ -255,7 +316,7 @@ export class MerkleTree extends Base {
    *```
    */
   static marshalLeaves (leaves: any[]):string {
-    return JSON.stringify(leaves.map(x => MerkleTree.bufferToHex(x)), null, 2)
+    return JSON.stringify(leaves.map(leaf => MerkleTree.bufferToHex(leaf)), null, 2)
   }
 
   /**
@@ -286,7 +347,7 @@ export class MerkleTree extends Base {
       throw new Error('Expected JSON string to be array')
     }
 
-    return parsed.map(x => MerkleTree.bufferify(x))
+    return parsed.map(leaf => MerkleTree.bufferify(leaf))
   }
 
   /**
@@ -314,7 +375,7 @@ export class MerkleTree extends Base {
   getHexLayers ():string[] {
     return this.layers.reduce((acc: string[][], item: Buffer[]) => {
       if (Array.isArray(item)) {
-        acc.push(item.map(x => this.bufferToHex(x)))
+        acc.push(item.map(value => this.bufferToHex(value)))
       } else {
         acc.push(item)
       }
@@ -358,10 +419,18 @@ export class MerkleTree extends Base {
    *```
    */
   getHexLayersFlat ():string[] {
-    return this.getLayersFlat().map(x => this.bufferToHex(x))
+    return this.getLayersFlat().map(layer => this.bufferToHex(layer))
   }
 
-  // TODO: docs
+  /**
+   * getLayerCount
+   * @desc Returns the total number of layers.
+   * @return {number}
+   * @example
+   *```js
+   *const count = tree.getLayerCount()
+   *```
+   */
   getLayerCount ():number {
     return this.getLayers().length
   }
@@ -411,7 +480,7 @@ export class MerkleTree extends Base {
    *
    * @example
    *```js
-   *const leaves = ['a', 'b', 'a'].map(x => keccak(x))
+   *const leaves = ['a', 'b', 'a'].map(value => keccak(value))
    *const tree = new MerkleTree(leaves, keccak)
    *const proof = tree.getProof(leaves[2], 2)
    *```
@@ -474,7 +543,7 @@ export class MerkleTree extends Base {
    *```
    */
   getHexProof (leaf: Buffer | string, index?: number):string[] {
-    return this.getProof(leaf, index).map(x => this.bufferToHex(x.data))
+    return this.getProof(leaf, index).map(item => this.bufferToHex(item.data))
   }
 
   /**
@@ -490,10 +559,10 @@ export class MerkleTree extends Base {
   *```
   */
   getPositionalHexProof (leaf: Buffer | string, index?: number): (string | number)[][] {
-    return this.getProof(leaf, index).map(x => {
+    return this.getProof(leaf, index).map(item => {
       return [
-        x.position === 'left' ? 0 : 1,
-        this.bufferToHex(x.data)
+        item.position === 'left' ? 0 : 1,
+        this.bufferToHex(item.data)
       ]
     })
   }
@@ -509,18 +578,18 @@ export class MerkleTree extends Base {
    *```
    */
   static marshalProof (proof: any[]):string {
-    const json = proof.map(x => {
-      if (typeof x === 'string') {
-        return x
+    const json = proof.map(item => {
+      if (typeof item === 'string') {
+        return item
       }
 
-      if (Buffer.isBuffer(x)) {
-        return MerkleTree.bufferToHex(x)
+      if (Buffer.isBuffer(item)) {
+        return MerkleTree.bufferToHex(item)
       }
 
       return {
-        position: x.position,
-        data: MerkleTree.bufferToHex(x.data)
+        position: item.position,
+        data: MerkleTree.bufferToHex(item.data)
       }
     })
 
@@ -555,13 +624,13 @@ export class MerkleTree extends Base {
       throw new Error('Expected JSON string to be array')
     }
 
-    return parsed.map(x => {
-      if (typeof x === 'string') {
-        return MerkleTree.bufferify(x)
-      } else if (x instanceof Object) {
+    return parsed.map(item => {
+      if (typeof item === 'string') {
+        return MerkleTree.bufferify(item)
+      } else if (item instanceof Object) {
         return {
-          position: x.position,
-          data: MerkleTree.bufferify(x.data)
+          position: item.position,
+          data: MerkleTree.bufferify(item.data)
         }
       } else {
         throw new Error('Expected item to be of type string or object')
@@ -716,7 +785,7 @@ export class MerkleTree extends Base {
       throw new Error('Element does not exist in Merkle tree')
     }
 
-    const _proofs: Buffer[] = (proofs as any[]).map(x => this.bufferify(x))
+    const _proofs: Buffer[] = (proofs as any[]).map(item => this.bufferify(item))
 
     const tested = []
     const flags = []
@@ -840,8 +909,8 @@ export class MerkleTree extends Base {
    */
   verifyMultiProof (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], depth: number, proof: Buffer[] | string[]):boolean {
     root = this.bufferify(root)
-    leaves = (leaves as any[]).map(x => this.bufferify(x))
-    proof = (proof as any[]).map(x => this.bufferify(x))
+    leaves = (leaves as any[]).map(leaf => this.bufferify(leaf))
+    proof = (proof as any[]).map(leaf => this.bufferify(leaf))
 
     const tree = {}
     for (const [index, leaf] of this._zip(indices, leaves)) {
@@ -850,7 +919,7 @@ export class MerkleTree extends Base {
     for (const [index, proofitem] of this._zip(this.getProofIndices(indices, depth), proof)) {
       tree[index] = proofitem
     }
-    let indexqueue = Object.keys(tree).map(x => +x).sort((a, b) => a - b)
+    let indexqueue = Object.keys(tree).map(value => +value).sort((a, b) => a - b)
     indexqueue = indexqueue.slice(0, indexqueue.length - 1)
     let i = 0
     while (i < indexqueue.length) {
@@ -958,7 +1027,14 @@ export class MerkleTree extends Base {
     return t.getMultiProof(tree, indices)
   }
 
-  // TODO: docs
+  /**
+   * resetTree
+   * @desc Resets the tree by clearing the leaves and layers.
+   * @example
+   *```js
+   *tree.resetTree()
+   *```
+   */
   resetTree ():void {
     this.leaves = []
     this.layers = []
@@ -1010,18 +1086,6 @@ export class MerkleTree extends Base {
    */
   toString ():string {
     return this._toTreeString()
-  }
-
-  // TODO: docs
-  addLeaf (leaf: TLeaf, shouldHash: boolean = false) {
-    const leaves = this.leaves
-    leaves.push(leaf)
-    this.processLeaves(this.leaves)
-  }
-
-  // TODO: docs
-  addLeaves (leaves: TLeaf[], shouldHash: boolean = false) {
-    this.processLeaves(leaves)
   }
 }
 

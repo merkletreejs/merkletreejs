@@ -1061,7 +1061,7 @@ test('addLeaf', t => {
 })
 
 test('addLeaves', t => {
-  t.plan(2)
+  t.plan(3)
 
   const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
   const tree = new MerkleTree([], sha256)
@@ -1073,6 +1073,10 @@ test('addLeaves', t => {
     '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
     '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
   ])
+
+  const moreLeaves = ['d', 'e', 'f'].map(x => keccak256(Buffer.from(x)))
+  tree.addLeaves(moreLeaves)
+  t.equal(tree.getHexRoot(), '0xb9a721d82428976e0d500f97646bf273ec1dd9c2104b9328873a94fc3897aec6')
 })
 
 test('resetTree', t => {
