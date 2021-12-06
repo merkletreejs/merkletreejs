@@ -91,6 +91,10 @@ export class MerkleTree extends Base {
     this.duplicateOdd = !!options.duplicateOdd
 
     this.hashFn = this._bufferifyFn(hashFn)
+    this.processLeaves(leaves)
+  }
+
+  private processLeaves (leaves: TLeaf[]) {
     if (this.hashLeaves) {
       leaves = leaves.map(x => this.hashFn(x))
     }
@@ -206,6 +210,20 @@ export class MerkleTree extends Base {
     }
 
     return this.leaves[index]
+  }
+
+  // TODO: docs
+  getLeafIndex (target: Buffer):number {
+    target = this.bufferify(target)
+    const leaves = this.getLeaves()
+    for (let i = 0; i < leaves.length; i++) {
+      const leaf = leaves[i]
+      if (leaf.equals(target)) {
+        return i
+      }
+    }
+
+    return -1
   }
 
   // TODO: docs
@@ -992,6 +1010,18 @@ export class MerkleTree extends Base {
    */
   toString ():string {
     return this._toTreeString()
+  }
+
+  // TODO: docs
+  addLeaf (leaf: TLeaf, shouldHash: boolean = false) {
+    const leaves = this.leaves
+    leaves.push(leaf)
+    this.processLeaves(this.leaves)
+  }
+
+  // TODO: docs
+  addLeaves (leaves: TLeaf[], shouldHash: boolean = false) {
+    this.processLeaves(leaves)
   }
 }
 

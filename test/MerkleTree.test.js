@@ -1008,6 +1008,19 @@ test('fillDefaultHashes', t => {
   t.equal(tree.getHexRoot(), '0x11f470d712bb3a84f0b01cb7c73493ec7d06eda480f567c99b9a6dc773679a72')
 })
 
+test('getLeafIndex', t => {
+  t.plan(5)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+  t.equal(tree.getLeafIndex(leaves[1]), 1)
+  t.equal(tree.getLeafIndex(keccak256(Buffer.from('b'))), 1)
+  t.equal(tree.getLeafIndex(leaves[2]), 2)
+  t.equal(tree.getLeafIndex(Buffer.from('invalid')), -1)
+})
+
 test('getleafCount', t => {
   t.plan(1)
 
@@ -1028,6 +1041,38 @@ test('getleaf', t => {
   t.deepEqual(tree.getLeaf(1), leaves[1])
   t.deepEqual(tree.getLeaf(2), leaves[2])
   t.deepEqual(tree.getLeaf(3), Buffer.from([]))
+})
+
+test('addLeaf', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree([], sha256)
+  tree.addLeaf(leaves[0])
+  tree.addLeaf(leaves[1])
+  tree.addLeaf(leaves[2])
+
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+  t.deepEqual(tree.getHexLeaves(), [
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+  ])
+})
+
+test('addLeaves', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const tree = new MerkleTree([], sha256)
+  tree.addLeaves(leaves)
+
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+  t.deepEqual(tree.getHexLeaves(), [
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+  ])
 })
 
 test('resetTree', t => {
