@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "build:browser": "browserify -t [ babelify --presets [ @babel/preset-env ] ] dist/index.js | uglifyjs > merkletree.js",
     "lint": "standardx --fix src/*.ts test/*.js",
     "lint:example": "standardx --fix example/*.js",
-    "docs": "rimraf docs/ && typedoc --plugin typedoc-plugin-markdown --hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs index.ts",
+    "docs": "rimraf docs/ && typedoc --plugin typedoc-plugin-markdown --hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs src/",
     "prepare": "npm run lint && npm run build"
   },
   "repository": {
