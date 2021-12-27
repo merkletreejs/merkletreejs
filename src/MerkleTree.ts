@@ -21,6 +21,8 @@ export interface Options {
   sortLeaves?: boolean
   /** If set to `true`, the hashing pairs will be sorted. */
   sortPairs?: boolean
+  /** If set to `true`, the nodes at every layers will be sorted. */
+  sortLayers?: boolean
   /** If set to `true`, the leaves and hashing pairs will be sorted. */
   sort?: boolean
   /** If defined, the resulting hash of this function will be used to fill in odd numbered layers. */
@@ -40,6 +42,7 @@ export class MerkleTree extends Base {
   private layers: TLayer[] = []
   private sortLeaves: boolean = false
   private sortPairs: boolean = false
+  private sortLayers: boolean = false
   private sort: boolean = false
   private fillDefaultHash: TFillDefaultHash | null = null
 
@@ -71,6 +74,7 @@ export class MerkleTree extends Base {
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
     this.sortPairs = !!options.sortPairs
+    this.sortLayers = !!options.sortLayers
 
     if (options.fillDefaultHash) {
       if (typeof options.fillDefaultHash === 'function') {
@@ -143,6 +147,9 @@ export class MerkleTree extends Base {
               } else {
                 // push copy of hash and continue iteration
                 this.layers[layerIndex].push(nodes[i])
+                if (this.sortLayers) {
+                  this.layers[layerIndex].sort(Buffer.compare)
+                }
                 continue
               }
             }
@@ -176,6 +183,9 @@ export class MerkleTree extends Base {
       }
 
       nodes = this.layers[layerIndex]
+      if (this.sortLayers) {
+        this.layers[layerIndex].sort(Buffer.compare)
+      }
     }
   }
 
