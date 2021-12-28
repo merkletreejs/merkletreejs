@@ -138,8 +138,10 @@ export class MerkleTree extends Base {
               data = Buffer.concat([reverse(data), reverse(data)])
               hash = this.hashFn(data)
               hash = reverse(this.hashFn(hash))
-
               this.layers[layerIndex].push(hash)
+              if (this.sortLayers) {
+                this.layers[layerIndex].sort(Buffer.compare)
+              }
               continue
             } else {
               if (this.duplicateOdd) {
