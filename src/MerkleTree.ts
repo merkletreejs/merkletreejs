@@ -996,37 +996,40 @@ export class MerkleTree extends Base {
    * verifyMultiProof
    * @desc Returns true if the multiproofs can connect the leaves to the Merkle root.
    * @param {Buffer} root - Merkle tree root
-   * @param {Number[]} indices - Leave indices
-   * @param {Buffer[]} leaves - Leaf values at indices.
-   * @param {Number} depth - Tree depth
+   * @param {Number[]} proofIndices - Leave indices for proof
+   * @param {Buffer[]} proofLeaves - Leaf values at indices for proof
+   * @param {Number} leavesCount - Count of original leaves
    * @param {Buffer[]} proof - Multiproofs given indices
    * @return {Boolean}
    * @example
    *```js
+   *const leaves = tree.getLeaves()
    *const root = tree.getRoot()
    *const treeFlat = tree.getLayersFlat()
-   *const depth = tree.getDepth()
-   *const indices = [2, 5, 6]
-   *const proofLeaves = indices.map(i => leaves[i])
+   *const leavesCount = leaves.length
+   *const proofIndices = [2, 5, 6]
+   *const proofLeaves = proofIndices.map(i => leaves[i])
    *const proof = tree.getMultiProof(treeFlat, indices)
-   *const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
+   *const verified = tree.verifyMultiProof(root, proofIndices, proofLeaves, leavesCount, proof)
    *```
    */
-  verifyMultiProof (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], depth: number, proof: Buffer[] | string[]):boolean {
+  verifyMultiProof (root: Buffer | string, proofIndices: number[], proofLeaves: Buffer[] | string[], leavesCount: number, proof: Buffer[] | string[]):boolean {
     const isUneven = this.isUnevenTree()
     if (isUneven) {
-      return this.verifyMultiProofForUnevenTree(root, indices, leaves, depth, proof)
+      // TODO: combine these functions and simplify
+      return this.verifyMultiProofForUnevenTree(root, proofIndices, proofLeaves, leavesCount, proof)
     }
 
+    const depth = Math.ceil(Math.log2(leavesCount))
     root = this.bufferify(root)
-    leaves = (leaves as any[]).map(leaf => this.bufferify(leaf))
+    proofLeaves = (proofLeaves as any[]).map(leaf => this.bufferify(leaf))
     proof = (proof as any[]).map(leaf => this.bufferify(leaf))
 
     const tree = {}
-    for (const [index, leaf] of this._zip(indices, leaves)) {
+    for (const [index, leaf] of this._zip(proofIndices, proofLeaves)) {
       tree[(2 ** depth) + index] = leaf
     }
-    for (const [index, proofitem] of this._zip(this.getProofIndices(indices, depth), proof)) {
+    for (const [index, proofitem] of this._zip(this.getProofIndices(proofIndices, depth), proof)) {
       tree[index] = proofitem
     }
     let indexqueue = Object.keys(tree).map(value => +value).sort((a, b) => a - b)
@@ -1046,7 +1049,7 @@ export class MerkleTree extends Base {
       }
       i += 1
     }
-    return !indices.length || (({}).hasOwnProperty.call(tree, 1) && tree[1].equals(root))
+    return !proofIndices.length || (({}).hasOwnProperty.call(tree, 1) && tree[1].equals(root))
   }
 
   verifyMultiProofWithFlags (

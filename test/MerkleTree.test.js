@@ -743,10 +743,8 @@ test('sha256 getMultiProof + verifyMultiProof', t => {
     '6b41dc65d0df2bb4b8c2f1fe48e85b7ba8f9b876113ec410fe612bae61a19eaf'
   ])
 
-  const depth = tree.getDepth()
-
   const proofLeaves = proofIndices.map(i => leaves[i])
-  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, depth, proof))
+  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, leaves.length, proof))
 })
 
 test('keccak256 verifyMultiProofWithFlags', t => {
@@ -806,10 +804,9 @@ test('sha256 getMultiProof with pairs sorted', t => {
   const proofIndices = Array(16).fill(0).map((x, j) => j).filter(j => (n >> j) % 2 === 1)
 
   const proof = tree.getMultiProof(proofIndices)
-  const depth = tree.getDepth()
   const proofLeaves = proofIndices.map(i => leaves[i])
 
-  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, depth, proof))
+  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, leaves.length, proof))
 })
 
 test('sha256 getMultiProof using tree array', t => {
@@ -875,11 +872,11 @@ test('sha256 getMultiProof using tree array', t => {
   ])
 
   const depth = tree.getDepth()
-  t.equal(depth, Math.log2((treeFlat.length / 2) | 0))
+  t.equal(depth, Math.ceil(Math.log2((treeFlat.length / 2))))
 
   const treeRoot = treeFlat[1]
   const proofLeaves = proofIndices.map(i => leaves[i])
-  t.true(tree.verifyMultiProof(treeRoot, proofIndices, proofLeaves, depth, proof))
+  t.true(tree.verifyMultiProof(treeRoot, proofIndices, proofLeaves, leaves.length, proof))
 })
 
 test('sha256 getMultiProof', t => {

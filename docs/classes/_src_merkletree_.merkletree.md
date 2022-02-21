@@ -51,11 +51,13 @@ Class reprensenting a Merkle Tree
 * [getProofFlags](_src_merkletree_.merkletree.md#getproofflags)
 * [getProofIndices](_src_merkletree_.merkletree.md#getproofindices)
 * [getRoot](_src_merkletree_.merkletree.md#getroot)
+* [isUnevenTree](_src_merkletree_.merkletree.md#isuneventree)
 * [print](_src_merkletree_.merkletree.md#print)
 * [resetTree](_src_merkletree_.merkletree.md#resettree)
 * [toString](_src_merkletree_.merkletree.md#tostring)
 * [verify](_src_merkletree_.merkletree.md#verify)
 * [verifyMultiProof](_src_merkletree_.merkletree.md#verifymultiproof)
+* [verifyMultiProofWithFlags](_src_merkletree_.merkletree.md#verifymultiproofwithflags)
 * [bufferToHex](_src_merkletree_.merkletree.md#static-buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#static-bufferify)
 * [getMultiProof](_src_merkletree_.merkletree.md#static-getmultiproof)
@@ -798,6 +800,20 @@ const root = tree.getRoot()
 
 ___
 
+###  isUnevenTree
+
+▸ **isUnevenTree**(`treeLayers?`: any[]): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`treeLayers?` | any[] |
+
+**Returns:** *boolean*
+
+___
+
 ###  print
 
 ▸ **print**(): *void*
@@ -881,7 +897,7 @@ ___
 
 ###  verifyMultiProof
 
-▸ **verifyMultiProof**(`root`: Buffer | string, `indices`: number[], `leaves`: Buffer[] | string[], `depth`: number, `proof`: Buffer[] | string[]): *boolean*
+▸ **verifyMultiProof**(`root`: Buffer | string, `proofIndices`: number[], `proofLeaves`: Buffer[] | string[], `leavesCount`: number, `proof`: Buffer[] | string[]): *boolean*
 
 verifyMultiProof
 
@@ -889,13 +905,14 @@ verifyMultiProof
 
 **`example`** 
 ```js
+const leaves = tree.getLeaves()
 const root = tree.getRoot()
 const treeFlat = tree.getLayersFlat()
-const depth = tree.getDepth()
-const indices = [2, 5, 6]
-const proofLeaves = indices.map(i => leaves[i])
+const leavesCount = leaves.length
+const proofIndices = [2, 5, 6]
+const proofLeaves = proofIndices.map(i => leaves[i])
 const proof = tree.getMultiProof(treeFlat, indices)
-const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
+const verified = tree.verifyMultiProof(root, proofIndices, proofLeaves, leavesCount, proof)
 ```
 
 **Parameters:**
@@ -903,10 +920,27 @@ const verified = tree.verifyMultiProof(root, indices, proofLeaves, depth, proof)
 Name | Type | Description |
 ------ | ------ | ------ |
 `root` | Buffer &#124; string | Merkle tree root |
-`indices` | number[] | Leave indices |
-`leaves` | Buffer[] &#124; string[] | Leaf values at indices. |
-`depth` | number | Tree depth |
+`proofIndices` | number[] | Leave indices for proof |
+`proofLeaves` | Buffer[] &#124; string[] | Leaf values at indices for proof |
+`leavesCount` | number | Count of original leaves |
 `proof` | Buffer[] &#124; string[] | Multiproofs given indices |
+
+**Returns:** *boolean*
+
+___
+
+###  verifyMultiProofWithFlags
+
+▸ **verifyMultiProofWithFlags**(`root`: Buffer | string, `leaves`: [TLeaf](../modules/_src_merkletree_.md#tleaf)[], `proofs`: Buffer[] | string[], `proofFlag`: boolean[]): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`root` | Buffer &#124; string |
+`leaves` | [TLeaf](../modules/_src_merkletree_.md#tleaf)[] |
+`proofs` | Buffer[] &#124; string[] |
+`proofFlag` | boolean[] |
 
 **Returns:** *boolean*
 
