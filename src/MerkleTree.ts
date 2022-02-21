@@ -3,6 +3,8 @@ import SHA256 from 'crypto-js/sha256'
 import Base from './Base'
 import treeify from 'treeify'
 
+// TODO: Clean up and DRY up code
+
 type TValue = Buffer | string | number | null | undefined
 type THashFnResult = Buffer | string
 type THashFn = (value: TValue) => Buffer
@@ -96,10 +98,10 @@ export class MerkleTree extends Base {
 
   private processLeaves (leaves: TLeaf[]) {
     if (this.hashLeaves) {
-      leaves = leaves.map(leaf => this.hashFn(leaf))
+      leaves = leaves.map(this.hashFn)
     }
 
-    this.leaves = leaves.map(leaf => this.bufferify(leaf))
+    this.leaves = leaves.map(this.bufferify)
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
     }
@@ -193,7 +195,7 @@ export class MerkleTree extends Base {
     if (shouldHash) {
       leaf = this.hashFn(leaf)
     }
-    this.processLeaves([...this.leaves, leaf])
+    this.processLeaves(this.leaves.concat(leaf))
   }
 
   /**
@@ -208,9 +210,9 @@ export class MerkleTree extends Base {
    */
   addLeaves (leaves: TLeaf[], shouldHash: boolean = false) {
     if (shouldHash) {
-      leaves = leaves.map(leaf => this.hashFn(leaf))
+      leaves = leaves.map(this.hashFn)
     }
-    this.processLeaves([...this.leaves, ...leaves])
+    this.processLeaves(this.leaves.concat(leaves))
   }
 
   /**
@@ -225,7 +227,7 @@ export class MerkleTree extends Base {
   getLeaves (values?: any[]):Buffer[] {
     if (Array.isArray(values)) {
       if (this.hashLeaves) {
-        values = values.map(value => this.hashFn(value))
+        values = values.map(this.hashFn)
         if (this.sortLeaves) {
           values = values.sort(Buffer.compare)
         }
@@ -347,7 +349,7 @@ export class MerkleTree extends Base {
       throw new Error('Expected JSON string to be array')
     }
 
-    return parsed.map(leaf => MerkleTree.bufferify(leaf))
+    return parsed.map(MerkleTree.bufferify)
   }
 
   /**
@@ -375,7 +377,7 @@ export class MerkleTree extends Base {
   getHexLayers ():string[] {
     return this.layers.reduce((acc: string[][], item: Buffer[]) => {
       if (Array.isArray(item)) {
-        acc.push(item.map(value => this.bufferToHex(value)))
+        acc.push(item.map(layer => this.bufferToHex(layer)))
       } else {
         acc.push(item)
       }
@@ -684,6 +686,50 @@ export class MerkleTree extends Base {
     })
   }
 
+  private getProofIndicesForUnevenTree (sortedLeafIndices: number[], leavesCount: number): number[][] {
+    const depth = Math.ceil(Math.log2(leavesCount))
+    const unevenLayers :any[] = []
+    for (let index = 0; index < depth; index++) {
+      const unevenLayer = leavesCount % 2 !== 0
+      if (unevenLayer) {
+        unevenLayers.push({ index, leavesCount })
+      }
+      leavesCount = Math.ceil(leavesCount / 2)
+    }
+
+    const proofIndices: number[][] = []
+
+    let layerNodes: any[] = sortedLeafIndices
+    for (let layerIndex = 0; layerIndex < depth; layerIndex++) {
+      const siblingIndices = layerNodes.map((index: any) => {
+        if (index % 2 === 0) {
+          return index + 1
+        }
+        return index - 1
+      })
+      let proofNodeIndices = siblingIndices.filter((index: any) => !layerNodes.includes(index))
+      const unevenLayer = unevenLayers.find(({ index }) => index === layerIndex)
+      if (unevenLayer && layerNodes.includes(unevenLayer.leavesCount - 1)) {
+        proofNodeIndices = proofNodeIndices.slice(0, -1)
+      }
+
+      proofIndices.push(proofNodeIndices)
+      layerNodes = [...new Set(layerNodes.map((index: any) => {
+        if (index % 2 === 0) {
+          return index / 2
+        }
+
+        if (index % 2 === 0) {
+          return (index + 1) / 2
+        }
+
+        return (index - 1) / 2
+      }))]
+    }
+
+    return proofIndices
+  }
+
   /**
    * getMultiProof
    * @desc Returns the multiproof for given tree indices.
@@ -699,45 +745,104 @@ export class MerkleTree extends Base {
     if (!indices) {
       indices = tree
       tree = this.getLayersFlat()
+    }
 
-      if (!indices.every(Number.isInteger)) {
-        let els = indices
-        if (this.sortPairs) {
-          els = els.sort(Buffer.compare)
-        }
-
-        let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
-        if (!ids.every((idx) => idx !== -1)) {
-          throw new Error('Element does not exist in Merkle tree')
-        }
-
-        const hashes = []
-        const proof = []
-        let nextIds = []
-
-        for (let i = 0; i < this.layers.length; i++) {
-          const layer = this.layers[i]
-          for (let j = 0; j < ids.length; j++) {
-            const idx = ids[j]
-            const pairElement = this._getPairNode(layer, idx)
-
-            hashes.push(layer[idx])
-            if (pairElement) {
-              proof.push(pairElement)
-            }
-
-            nextIds.push((idx / 2) | 0)
-          }
-
-          ids = nextIds.filter((value, i, self) => self.indexOf(value) === i)
-          nextIds = []
-        }
-
-        return proof.filter((value) => !hashes.includes(value))
+    const isUneven = this.isUnevenTree()
+    if (isUneven) {
+      if (indices.every(Number.isInteger)) {
+        return this.getMultiProofForUnevenTree(indices)
       }
     }
 
+    if (!indices.every(Number.isInteger)) {
+      let els = indices
+      if (this.sortPairs) {
+        els = els.sort(Buffer.compare)
+      }
+
+      let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      if (!ids.every((idx) => idx !== -1)) {
+        throw new Error('Element does not exist in Merkle tree')
+      }
+
+      const hashes = []
+      const proof = []
+      let nextIds = []
+
+      for (let i = 0; i < this.layers.length; i++) {
+        const layer = this.layers[i]
+        for (let j = 0; j < ids.length; j++) {
+          const idx = ids[j]
+          const pairElement = this._getPairNode(layer, idx)
+
+          hashes.push(layer[idx])
+          if (pairElement) {
+            proof.push(pairElement)
+          }
+
+          nextIds.push((idx / 2) | 0)
+        }
+
+        ids = nextIds.filter((value, i, self) => self.indexOf(value) === i)
+        nextIds = []
+      }
+
+      return proof.filter((value) => !hashes.includes(value))
+    }
+
     return this.getProofIndices(indices, this._log2((tree.length / 2) | 0)).map(index => tree[index])
+  }
+
+  private getMultiProofForUnevenTree (tree?: any[], indices?: any[]):Buffer[] {
+    if (!indices) {
+      indices = tree
+      tree = this.getLayers()
+    }
+
+    let proofHashes : Buffer[] = []
+    let currentLayerIndices: number[] = indices
+    for (const treeLayer of tree) {
+      const siblings: Buffer[] = []
+      for (const index of currentLayerIndices) {
+        if (index % 2 === 0) {
+          const idx = index + 1
+          if (!currentLayerIndices.includes(idx)) {
+            if (treeLayer[idx]) {
+              siblings.push(treeLayer[idx])
+              continue
+            }
+          }
+        }
+        const idx = index - 1
+        if (!currentLayerIndices.includes(idx)) {
+          if (treeLayer[idx]) {
+            siblings.push(treeLayer[idx])
+            continue
+          }
+        }
+      }
+
+      proofHashes = proofHashes.concat(siblings)
+      const uniqueIndices = new Set<number>()
+
+      for (const index of currentLayerIndices) {
+        if (index % 2 === 0) {
+          uniqueIndices.add(index / 2)
+          continue
+        }
+
+        if (index % 2 === 0) {
+          uniqueIndices.add((index + 1) / 2)
+          continue
+        }
+
+        uniqueIndices.add((index - 1) / 2)
+      }
+
+      currentLayerIndices = Array.from(uniqueIndices)
+    }
+
+    return proofHashes
   }
 
   /**
@@ -908,6 +1013,11 @@ export class MerkleTree extends Base {
    *```
    */
   verifyMultiProof (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], depth: number, proof: Buffer[] | string[]):boolean {
+    const isUneven = this.isUnevenTree()
+    if (isUneven) {
+      return this.verifyMultiProofForUnevenTree(root, indices, leaves, depth, proof)
+    }
+
     root = this.bufferify(root)
     leaves = (leaves as any[]).map(leaf => this.bufferify(leaf))
     proof = (proof as any[]).map(leaf => this.bufferify(leaf))
@@ -930,12 +1040,47 @@ export class MerkleTree extends Base {
           pair = pair.sort(Buffer.compare)
         }
 
-        tree[(index / 2) | 0] = this.hashFn(Buffer.concat(pair))
+        const hash = pair[1] ? this.hashFn(Buffer.concat(pair)) : pair[0]
+        tree[(index / 2) | 0] = hash
         indexqueue.push((index / 2) | 0)
       }
       i += 1
     }
     return !indices.length || (({}).hasOwnProperty.call(tree, 1) && tree[1].equals(root))
+  }
+
+  verifyMultiProofWithFlags (
+    root: Buffer | string,
+    leaves: TLeaf[],
+    proofs: Buffer[] | string[],
+    proofFlag: boolean[]
+  ) {
+    root = this.bufferify(root) as Buffer
+    leaves = leaves.map(this.bufferify) as Buffer[]
+    proofs = (proofs as any[]).map(this.bufferify) as Buffer[]
+    const leavesLen = leaves.length
+    const totalHashes = proofFlag.length
+    const hashes : Buffer[] = []
+    let leafPos = 0
+    let hashPos = 0
+    let proofPos = 0
+    for (let i = 0; i < totalHashes; i++) {
+      const bufA: Buffer = proofFlag[i] ? (leafPos < leavesLen ? leaves[leafPos++] : hashes[hashPos++]) : proofs[proofPos++]
+      const bufB : Buffer = leafPos < leavesLen ? leaves[leafPos++] : hashes[hashPos++]
+      const buffers = [bufA, bufB].sort(Buffer.compare)
+      hashes[i] = this.hashFn(Buffer.concat(buffers))
+    }
+
+    return Buffer.compare(hashes[totalHashes - 1], root) === 0
+  }
+
+  private verifyMultiProofForUnevenTree (root: Buffer | string, indices: number[], leaves: Buffer[] | string[], leavesCount: number, proof: Buffer[] | string[]):boolean {
+    root = this.bufferify(root)
+    leaves = (leaves as any[]).map(leaf => this.bufferify(leaf))
+    proof = (proof as any[]).map(leaf => this.bufferify(leaf))
+
+    const computedRoot = this.calculateRootForUnevenTree(indices, leaves, leavesCount, proof)
+    return root.equals(computedRoot)
   }
 
   /**
@@ -1086,6 +1231,62 @@ export class MerkleTree extends Base {
    */
   toString ():string {
     return this._toTreeString()
+  }
+
+  isUnevenTree (treeLayers?: any[]) {
+    const depth = treeLayers?.length || this.getDepth()
+    return !this.isPowOf2(depth)
+  }
+
+  private isPowOf2 (v: number) {
+    return v && !(v & (v - 1))
+  }
+
+  private calculateRootForUnevenTree (leafIndices: number[], leafHashes: any[], totalLeavesCount: number, proofHashes: any[]) {
+    const leafTuples = this._zip(leafIndices, leafHashes).sort(([indexA], [indexB]) => indexA - indexB)
+    const leafTupleIndices = leafTuples.map(([index]) => index)
+    const proofIndices = this.getProofIndicesForUnevenTree(leafTupleIndices, totalLeavesCount)
+
+    let nextSliceStart = 0
+    const proofTuplesByLayers :any[] = []
+    for (let i = 0; i < proofIndices.length; i++) {
+      const indices = proofIndices[i]
+      const sliceStart = nextSliceStart
+      nextSliceStart += indices.length
+      proofTuplesByLayers[i] = this._zip(indices, proofHashes.slice(sliceStart, nextSliceStart))
+    }
+
+    const tree = [leafTuples]
+    for (let layerIndex = 0; layerIndex < proofTuplesByLayers.length; layerIndex++) {
+      const currentLayer = proofTuplesByLayers[layerIndex].concat(tree[layerIndex]).sort(([indexA], [indexB]) => indexA - indexB)
+        .map(([, hash]) => hash)
+
+      const s = tree[layerIndex].map(([layerIndex]) => layerIndex)
+      const parentIndices = [...new Set(s.map((index: any) => {
+        if (index % 2 === 0) {
+          return index / 2
+        }
+
+        if (index % 2 === 0) {
+          return (index + 1) / 2
+        }
+
+        return (index - 1) / 2
+      }))]
+
+      const parentLayer: any[] = []
+      for (let i = 0; i < parentIndices.length; i++) {
+        const parentNodeTreeIndex = parentIndices[i]
+        const bufA = currentLayer[i * 2]
+        const bufB = currentLayer[i * 2 + 1]
+        const hash = bufB ? this.hashFn(Buffer.concat([bufA, bufB])) : bufA
+        parentLayer.push([parentNodeTreeIndex, hash])
+      }
+
+      tree.push(parentLayer)
+    }
+
+    return tree[tree.length - 1][0][1]
   }
 }
 

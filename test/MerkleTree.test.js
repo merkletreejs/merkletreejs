@@ -1,7 +1,8 @@
 /* eslint camelcase: 0 */
 
 const test = require('tape')
-const { keccak256 } = require('ethereumjs-util')
+const keccak256 = require('keccak256')
+const { keccak256: ethjskeccak256 } = require('ethereumjs-util')
 const crypto = require('crypto')
 const CryptoJS = require('crypto-js')
 const SHA256 = require('crypto-js/sha256')
@@ -15,7 +16,7 @@ const sha256 = (data) => crypto.createHash('sha256').update(data).digest()
 test('sha256 with keccak256 leaves', t => {
   t.plan(3)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
@@ -40,10 +41,18 @@ test('sha256 with keccak256 leaves', t => {
   ])
 })
 
+test('sha256 with ethjs-keccak256 leaves', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c'].map(x => ethjskeccak256(Buffer.from(x)))
+  const tree = new MerkleTree(leaves, sha256)
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+})
+
 test('sha256 with keccak256 leaves with duplicate odd option', t => {
   t.plan(3)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
 
   t.equal(tree.getHexRoot(), '0xbcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1')
@@ -71,7 +80,7 @@ test('sha256 with keccak256 leaves with duplicate odd option', t => {
 test('crypto-js - sha256', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, SHA256)
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
 
@@ -81,7 +90,7 @@ test('crypto-js - sha256', t => {
 test('sha256 with sort pairs option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
   const root = 'a30ba95a1a5dc397fe45ea20105363b08d682b864a28f4940419a29349a28325'
 
@@ -91,7 +100,7 @@ test('sha256 with sort pairs option', t => {
 test('sha256 - static verify', t => {
   t.plan(2)
 
-  const leaves = ['a', 'b', 'c'].map(x => sha256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(sha256)
   const tree = new MerkleTree(leaves, sha256)
   const leaf = sha256(Buffer.from('a'))
   const badLeaf = sha256(Buffer.from('o'))
@@ -106,7 +115,7 @@ test('sha256 - static verify', t => {
 test('sha256 verify with positional hex proof and no pairSort', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: false })
 
   t.true(tree.verify(tree.getPositionalHexProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
@@ -115,7 +124,7 @@ test('sha256 verify with positional hex proof and no pairSort', t => {
 test('sha256 verify with non-hex proof and no pairSort', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: false })
 
   t.true(tree.verify(tree.getProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
@@ -124,7 +133,7 @@ test('sha256 verify with non-hex proof and no pairSort', t => {
 test('sha256 verify with hex proof and pairSort', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
 
   t.true(tree.verify(tree.getHexProof(leaves[1], 1), leaves[1], tree.getHexRoot()))
@@ -153,7 +162,7 @@ test('keccak256 with sort option', t => {
 test('sha256 with sha256 leaves and sort pairs option and duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(x => sha256(x))
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true, duplicateOdd: true })
   const root = 'a5260b2a7ec31584e5d5689a5628c2b3d949e2397334fd71c107478e5f887eaf'
 
@@ -193,7 +202,7 @@ test('crypto-js - sha256 with sha256 leaves', t => {
 test('crypto-js - sha256 with keccak256 leaves and duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, SHA256, { duplicateOdd: true })
   const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
@@ -224,7 +233,7 @@ test('crypto-js - SHA256 with SHA3 leaves', t => {
 test('crypto-js - SHA256 with keccak256 leaves and duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, SHA256, { duplicateOdd: true })
   const root = 'bcdd0f60308db788712205115fe4273bfda49fa0925611fee765a63df9ab96a1'
 
@@ -234,7 +243,7 @@ test('crypto-js - SHA256 with keccak256 leaves and duplicate odd option', t => {
 test('solidity keccak256', t => {
   t.plan(20)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
@@ -283,7 +292,7 @@ test('solidity keccak256', t => {
 test('solidity keccak256 with duplicate odd option', t => {
   t.plan(20)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
@@ -330,7 +339,7 @@ test('solidity keccak256 with duplicate odd option', t => {
 test('solidity keccak256 with duplicate leaves', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'a'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'a'].map(keccak256)
 
   const a_hash = '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb'
   const b_hash = 'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
@@ -472,7 +481,7 @@ test('sha-256 with option.isBitcoinTree', t => {
 
 test('keccak256 - hex strings', t => {
   t.plan(1)
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)).toString('hex'))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, SHA256)
   const root = '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
   t.equal(tree.getRoot().toString('hex'), root)
@@ -496,7 +505,7 @@ test.skip('sha256 - 1,000,000 leaves', t => {
     values.push(`${i}`)
   }
 
-  const leaves = values.map(x => sha256(x))
+  const leaves = values.map(sha256)
   const tree = new MerkleTree(leaves, sha256)
   const root = '101dd357df60384d254330fe118e3046871767c2748ebd62ce031c117df483da'
 
@@ -506,7 +515,7 @@ test.skip('sha256 - 1,000,000 leaves', t => {
 test('sha256 getHexLeaves', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
   t.deepEqual(tree.getHexLeaves(), [
     '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
@@ -598,7 +607,7 @@ test('sha1', t => {
 test('sha56 getHexLayers', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
   const layers = tree.getHexLayers()
 
@@ -621,7 +630,7 @@ test('sha56 getHexLayers', t => {
 test('getLayersAsObject', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
   const obj = tree.getLayersAsObject()
 
@@ -641,7 +650,7 @@ test('getLayersAsObject', t => {
 test('getLayersAsObject with duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
   const obj = tree.getLayersAsObject()
 
@@ -658,26 +667,27 @@ test('getLayersAsObject with duplicate odd option', t => {
   })
 })
 
-test.skip('sha256 getHexLayersFlat', t => {
+test('sha256 getHexLayersFlat', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
-  const layers = tree.getLayersFlat()
+  const layers = tree.getHexLayersFlat()
   t.deepEqual(layers, [
-    '3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
-    'b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
-    '0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2',
-    '176f0f307632fdd5831875eb709e2f68d770b102262998b214ddeb3f04164ae1',
-    '0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2',
-    '311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae'
+    '0x00',
+    '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae',
+    '0x176f0f307632fdd5831875eb709e2f68d770b102262998b214ddeb3f04164ae1',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2',
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
   ])
 })
 
 test('print', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.toString(),
@@ -693,7 +703,7 @@ test('print', t => {
 test('print with duplicate odd option', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
 
   t.equal(tree.toString(),
@@ -706,7 +716,7 @@ test('print with duplicate odd option', t => {
 `)
 })
 
-test('sha256 getMultiProof', t => {
+test('sha256 getMultiProof + verifyMultiProof', t => {
   t.plan(3)
 
   const leaves = Array(16).fill(0).map((x, i) => {
@@ -720,10 +730,10 @@ test('sha256 getMultiProof', t => {
   const root = tree.getHexRoot()
   t.equal(root, '0xc1ebc5b83154907160d73863bdae7eb86fe1888495a83cb8daadb1603b8aeaf5')
 
-  const i = 100
-  const indices = Array(16).fill(0).map((x, j) => j).filter(j => (i >> j) % 2 === 1)
+  const n = 100
+  const proofIndices = Array(16).fill(0).map((x, j) => j).filter(j => (n >> j) % 2 === 1)
 
-  const proof = tree.getMultiProof(indices)
+  const proof = tree.getMultiProof(proofIndices)
 
   t.deepEqual(proof.map(x => x.toString('hex')), [
     '0000000000000000000000000000000000000000000000000000000000000007',
@@ -735,8 +745,49 @@ test('sha256 getMultiProof', t => {
 
   const depth = tree.getDepth()
 
-  const tLeaves = indices.map(i => leaves[i])
-  t.true(tree.verifyMultiProof(root, indices, tLeaves, depth, proof))
+  const proofLeaves = proofIndices.map(i => leaves[i])
+  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, depth, proof))
+})
+
+test('keccak256 verifyMultiProofWithFlags', t => {
+  t.plan(4)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(keccak256).sort(Buffer.compare)
+
+  const tree = new MerkleTree(leaves, keccak256, { sort: true })
+  const root = tree.getHexRoot()
+  t.equal(root, '0x1b404f199ea828ec5771fb30139c222d8417a82175fefad5cd42bc3a189bd8d5')
+
+  const proofLeaves = [keccak256('b'), keccak256('d'), keccak256('f')].sort(Buffer.compare)
+  t.deepEqual(proofLeaves.map(x => x.toString('hex')), ['b5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    'd1e8aeb79500496ef3dc2e57ba746a8315d048b7a664a2bf948db4fa91960483',
+    'f1918e8562236eb17adc8502332f4c9c82bc14e19bfc0aa10ab674ff75b3d2f3'
+  ])
+
+  const proof = tree.getMultiProof(proofLeaves)
+  t.deepEqual(proof.map(x => x.toString('hex')), [
+    'a8982c89d80987fb9a510e25981ee9170206be21af3c8e0eb312ef1d3382e761',
+    '7dea550f679f3caab547cbbc5ee1a4c978c8c039b572ba00af1baa6481b88360'
+  ])
+  const proofFlags = tree.getProofFlags(proofLeaves, proof)
+  t.true(tree.verifyMultiProofWithFlags(root, proofLeaves, proof, proofFlags))
+})
+
+test('keccak256 getMultiProof uneven tree', t => {
+  t.plan(3)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
+  const tree = new MerkleTree(leaves, sha256)
+  const root = tree.getRoot()
+  t.equal(root.toString('hex'), '1f7379539707bcaea00564168d1d4d626b09b73f8a2a365234c62d763f854da2')
+  const indicesToProve = [3, 4]
+  const leavesToProve = indicesToProve.map((index) => leaves[index])
+  const proof = tree.getMultiProof(indicesToProve)
+  t.deepEqual(proof.map(x => x.toString('hex')), ['2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6',
+    '252f10c83610ebca1a059c0bae8255eba2f95be4d1d7bcfa89d7248a82d9f111',
+    'e5a01fee14e0ed5c48714f22180f25ad8365b53f9779f79dc4a3d7e93963f94a'
+  ])
+  t.true(tree.verifyMultiProof(root, indicesToProve, leavesToProve, leaves.length, proof))
 })
 
 test('sha256 getMultiProof with pairs sorted', t => {
@@ -751,14 +802,14 @@ test('sha256 getMultiProof with pairs sorted', t => {
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
   const root = tree.getHexRoot()
 
-  const i = 100
-  const indices = Array(16).fill(0).map((x, j) => j).filter(j => (i >> j) % 2 === 1)
+  const n = 100
+  const proofIndices = Array(16).fill(0).map((x, j) => j).filter(j => (n >> j) % 2 === 1)
 
-  const proof = tree.getMultiProof(indices)
+  const proof = tree.getMultiProof(proofIndices)
   const depth = tree.getDepth()
-  const tLeaves = indices.map(i => leaves[i])
+  const proofLeaves = proofIndices.map(i => leaves[i])
 
-  t.true(tree.verifyMultiProof(root, indices, tLeaves, depth, proof))
+  t.true(tree.verifyMultiProof(root, proofIndices, proofLeaves, depth, proof))
 })
 
 test('sha256 getMultiProof using tree array', t => {
@@ -812,8 +863,8 @@ test('sha256 getMultiProof using tree array', t => {
     '000000000000000000000000000000000000000000000000000000000000000f'
   ])
 
-  const indices = [2, 5, 6]
-  const proof = tree.getMultiProof(treeFlat, indices)
+  const proofIndices = [2, 5, 6]
+  const proof = tree.getMultiProof(treeFlat, proofIndices)
 
   t.deepEqual(proof.map(x => x.toString('hex')), [
     '0000000000000000000000000000000000000000000000000000000000000007',
@@ -826,9 +877,9 @@ test('sha256 getMultiProof using tree array', t => {
   const depth = tree.getDepth()
   t.equal(depth, Math.log2((treeFlat.length / 2) | 0))
 
-  const tRoot = treeFlat[1]
-  const tLeaves = indices.map(i => leaves[i])
-  t.true(tree.verifyMultiProof(tRoot, indices, tLeaves, depth, proof))
+  const treeRoot = treeFlat[1]
+  const proofLeaves = proofIndices.map(i => leaves[i])
+  t.true(tree.verifyMultiProof(treeRoot, proofIndices, proofLeaves, depth, proof))
 })
 
 test('sha256 getMultiProof', t => {
@@ -847,9 +898,9 @@ test('sha256 getMultiProof', t => {
 
   const treeFlat = tree.getLayersFlat()
 
-  const indices = [0, 1]
-  const proof = tree.getMultiProof(treeFlat, indices)
-  const tLeaves = indices.map(i => leaves[i])
+  const proofIndices = [0, 1]
+  const proof = tree.getMultiProof(treeFlat, proofIndices)
+  const proofLeaves = proofIndices.map(i => leaves[i])
 
   t.deepEqual(proof.map(x => x.toString('hex')), [
     'a774c351cf3882b36b2c541586b0b59c6dfd119ae831ef3c6b2e269f7a6be220',
@@ -857,7 +908,7 @@ test('sha256 getMultiProof', t => {
     '44f76d663f391971ba8bd22469061c70aa63c176bc29b651336db7587b6f5a6c'
   ])
 
-  const proofFlags = tree.getProofFlags(tLeaves, proof)
+  const proofFlags = tree.getProofFlags(proofLeaves, proof)
   t.deepEqual(proofFlags, [
     true,
     false,
@@ -875,10 +926,10 @@ test('sha256 getProofFlag with indices', t => {
   t.equal(root, '0x4c6aae040ffada3d02598207b8485fcbe161c03f4cb3f660e4d341e7496ff3b2')
 
   const treeFlat = tree.getLayersFlat()
-  const indices = [1, 2]
-  const proof = tree.getMultiProof(treeFlat, indices)
+  const proofIndices = [1, 2]
+  const proof = tree.getMultiProof(treeFlat, proofIndices)
 
-  const proofFlags = tree.getProofFlags(indices, proof)
+  const proofFlags = tree.getProofFlags(proofIndices, proof)
   t.deepEqual(proofFlags, [
     false,
     false,
@@ -926,7 +977,7 @@ test('sha256 getMultiProof - statusim', t => {
 test('marshal leaves', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const jsonLeaves = MerkleTree.marshalLeaves(leaves)
   t.equal(typeof jsonLeaves, 'string')
 
@@ -956,7 +1007,7 @@ test('unmarshal leaves', t => {
 test('marshal proof', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256, { duplicateOdd: true })
   const proof = tree.getProof(leaves[0])
 
@@ -1011,7 +1062,7 @@ test('fillDefaultHashes', t => {
 test('getLeafIndex', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
@@ -1024,7 +1075,7 @@ test('getLeafIndex', t => {
 test('getleafCount', t => {
   t.plan(1)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.getLeafCount(), 3)
@@ -1033,7 +1084,7 @@ test('getleafCount', t => {
 test('getleaf', t => {
   t.plan(5)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.deepEqual(tree.getLeaf(-1), Buffer.from([]))
@@ -1046,7 +1097,7 @@ test('getleaf', t => {
 test('addLeaf', t => {
   t.plan(2)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree([], sha256)
   tree.addLeaf(leaves[0])
   tree.addLeaf(leaves[1])
@@ -1063,7 +1114,7 @@ test('addLeaf', t => {
 test('addLeaves', t => {
   t.plan(3)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree([], sha256)
   tree.addLeaves(leaves)
 
@@ -1074,7 +1125,7 @@ test('addLeaves', t => {
     '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
   ])
 
-  const moreLeaves = ['d', 'e', 'f'].map(x => keccak256(Buffer.from(x)))
+  const moreLeaves = ['d', 'e', 'f'].map(keccak256)
   tree.addLeaves(moreLeaves)
   t.equal(tree.getHexRoot(), '0xb9a721d82428976e0d500f97646bf273ec1dd9c2104b9328873a94fc3897aec6')
 })
@@ -1082,7 +1133,7 @@ test('addLeaves', t => {
 test('resetTree', t => {
   t.plan(2)
 
-  const leaves = ['a', 'b', 'c'].map(x => keccak256(Buffer.from(x)))
+  const leaves = ['a', 'b', 'c'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
   t.equal(tree.getLeafCount(), 3)
