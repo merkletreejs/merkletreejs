@@ -15,12 +15,12 @@
 ### Methods
 
 * [_bufferIndexOf](_src_base_.base.md#protected-_bufferindexof)
-* [_bufferifyFn](_src_base_.base.md#protected-_bufferifyfn)
 * [_isHexString](_src_base_.base.md#protected-_ishexstring)
 * [_log2](_src_base_.base.md#protected-_log2)
 * [_zip](_src_base_.base.md#protected-_zip)
 * [bufferToHex](_src_base_.base.md#buffertohex)
 * [bufferify](_src_base_.base.md#bufferify)
+* [bufferifyFn](_src_base_.base.md#bufferifyfn)
 * [print](_src_base_.base.md#print)
 * [bufferToHex](_src_base_.base.md#static-buffertohex)
 * [bufferify](_src_base_.base.md#static-bufferify)
@@ -52,29 +52,6 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
-
-___
-
-### `Protected` _bufferifyFn
-
-▸ **_bufferifyFn**(`f`: any): *any*
-
-bufferifyFn
-
-**`desc`** Returns a function that will bufferify the return value.
-
-**`example`** 
-```js
-const fn = tree.bufferifyFn((value) => sha256(value))
-```
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`f` | any |
-
-**Returns:** *any*
 
 ___
 
@@ -188,6 +165,29 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+###  bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = tree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

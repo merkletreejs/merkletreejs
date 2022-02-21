@@ -150,15 +150,19 @@ export class Base {
    *const fn = tree.bufferifyFn((value) => sha256(value))
    *```
    */
-  protected _bufferifyFn (f: any):any {
-    return function (value: any) {
+  bufferifyFn (f: any):any {
+    return (value: any): Buffer => {
       const v = f(value)
       if (Buffer.isBuffer(v)) {
         return v
       }
 
       if (this._isHexString(v)) {
-        return Buffer.from(v, 'hex')
+        return Buffer.from(v.replace('0x', ''), 'hex')
+      }
+
+      if (typeof v === 'string') {
+        return Buffer.from(v)
       }
 
       // crypto-js support

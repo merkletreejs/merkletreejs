@@ -19,7 +19,7 @@ export class MerkleMountainRange extends Base {
   constructor (hashFn = SHA256, leaves: any[] = [], hashLeafFn?: any, peakBaggingFn?: any, hashBranchFn?: any) {
     super()
     leaves = leaves.map(this.bufferify)
-    this.hashFn = this._bufferifyFn(hashFn)
+    this.hashFn = this.bufferifyFn(hashFn)
     this.hashLeafFn = hashLeafFn
     this.peakBaggingFn = peakBaggingFn
     this.hashBranchFn = hashBranchFn

@@ -17,7 +17,7 @@
     "lint": "standardx --fix src/*.ts test/*.js",
     "lint:example": "standardx --fix example/*.js",
     "docs": "rimraf docs/ && typedoc --plugin typedoc-plugin-markdown --hideSources --theme markdown --hideGenerator --excludeExternals --excludePrivate --out docs src/",
-    "prepare": "npm run lint && npm run build"
+    "prepare": "npm run lint && npm run build && npm run build:browser && npm run docs"
   },
   "repository": {
     "type": "git",

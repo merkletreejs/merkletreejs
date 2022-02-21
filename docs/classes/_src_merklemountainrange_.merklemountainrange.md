@@ -30,13 +30,13 @@
 ### Methods
 
 * [_bufferIndexOf](_src_merklemountainrange_.merklemountainrange.md#protected-_bufferindexof)
-* [_bufferifyFn](_src_merklemountainrange_.merklemountainrange.md#protected-_bufferifyfn)
 * [_isHexString](_src_merklemountainrange_.merklemountainrange.md#protected-_ishexstring)
 * [_log2](_src_merklemountainrange_.merklemountainrange.md#protected-_log2)
 * [_zip](_src_merklemountainrange_.merklemountainrange.md#protected-_zip)
 * [append](_src_merklemountainrange_.merklemountainrange.md#append)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#bufferify)
+* [bufferifyFn](_src_merklemountainrange_.merklemountainrange.md#bufferifyfn)
 * [getChildren](_src_merklemountainrange_.merklemountainrange.md#getchildren)
 * [getHexRoot](_src_merklemountainrange_.merklemountainrange.md#gethexroot)
 * [getLeafIndex](_src_merklemountainrange_.merklemountainrange.md#getleafindex)
@@ -157,31 +157,6 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
-
-___
-
-### `Protected` _bufferifyFn
-
-▸ **_bufferifyFn**(`f`: any): *any*
-
-*Inherited from [Base](_src_base_.base.md).[_bufferifyFn](_src_base_.base.md#protected-_bufferifyfn)*
-
-bufferifyFn
-
-**`desc`** Returns a function that will bufferify the return value.
-
-**`example`** 
-```js
-const fn = tree.bufferifyFn((value) => sha256(value))
-```
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`f` | any |
-
-**Returns:** *any*
 
 ___
 
@@ -322,6 +297,31 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+###  bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#bufferifyfn)*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = tree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

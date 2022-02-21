@@ -92,7 +92,7 @@ export class MerkleTree extends Base {
 
     this.duplicateOdd = !!options.duplicateOdd
 
-    this.hashFn = this._bufferifyFn(hashFn)
+    this.hashFn = this.bufferifyFn(hashFn)
     this.processLeaves(leaves)
   }
 
