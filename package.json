@@ -55,6 +55,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "crypto": "0.0.3",
+    "ethereum-cryptography": "^1.0.3",
     "ethereumjs-util": "^7.0.9",
     "keccak256": "^1.0.6",
     "rimraf": "^2.6.3",

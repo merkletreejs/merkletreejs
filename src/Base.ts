@@ -38,7 +38,7 @@ export class Base {
   /**
    * bufferify
    * @desc Returns a buffer type for the given value.
-   * @param {String|Number|Object|Buffer} value
+   * @param {String|Number|Object|Buffer|ArrayBuffer} value
    * @return {Buffer}
    *
    * @example
@@ -61,6 +61,8 @@ export class Base {
           s = `0${s}`
         }
         return Buffer.from(s, 'hex')
+      } else if (ArrayBuffer.isView(value)) {
+        return Buffer.from(value.buffer, value.byteOffset, value.byteLength)
       }
     }
 
@@ -163,6 +165,10 @@ export class Base {
 
       if (typeof v === 'string') {
         return Buffer.from(v)
+      }
+
+      if (ArrayBuffer.isView(v)) {
+        return Buffer.from(v.buffer, v.byteOffset, v.byteLength)
       }
 
       // crypto-js support
