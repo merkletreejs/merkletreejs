@@ -127,7 +127,10 @@ npm test
 - Q: How do you verify merkle [multiproofs](https://github.com/ethereum/eth2.0-specs/blob/dev/ssz/merkle-proofs.md#merkle-multiproofs) in Solidity?
   - A: Check out the example repo [merkletreejs-multiproof-solidity](https://github.com/miguelmota/merkletreejs-multiproof-solidity) on how to generate merkle multiproofs with this library and verify them in Solidity.
 
-- Q: Is there a CLI version?
+- Q: Is there an NFT whitelist example in Solidity?
+  - A: Check out the example repo [merkletreejs-nft-whitelist](https://github.com/miguelmota/merkletreejs-nft-whitelist) on how to generate merkle root of whitelisted accounts and merkle proofs with this library and verify them in Solidity.
+
+- Q: Is there a CLI version of this library?
 
   - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).
 
