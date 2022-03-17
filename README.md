@@ -29,6 +29,7 @@
 - [Notes](#notes)
 - [Resources](#resources)
 - [Contributing](#contributing)
+- [Tip Jar](#tip-jar)
 - [License](#license)
 
 ## Install
@@ -172,6 +173,16 @@ For contributions please create a new branch and submit a pull request for revie
 
 _Many thanks to all the [contributors](https://github.com/miguelmota/merkletreejs/graphs/contributors) that made this library better._
 
+## Tip Jar
+
+[![BTC Tip Jar](https://img.shields.io/badge/BTC-tip-yellow.svg?logo=bitcoin&style=flat)](https://www.blockchain.com/btc/address/3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf) `3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf`
+
+[![ETH Tip Jar](https://img.shields.io/badge/ETH-tip-blue.svg?logo=ethereum&style=flat)](https://etherscan.io/address/0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF) `0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF`
+
+Thank you for tips! 🙏
+
 ## License
 
-[MIT](LICENSE)
+Released under the [MIT](./LICENSE) license.
+
+© [Miguel Mota](https://github.com/miguelmota)
