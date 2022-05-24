@@ -4,6 +4,7 @@ import Base from './Base'
 import treeify from 'treeify'
 
 // TODO: Clean up and DRY up code
+// Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and it's begging for a rewrite!
 
 type TValue = Buffer | string | number | null | undefined
 type THashFnResult = Buffer | string
