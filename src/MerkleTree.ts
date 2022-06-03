@@ -567,10 +567,9 @@ export class MerkleTree extends Base {
    *```
    */
    getProofs ():any[] {
-    const layers = this.layers;
-    const proof = [], proofs = [];
+    let proof = [], proofs = [];
   
-    this.getProofsDFS(layers.length - 1, 0, proof, proofs);
+    this.getProofsDFS(this.layers.length - 1, 0, proof, proofs);
   
     return proofs
   }
