@@ -1,7 +1,8 @@
+import { Buffer } from 'buffer'
 import reverse from 'buffer-reverse'
 import SHA256 from 'crypto-js/sha256'
-import Base from './Base'
 import treeify from 'treeify'
+import Base from './Base'
 
 // TODO: Clean up and DRY up code
 // Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and it's begging for a rewrite!
