@@ -235,7 +235,7 @@ export class MerkleTree extends Base {
         }
       }
 
-      return this.leaves.filter(leaf => this._bufferIndexOf(values, leaf) !== -1)
+      return this.leaves.filter(leaf => this._bufferIndexOf(values, leaf, this.sortLeaves) !== -1)
     }
 
     return this.leaves
@@ -497,13 +497,7 @@ export class MerkleTree extends Base {
     const proof = []
 
     if (!Number.isInteger(index)) {
-      index = -1
-
-      for (let i = 0; i < this.leaves.length; i++) {
-        if (Buffer.compare(leaf, this.leaves[i]) === 0) {
-          index = i
-        }
-      }
+      index = this._bufferIndexOf(this.leaves, leaf, this.sortLeaves)
     }
 
     if (index <= -1) {
@@ -762,7 +756,7 @@ export class MerkleTree extends Base {
         els = els.sort(Buffer.compare)
       }
 
-      let ids = els.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      let ids = els.map((el) => this._bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
       if (!ids.every((idx) => idx !== -1)) {
         throw new Error('Element does not exist in Merkle tree')
       }
@@ -885,7 +879,7 @@ export class MerkleTree extends Base {
     if (leaves.every(Number.isInteger)) {
       ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
     } else {
-      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
     }
 
     if (!ids.every((idx: number) => idx !== -1)) {
