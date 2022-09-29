@@ -4,7 +4,7 @@
 
 <h3 align="center">
   <br />
-  <img src="https://user-images.githubusercontent.com/168240/83951171-85f48c80-a7e4-11ea-896e-529c28ffa18e.png" alt="merkletree.js logo" width="600" />
+  <img src="https://user-images.githubusercontent.com/168240/83951171-85f48c80-a7e4-11ea-896e-529c28ffa18e.png" alt="merkletree.js logo" width="600" style="background: white;padding: 5px;"/>
   <br />
   <br />
   <br />
