@@ -6,11 +6,15 @@ import Base from './Base'
 
 // TODO: Clean up and DRY up code
 // Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and it's begging for a rewrite!
-
+const SHA256F = require('crypto-js/sha256')
 type TValue = Buffer | string | number | null | undefined
 type THashFnResult = Buffer | string
 type THashFn = (value: TValue) => Buffer
 type TLeaf = Buffer
+type TLeafPref = {
+  leaf: Buffer;
+  vote: Map<string, number>;
+};
 type TLayer = any
 type TFillDefaultHash = (idx?: number, hashFn?: THashFn) => THashFnResult
 
@@ -33,19 +37,24 @@ export interface Options {
 
 /**
  * Class reprensenting a Merkle Tree
- * @namespace MerkleTree
+ * @namespace MerkleTreePrefix
  */
-export class MerkleTree extends Base {
+export class MerkleTreePrefix extends Base {
   private duplicateOdd: boolean = false
   private hashFn: THashFn
   private hashLeaves: boolean = false
   private isBitcoinTree: boolean = false
-  private leaves: TLeaf[] = []
-  private layers: TLayer[] = []
+  private leaves: TLeafPref[] = []
+   layers: TLayer[] = []
   private sortLeaves: boolean = false
   private sortPairs: boolean = false
   private sort: boolean = false
   private fillDefaultHash: TFillDefaultHash | null = null
+
+  private hashFnPref(leaf : TLeafPref){
+    leaf.leaf = this.hashFn(leaf.leaf)
+    return leaf
+  }
 
   /**
    * @desc Constructs a Merkle Tree.
@@ -56,7 +65,7 @@ export class MerkleTree extends Base {
    * @param {Object} options - Additional options
    * @example
    *```js
-   *const MerkleTree = require('merkletreejs')
+   *const MerkleTreePrefix = require('merkletreePrefixjs')
    *const crypto = require('crypto')
    *
    *function sha256(data) {
@@ -66,7 +75,7 @@ export class MerkleTree extends Base {
    *
    *const leaves = ['a', 'b', 'c'].map(value => keccak(value))
    *
-   *const tree = new MerkleTree(leaves, sha256)
+   *const tree = new MerkleTreePrefix(leaves, sha256)
    *```
    */
   constructor (leaves: any[], hashFn = SHA256, options: Options = {}) {
@@ -98,15 +107,16 @@ export class MerkleTree extends Base {
     this.processLeaves(leaves)
   }
 
-  private processLeaves (leaves: TLeaf[]) {
+  private processLeaves (leaves: TLeafPref[]) {
     if (this.hashLeaves) {
-      leaves = leaves.map(this.hashFn)
+      leaves = leaves.map(this.hashFnPref)
     }
 
-    this.leaves = leaves.map(this.bufferify)
+    this.leaves = leaves
+    /*this.leaves = leaves.map(this.bufferify)
     if (this.sortLeaves) {
       this.leaves = this.leaves.sort(Buffer.compare)
-    }
+    } 
 
     if (this.fillDefaultHash) {
       for (let i = 0; i < Math.pow(2, Math.ceil(Math.log2(this.leaves.length))); i++) {
@@ -114,19 +124,20 @@ export class MerkleTree extends Base {
           this.leaves.push(this.bufferify(this.fillDefaultHash(i, this.hashFn)))
         }
       }
-    }
+    } */
 
     this.layers = [this.leaves]
     this._createHashes(this.leaves)
   }
 
-  private _createHashes (nodes: any[]) {
+  private _createHashes (nodes: TLeafPref[]) {
+    console.log(this.layers)
     while (nodes.length > 1) {
-      console.log(this.layers)
       const layerIndex = this.layers.length
 
       this.layers.push([])
       console.log(this.layers)
+  
       console.log(" for (let i = 0; i < nodes.length; i += 2) {")
       for (let i = 0; i < nodes.length; i += 2) {
         console.log("i=" + i)
@@ -138,21 +149,24 @@ export class MerkleTree extends Base {
 
             // is bitcoin tree
             if (this.isBitcoinTree) {
-              // Bitcoin method of duplicating the odd ending nodes
+              /*TODO/ Bitcoin method of duplicating the odd ending nodes
               data = Buffer.concat([reverse(data), reverse(data)])
               hash = this.hashFn(data)
               hash = reverse(this.hashFn(hash))
 
               this.layers[layerIndex].push(hash)
+              */
               continue
             } else {
               if (this.duplicateOdd) {
                 // continue with creating layer
               } else {
                 // push copy of hash and continue iteration
-                console.log("Push")
+                console.log("Push-1")
                 console.log(this.layers)
+                console.log(nodes[i])
                 this.layers[layerIndex].push(nodes[i])
+                console.log("Push-2")
                 console.log(this.layers)
                 continue
               }
@@ -162,8 +176,9 @@ export class MerkleTree extends Base {
 
         const left = nodes[i]
         const right = i + 1 === nodes.length ? left : nodes[i + 1]
-        let data = null
+        let dataleaf = null
         let combined = null
+        let datavote = null
 
         if (this.isBitcoinTree) {
           combined = [reverse(left), reverse(right)]
@@ -175,15 +190,39 @@ export class MerkleTree extends Base {
           combined.sort(Buffer.compare)
         }
 
-        data = Buffer.concat(combined)
-        let hash = this.hashFn(data)
+        //TODO criar id para ordenar/ ordenar alguma forma ou hashmap etc. Transformar em array  
+        datavote = new Map(combined[0].vote)
+
+        for (var ik in combined[1].vote){
+          if (datavote.get(ik) === undefined){
+            datavote.set(ik, combined[1].vote.get(ik));
+          }
+          else {
+            datavote.set(ik, datavote.get(ik) + combined[1].vote.get(ik));
+          }
+        }
+       
+
+        console.log(Buffer.from(Array.from(datavote)))
+
+        console.log(combined[1])
+        console.log(combined[1].leaf)
+        console.log(this.bufferify(combined[1].leaf))
+        console.log([Buffer.from(Array.from(datavote)),this.bufferify(combined[0].leaf), this.bufferify(combined[1].leaf) ])
+        dataleaf = Buffer.concat([Buffer.from(Array.from(datavote)),this.bufferify(combined[0].leaf), this.bufferify(combined[1].leaf) ], 3)
+        let hash = this.hashFn(dataleaf)
 
         // double hash if bitcoin tree
         if (this.isBitcoinTree) {
           hash = reverse(this.hashFn(hash))
         }
 
-        this.layers[layerIndex].push(hash)
+        const newLeaf:  TLeafPref = {
+          leaf: hash,
+          vote: datavote
+        } 
+
+        this.layers[layerIndex].push(newLeaf)
       }
 
       nodes = this.layers[layerIndex]
@@ -200,9 +239,9 @@ export class MerkleTree extends Base {
    *tree.addLeaf(newLeaf)
    *```
    */
-  addLeaf (leaf: TLeaf, shouldHash: boolean = false) {
+  addLeaf (leaf: TLeafPref, shouldHash: boolean = false) {
     if (shouldHash) {
-      leaf = this.hashFn(leaf)
+      leaf.leaf = this.hashFn(leaf.leaf)
     }
     this.processLeaves(this.leaves.concat(leaf))
   }
@@ -217,9 +256,9 @@ export class MerkleTree extends Base {
    *tree.addLeaves(newLeaves)
    *```
    */
-  addLeaves (leaves: TLeaf[], shouldHash: boolean = false) {
+  addLeaves (leaves: TLeafPref[], shouldHash: boolean = false) {
     if (shouldHash) {
-      leaves = leaves.map(this.hashFn)
+      leaves = leaves.map(this.hashFnPref)
     }
     this.processLeaves(this.leaves.concat(leaves))
   }
@@ -233,7 +272,7 @@ export class MerkleTree extends Base {
    *const leaves = tree.getLeaves()
    *```
    */
-  getLeaves (values?: any[]):Buffer[] {
+   /*TODO getLeaves (values?: any[]):Buffer[] {
     if (Array.isArray(values)) {
       if (this.hashLeaves) {
         values = values.map(this.hashFn)
@@ -247,7 +286,7 @@ export class MerkleTree extends Base {
 
     return this.leaves
   }
-
+  */
   /**
    * getLeaf
    * @desc Returns the leaf at the given index.
@@ -258,14 +297,14 @@ export class MerkleTree extends Base {
    *const leaf = tree.getLeaf(1)
    *```
    */
-  getLeaf (index: number):Buffer {
+   /*/TODO getLeaf (index: number):Buffer {
     if (index < 0 || index > this.leaves.length - 1) {
       return Buffer.from([])
     }
 
     return this.leaves[index]
   }
-
+  */
   /**
    * getLeafIndex
    * @desc Returns the index of the given leaf, or -1 if the leaf is not found.
@@ -277,7 +316,7 @@ export class MerkleTree extends Base {
    *const index = tree.getLeafIndex(leaf)
    *```
    */
-  getLeafIndex (target: TLeaf):number {
+   /*TODO/ getLeafIndex (target: TLeaf):number {
     target = this.bufferify(target)
     const leaves = this.getLeaves()
     for (let i = 0; i < leaves.length; i++) {
@@ -289,7 +328,7 @@ export class MerkleTree extends Base {
 
     return -1
   }
-
+  */
   /**
    * getLeafCount
    * @desc Returns the total number of leaves.
@@ -312,10 +351,11 @@ export class MerkleTree extends Base {
    *const leaves = tree.getHexLeaves()
    *```
    */
+   /* TODO
   getHexLeaves ():string[] {
     return this.leaves.map(leaf => this.bufferToHex(leaf))
   }
-
+  */
   /**
    * marshalLeaves
    * @desc Returns array of leaves of Merkle Tree as a JSON string.
@@ -323,11 +363,11 @@ export class MerkleTree extends Base {
    * @return {String} - List of leaves as JSON string
    * @example
    *```js
-   *const jsonStr = MerkleTree.marshalLeaves(leaves)
+   *const jsonStr = MerkleTreePrefix.marshalLeaves(leaves)
    *```
    */
   static marshalLeaves (leaves: any[]):string {
-    return JSON.stringify(leaves.map(leaf => MerkleTree.bufferToHex(leaf)), null, 2)
+    return JSON.stringify(leaves.map(leaf => MerkleTreePrefix.bufferToHex(leaf)), null, 2)
   }
 
   /**
@@ -337,7 +377,7 @@ export class MerkleTree extends Base {
    * @return {Buffer[]} - Unmarshalled list of leaves
    * @example
    *```js
-   *const leaves = MerkleTree.unmarshalLeaves(jsonStr)
+   *const leaves = MerkleTreePrefix.unmarshalLeaves(jsonStr)
    *```
    */
   static unmarshalLeaves (jsonStr: string | object):Buffer[] {
@@ -358,7 +398,7 @@ export class MerkleTree extends Base {
       throw new Error('Expected JSON string to be array')
     }
 
-    return parsed.map(MerkleTree.bufferify)
+    return parsed.map(MerkleTreePrefix.bufferify)
   }
 
   /**
@@ -492,10 +532,11 @@ export class MerkleTree extends Base {
    * @example
    *```js
    *const leaves = ['a', 'b', 'a'].map(value => keccak(value))
-   *const tree = new MerkleTree(leaves, keccak)
+   *const tree = new MerkleTreePrefix(leaves, keccak)
    *const proof = tree.getProof(leaves[2], 2)
    *```
    */
+   /*/ TODO
   getProof (leaf: Buffer | string, index?: number):any[] {
     if (typeof leaf === 'undefined') {
       throw new Error('leaf is required')
@@ -540,7 +581,8 @@ export class MerkleTree extends Base {
 
     return proof
   }
-
+  
+*/
   /**
    * getHexProof
    * @desc Returns the proof for a target leaf as hex strings.
@@ -553,9 +595,11 @@ export class MerkleTree extends Base {
    *const proof = tree.getHexProof(leaves[2])
    *```
    */
+   /*/TODO
   getHexProof (leaf: Buffer | string, index?: number):string[] {
     return this.getProof(leaf, index).map(item => this.bufferToHex(item.data))
   }
+  */
 
   /**
   * getPositionalHexProof
@@ -569,6 +613,7 @@ export class MerkleTree extends Base {
   *const proof = tree.getPositionalHexProof(leaves[2])
   *```
   */
+  /* TODO
   getPositionalHexProof (leaf: Buffer | string, index?: number): (string | number)[][] {
     return this.getProof(leaf, index).map(item => {
       return [
@@ -577,7 +622,7 @@ export class MerkleTree extends Base {
       ]
     })
   }
-
+  */
   /**
    * marshalProof
    * @desc Returns proof array as JSON string.
@@ -585,7 +630,7 @@ export class MerkleTree extends Base {
    * @return {String} - Proof array as JSON string.
    * @example
    * ```js
-   *const jsonStr = MerkleTree.marshalProof(proof)
+   *const jsonStr = MerkleTreePrefix.marshalProof(proof)
    *```
    */
   static marshalProof (proof: any[]):string {
@@ -595,12 +640,12 @@ export class MerkleTree extends Base {
       }
 
       if (Buffer.isBuffer(item)) {
-        return MerkleTree.bufferToHex(item)
+        return MerkleTreePrefix.bufferToHex(item)
       }
 
       return {
         position: item.position,
-        data: MerkleTree.bufferToHex(item.data)
+        data: MerkleTreePrefix.bufferToHex(item.data)
       }
     })
 
@@ -614,7 +659,7 @@ export class MerkleTree extends Base {
    * @return {String|Object} - Marshalled proof
    * @example
    * ```js
-   *const proof = MerkleTree.unmarshalProof(jsonStr)
+   *const proof = MerkleTreePrefix.unmarshalProof(jsonStr)
    *```
    */
   static unmarshalProof (jsonStr: string | object):any[] {
@@ -637,11 +682,11 @@ export class MerkleTree extends Base {
 
     return parsed.map(item => {
       if (typeof item === 'string') {
-        return MerkleTree.bufferify(item)
+        return MerkleTreePrefix.bufferify(item)
       } else if (item instanceof Object) {
         return {
           position: item.position,
-          data: MerkleTree.bufferify(item.data)
+          data: MerkleTreePrefix.bufferify(item.data)
         }
       } else {
         throw new Error('Expected item to be of type string or object')
@@ -750,6 +795,7 @@ export class MerkleTree extends Base {
    *const proof = tree.getMultiProof(indices)
    *```
    */
+   /*
   getMultiProof (tree?: any[], indices?: any[]):Buffer[] {
     if (!indices) {
       indices = tree
@@ -853,7 +899,7 @@ export class MerkleTree extends Base {
 
     return proofHashes
   }
-
+*/
   /**
    * getHexMultiProof
    * @desc Returns the multiproof for given tree indices as hex strings.
@@ -865,10 +911,11 @@ export class MerkleTree extends Base {
    *const proof = tree.getHexMultiProof(indices)
    *```
    */
+  /*TODO
   getHexMultiProof (tree: Buffer[] | string[], indices: number[]):string[] {
     return this.getMultiProof(tree, indices).map((x) => this.bufferToHex(x))
   }
-
+  */
   /**
    * getProofFlags
    * @desc Returns list of booleans where proofs should be used instead of hashing.
@@ -883,6 +930,8 @@ export class MerkleTree extends Base {
    *const proofFlags = tree.getProofFlags(leaves, proof)
    *```
    */
+
+   /* TODO
   getProofFlags (leaves: any[], proofs: Buffer[] | string[]):boolean[] {
     if (!Array.isArray(leaves) || leaves.length <= 0) {
       throw new Error('Invalid Inputs!')
@@ -921,7 +970,7 @@ export class MerkleTree extends Base {
 
     return flags
   }
-
+*/
   /**
    * verify
    * @desc Returns true if the proof path (array of hashes) can connect the target node
@@ -1157,11 +1206,11 @@ export class MerkleTree extends Base {
    * @return {Boolean}
    * @example
    *```js
-   *const verified = MerkleTree.verify(proof, leaf, root, sha256, options)
+   *const verified = MerkleTreePrefix.verify(proof, leaf, root, sha256, options)
    *```
    */
   static verify (proof: any[], targetNode: Buffer | string, root: Buffer | string, hashFn = SHA256, options: Options = {}):boolean {
-    const tree = new MerkleTree([], hashFn, options)
+    const tree = new MerkleTreePrefix([], hashFn, options)
     return tree.verify(proof, targetNode, root)
   }
 
@@ -1176,14 +1225,15 @@ export class MerkleTree extends Base {
    * ```js
    *const flatTree = tree.getLayersFlat()
    *const indices = [2, 5, 6]
-   *const proof = MerkleTree.getMultiProof(flatTree, indices)
+   *const proof = MerkleTreePrefix.getMultiProof(flatTree, indices)
    *```
    */
+   /*TODO
   static getMultiProof (tree: Buffer[] | string[], indices: number[]):Buffer[] {
-    const t = new MerkleTree([])
+    const t = new MerkleTreePrefix([])
     return t.getMultiProof(tree, indices)
   }
-
+  */
   /**
    * resetTree
    * @desc Resets the tree by clearing the leaves and layers.
@@ -1303,27 +1353,38 @@ export class MerkleTree extends Base {
 }
 
 if (typeof window !== 'undefined') {
-  ;(window as any).MerkleTree = MerkleTree
+  ;(window as any).MerkleTreePrefix = MerkleTreePrefix
 }
 
-export default MerkleTree
+export default MerkleTreePrefix
 
-const tree = new MerkleTree([], SHA256)
-const ll = SHA256("aya") 
+const tree = new MerkleTreePrefix([], SHA256)
+const ll = SHA256F("aya") 
 const myMap = new Map<string, number>([
   ["key1", 1],
   ["key2", 2]
 ]);
 
 
+const testLeaf : TLeafPref = {leaf: ll , 
+                        vote: myMap}
 
-console.log(ll)   
-console.log(tree)              
-tree.addLeaf(ll)
-console.log(tree)
-tree.addLeaf(ll)
-console.log(tree)
-tree.addLeaf(ll)
+console.log(testLeaf)                 
+tree.addLeaf(testLeaf)
+tree.addLeaf(testLeaf)
+tree.addLeaf(testLeaf)
+tree.addLeaf(testLeaf)
+tree.addLeaf(testLeaf)
 
 console.log("a")
 console.log(tree)
+
+
+for (var layer in tree.layers) {
+  console.log(tree.layers[layer])
+  for(var layerj in tree.layers[layer]){
+    console.log(tree.layers[layer][layerj])
+  }
+
+}
+
