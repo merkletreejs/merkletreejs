@@ -29,6 +29,8 @@ export interface Options {
   sort?: boolean
   /** If defined, the resulting hash of this function will be used to fill in odd numbered layers. */
   fillDefaultHash?: TFillDefaultHash | Buffer | string
+  /** If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs. */
+  complete?: boolean;
 }
 
 /**
@@ -46,6 +48,7 @@ export class MerkleTree extends Base {
   private sortPairs: boolean = false
   private sort: boolean = false
   private fillDefaultHash: TFillDefaultHash | null = null
+  private complete: boolean = false
 
   /**
    * @desc Constructs a Merkle Tree.
@@ -71,10 +74,21 @@ export class MerkleTree extends Base {
    */
   constructor (leaves: any[], hashFn = SHA256, options: Options = {}) {
     super()
+
+    if (options.complete) {
+      if (options.isBitcoinTree) {
+        throw new Error('option "complete" is incompatible with "isBitcoinTree"')
+      }
+      if (options.duplicateOdd) {
+        throw new Error('option "complete" is incompatible with "duplicateOdd"')
+      }
+    }
+
     this.isBitcoinTree = !!options.isBitcoinTree
     this.hashLeaves = !!options.hashLeaves
     this.sortLeaves = !!options.sortLeaves
     this.sortPairs = !!options.sortPairs
+    this.complete = !!options.complete
 
     if (options.fillDefaultHash) {
       if (typeof options.fillDefaultHash === 'function') {
@@ -126,8 +140,15 @@ export class MerkleTree extends Base {
 
       this.layers.push([])
 
+      const layerLimit = this.complete && layerIndex === 1 && !Number.isInteger(Math.log2(nodes.length))
+        ? (2 * nodes.length) - (2 ** Math.ceil(Math.log2(nodes.length)))
+        : nodes.length
+
       for (let i = 0; i < nodes.length; i += 2) {
-        if (i + 1 === nodes.length) {
+        if (i >= layerLimit) {
+          this.layers[layerIndex].push(...nodes.slice(layerLimit))
+          break
+        } else if (i + 1 === nodes.length) {
           if (nodes.length % 2 === 1) {
             let data = nodes[nodes.length - 1]
             let hash = data
@@ -744,6 +765,10 @@ export class MerkleTree extends Base {
    *```
    */
   getMultiProof (tree?: any[], indices?: any[]):Buffer[] {
+    if (!this.complete) {
+      console.warn('for correct use of multiProof it\'s strongly recommended to set complete: true')
+    }
+
     if (!indices) {
       indices = tree
       tree = this.getLayersFlat()

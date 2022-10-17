@@ -1158,3 +1158,28 @@ test('ethereum-cryptography/keccak256', t => {
   const tree2 = new MerkleTree(leaves, ethCryptoKeccak256, { hashLeaves: true })
   t.equal(tree2.getHexRoot(), expectedRoot)
 })
+
+test('keccak256 with complete option', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map(v => keccak256(Buffer.from(v)))
+  const tree = new MerkleTree(leaves, keccak256, { complete: true })
+
+  const root = '581ddb9a48c5ec60fd5a0023d4673e2b33c256f8886342bef35a8eebeda51b44'
+
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('complete option with incompatible options', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(v => keccak256(Buffer.from(v)))
+  t.throws(
+    () => new MerkleTree(leaves, keccak256, { complete: true, isBitcoinTree: true }),
+    { message: 'option "complete" is incompatible with "isBitcoinTree"' },
+  )
+  t.throws(
+    () => new MerkleTree(leaves, keccak256, { complete: true, duplicateOdd: true }),
+    { message: 'option "complete" is incompatible with "duplicateOdd"' },
+  )
+})
