@@ -71,8 +71,8 @@ console.log(tree.verify(proof, leaf, root)) // true
 const badLeaves = ['a', 'x', 'c'].map(x => SHA256(x))
 const badTree = new MerkleTree(badLeaves, SHA256)
 const badLeaf = SHA256('x')
-const badProof = tree.getProof(badLeaf)
-console.log(tree.verify(badProof, leaf, root)) // false
+const badProof = badTree.getProof(badLeaf)
+console.log(badTree.verify(badProof, badLeaf, root)) // false
 ```
 
 Print tree to console:
