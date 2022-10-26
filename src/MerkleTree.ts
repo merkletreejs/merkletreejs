@@ -906,12 +906,12 @@ export class MerkleTree extends Base {
       throw new Error('Invalid Inputs!')
     }
 
+    let ids : number[]
     if (leaves.every(Number.isInteger)) {
-      leaves = leaves
+      ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
     } else {
-      leaves = leaves.map((el) => this._bufferIndexOf(this.leaves, el))
+      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
     }
-    let ids : number[] = [...leaves].sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
 
     if (!ids.every((idx: number) => idx !== -1)) {
       throw new Error('Element does not exist in Merkle tree')
@@ -935,11 +935,6 @@ export class MerkleTree extends Base {
         ids.push((idx / 2) | 0)
         return ids
       }, [])
-    }
-
-    const leafValues = leaves.map(i => this.leaves[i]);
-    if (!this.verifyMultiProofWithFlags(this.getRoot(), leafValues, proofs, flags)) {
-      throw new Error('cannot generate multiProof flags for parameters')
     }
 
     return flags

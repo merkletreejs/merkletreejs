@@ -1185,16 +1185,3 @@ test('complete option with incompatible options', t => {
     /option "complete" is incompatible with "duplicateOdd"/,
   )
 })
-
-test('bad multiproof', t => {
-  t.plan(1);
-  const leaves = 'abcdefghi'.split('').map(keccak256).sort(Buffer.compare);
-  const merkleTree = new MerkleTree(leaves, keccak256, { complete: true });
-  const reqLeaves = leaves;
-  const root = merkleTree.getHexRoot();
-  const proof = merkleTree.getMultiProof(reqLeaves);
-  t.throws(
-    () => merkleTree.getProofFlags(reqLeaves, proof),
-    /cannot generate multiProof flags for parameters/,
-  );
-});
