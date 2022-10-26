@@ -1176,13 +1176,14 @@ test('complete option with incompatible options', t => {
   const leaves = ['a', 'b', 'c'].map(v => keccak256(Buffer.from(v)))
   t.throws(
     () => new MerkleTree(leaves, keccak256, { complete: true, isBitcoinTree: true }),
-    { message: 'option "complete" is incompatible with "isBitcoinTree"' },
+    /option "complete" is incompatible with "isBitcoinTree"/,
   )
   t.throws(
     () => new MerkleTree(leaves, keccak256, { complete: true, duplicateOdd: true }),
-    { message: 'option "complete" is incompatible with "duplicateOdd"' },
+    /option "complete" is incompatible with "duplicateOdd"/,
   )
 })
+
 test('bad multiproof', t => {
   t.plan(1);
   const leaves = 'abcdefghi'.split('').map(keccak256).sort(Buffer.compare);
