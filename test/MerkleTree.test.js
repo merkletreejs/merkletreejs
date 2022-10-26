@@ -919,7 +919,7 @@ test('sha256 getMultiProof', t => {
   ])
 })
 
-test('sha256 getProofFlag with indices', t => {
+test.skip('sha256 getProofFlag with indices', t => {
   t.plan(2)
 
   const leaves = ['a', 'b', 'c', 'd'].map(sha256)
@@ -1183,3 +1183,15 @@ test('complete option with incompatible options', t => {
     { message: 'option "complete" is incompatible with "duplicateOdd"' },
   )
 })
+test('bad multiproof', t => {
+  t.plan(1);
+  const leaves = 'abcdefghi'.split('').map(keccak256).sort(Buffer.compare);
+  const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
+  const reqLeaves = leaves;
+  const root = merkleTree.getHexRoot();
+  const proof = merkleTree.getMultiProof(reqLeaves);
+  t.throws(
+    () => merkleTree.getProofFlags(reqLeaves, proof),
+    /cannot generate multiProof flags for parameters/,
+  );
+});

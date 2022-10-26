@@ -766,7 +766,7 @@ export class MerkleTree extends Base {
    */
   getMultiProof (tree?: any[], indices?: any[]):Buffer[] {
     if (!this.complete) {
-      console.warn('for correct use of multiProof it\'s strongly recommended to set complete: true')
+      console.warn('Warning: For correct multiProofs it\'s strongly recommended to set complete: true')
     }
 
     if (!indices) {
@@ -906,12 +906,12 @@ export class MerkleTree extends Base {
       throw new Error('Invalid Inputs!')
     }
 
-    let ids : number[]
     if (leaves.every(Number.isInteger)) {
-      ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
+      leaves = leaves
     } else {
-      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      leaves = leaves.map((el) => this._bufferIndexOf(this.leaves, el))
     }
+    let ids : number[] = [...leaves].sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
 
     if (!ids.every((idx: number) => idx !== -1)) {
       throw new Error('Element does not exist in Merkle tree')
@@ -935,6 +935,11 @@ export class MerkleTree extends Base {
         ids.push((idx / 2) | 0)
         return ids
       }, [])
+    }
+
+    const leafValues = leaves.map(i => this.leaves[i]);
+    if (!this.verifyMultiProofWithFlags(this.getRoot(), leafValues, proofs, flags)) {
+      throw new Error('cannot generate multiProof flags for parameters')
     }
 
     return flags
