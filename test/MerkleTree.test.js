@@ -919,8 +919,8 @@ test('sha256 getMultiProof', t => {
   ])
 })
 
-test.skip('sha256 getProofFlag with indices', t => {
-  t.plan(2)
+test('sha256 getProofFlag with indices', t => {
+  t.plan(3)
 
   const leaves = ['a', 'b', 'c', 'd'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
@@ -928,15 +928,17 @@ test.skip('sha256 getProofFlag with indices', t => {
   t.equal(root, '0x4c6aae040ffada3d02598207b8485fcbe161c03f4cb3f660e4d341e7496ff3b2')
 
   const treeFlat = tree.getLayersFlat()
-  const proofIndices = [1, 2]
-  const proof = tree.getMultiProof(treeFlat, proofIndices)
-
+  const proofIndices = [2, 1]
+  const proof = tree.getMultiProof(proofIndices)
   const proofFlags = tree.getProofFlags(proofIndices, proof)
   t.deepEqual(proofFlags, [
     false,
     false,
     true
   ])
+  t.ok(
+    tree.verifyMultiProofWithFlags(root, proofIndices.map(i => leaves[i]), proof, proofFlags)
+  )
 })
 
 test('sha256 getMultiProof - statusim', t => {
@@ -1187,7 +1189,7 @@ test('complete option with incompatible options', t => {
 test('bad multiproof', t => {
   t.plan(1);
   const leaves = 'abcdefghi'.split('').map(keccak256).sort(Buffer.compare);
-  const merkleTree = new MerkleTree(leaves, keccak256, { sort: true });
+  const merkleTree = new MerkleTree(leaves, keccak256, { complete: true });
   const reqLeaves = leaves;
   const root = merkleTree.getHexRoot();
   const proof = merkleTree.getMultiProof(reqLeaves);
