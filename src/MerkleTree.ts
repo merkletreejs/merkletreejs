@@ -21,7 +21,7 @@ export interface Options {
   hashLeaves?: boolean
   /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
   isBitcoinTree?: boolean
-  /** If set to `true`, the leaves will be sorted. */
+  /** If set to `true`, the leaves will be sorted. Recommended for use of multiProofs. */
   sortLeaves?: boolean
   /** If set to `true`, the hashing pairs will be sorted. */
   sortPairs?: boolean
