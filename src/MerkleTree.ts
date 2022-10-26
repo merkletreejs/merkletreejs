@@ -908,7 +908,7 @@ export class MerkleTree extends Base {
 
     let ids : number[]
     if (leaves.every(Number.isInteger)) {
-      ids = leaves.sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
+      ids = [...leaves].sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
     } else {
       ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
     }
