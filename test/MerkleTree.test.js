@@ -927,7 +927,6 @@ test('sha256 getProofFlag with indices', t => {
   const root = tree.getHexRoot()
   t.equal(root, '0x4c6aae040ffada3d02598207b8485fcbe161c03f4cb3f660e4d341e7496ff3b2')
 
-  const treeFlat = tree.getLayersFlat()
   const proofIndices = [2, 1]
   const proof = tree.getMultiProof(proofIndices)
   const proofFlags = tree.getProofFlags(proofIndices, proof)
@@ -1178,10 +1177,10 @@ test('complete option with incompatible options', t => {
   const leaves = ['a', 'b', 'c'].map(v => keccak256(Buffer.from(v)))
   t.throws(
     () => new MerkleTree(leaves, keccak256, { complete: true, isBitcoinTree: true }),
-    /option "complete" is incompatible with "isBitcoinTree"/,
+    /option "complete" is incompatible with "isBitcoinTree"/
   )
   t.throws(
     () => new MerkleTree(leaves, keccak256, { complete: true, duplicateOdd: true }),
-    /option "complete" is incompatible with "duplicateOdd"/,
+    /option "complete" is incompatible with "duplicateOdd"/
   )
 })
