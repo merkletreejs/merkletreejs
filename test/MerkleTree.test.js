@@ -920,7 +920,7 @@ test('sha256 getMultiProof', t => {
 })
 
 test('sha256 getProofFlag with indices', t => {
-  t.plan(2)
+  t.plan(3)
 
   const leaves = ['a', 'b', 'c', 'd'].map(sha256)
   const tree = new MerkleTree(leaves, sha256, { sortPairs: true })
@@ -928,15 +928,17 @@ test('sha256 getProofFlag with indices', t => {
   t.equal(root, '0x4c6aae040ffada3d02598207b8485fcbe161c03f4cb3f660e4d341e7496ff3b2')
 
   const treeFlat = tree.getLayersFlat()
-  const proofIndices = [1, 2]
-  const proof = tree.getMultiProof(treeFlat, proofIndices)
-
+  const proofIndices = [2, 1]
+  const proof = tree.getMultiProof(proofIndices)
   const proofFlags = tree.getProofFlags(proofIndices, proof)
   t.deepEqual(proofFlags, [
     false,
     false,
     true
   ])
+  t.ok(
+    tree.verifyMultiProofWithFlags(root, proofIndices.map(i => leaves[i]), proof, proofFlags)
+  )
 })
 
 test('sha256 getMultiProof - statusim', t => {
@@ -1157,4 +1159,29 @@ test('ethereum-cryptography/keccak256', t => {
 
   const tree2 = new MerkleTree(leaves, ethCryptoKeccak256, { hashLeaves: true })
   t.equal(tree2.getHexRoot(), expectedRoot)
+})
+
+test('keccak256 with complete option', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map(v => keccak256(Buffer.from(v)))
+  const tree = new MerkleTree(leaves, keccak256, { complete: true })
+
+  const root = '581ddb9a48c5ec60fd5a0023d4673e2b33c256f8886342bef35a8eebeda51b44'
+
+  t.equal(tree.getRoot().toString('hex'), root)
+})
+
+test('complete option with incompatible options', t => {
+  t.plan(2)
+
+  const leaves = ['a', 'b', 'c'].map(v => keccak256(Buffer.from(v)))
+  t.throws(
+    () => new MerkleTree(leaves, keccak256, { complete: true, isBitcoinTree: true }),
+    /option "complete" is incompatible with "isBitcoinTree"/,
+  )
+  t.throws(
+    () => new MerkleTree(leaves, keccak256, { complete: true, duplicateOdd: true }),
+    /option "complete" is incompatible with "duplicateOdd"/,
+  )
 })
