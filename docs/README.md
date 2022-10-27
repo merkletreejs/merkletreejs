@@ -168,6 +168,10 @@ More info [here](https://bitcointalk.org/?topic=102395).
 
 - [Eth 2.0 specs - Merkle Multiproofs](https://github.com/ethereum/eth2.0-specs/blob/dev/ssz/merkle-proofs.md#merkle-multiproofs)
 
+- [What is complete binary tree?](https://xlinux.nist.gov/dads/HTML/completeBinaryTree.html)
+
+- [What is perfect binary tree?](https://xlinux.nist.gov/dads/HTML/perfectBinaryTree.html)
+
 ## Contributing
 
 Pull requests are welcome!
