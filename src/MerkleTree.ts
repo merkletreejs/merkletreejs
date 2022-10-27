@@ -572,6 +572,89 @@ export class MerkleTree extends Base {
   }
 
   /**
+   * getProofs
+   * @desc Returns the proofs for all leaves.
+   * @return {Object[]} - Array of objects containing a position property of type string
+   * with values of 'left' or 'right' and a data property of type Buffer for all leaves.
+   * @example
+   * ```js
+   *const proofs = tree.getProofs()
+   *```
+   *
+   * @example
+   *```js
+   *const leaves = ['a', 'b', 'a'].map(value => keccak(value))
+   *const tree = new MerkleTree(leaves, keccak)
+   *const proofs = tree.getProofs()
+   *```
+   */
+   getProofs ():any[] {
+    let proof = [], proofs = [];
+  
+    this.getProofsDFS(this.layers.length - 1, 0, proof, proofs);
+  
+    return proofs
+  }
+
+  /**
+   * getProofsDFS
+   * @desc Get all proofs through single traverse 
+   * @param {Number} currentLayer - Current layer index in traverse.
+   * @param {Number} index - Current tarvese node index in traverse.
+   * @param {Object[]} proof - Proof chain for single leaf.
+   * @param {Object[]} proofs - Proofs for all leaves
+   * @example
+   * ```js
+   *const layers = tree.getLayers()
+   *const index = 0;
+   *let proof = [];
+   *let proofs = [];
+   *const proof = tree.getProofsDFS(layers, index, proof, proofs)
+   *```
+   */
+  getProofsDFS(currentLayer, index, proof, proofs):any[] {
+    const isRightNode = index % 2;
+    if (currentLayer == -1) {
+      if (!isRightNode) proofs.push([...proof].reverse());
+      return;
+    }
+    if(index >= this.layers[currentLayer].length) return;
+  
+    const layer = this.layers[currentLayer];
+    const pairIndex = isRightNode ? index - 1 : index + 1;
+  
+    let pushed = false;
+    if (pairIndex < layer.length) {
+      pushed = true;
+      proof.push({
+        position: isRightNode ? 'left' : 'right',
+        data: layer[pairIndex],
+      });
+    }
+  
+    let leftchildIndex = index * 2;
+    let rightchildIndex = index * 2 + 1;
+  
+    this.getProofsDFS(currentLayer - 1, leftchildIndex, proof, proofs);
+    this.getProofsDFS(currentLayer - 1, rightchildIndex, proof, proofs);
+  
+    if (pushed) proof.splice(proof.length - 1, 1);
+  }
+
+  /**
+   * getHexProofs
+   * @desc Returns the proofs for all leaves as hex strings.
+   * @return {String[]} - Proofs array as hex strings.
+   * @example
+   * ```js
+   *const proofs = tree.getHexProofs()
+   *```
+   */
+   getHexProofs ():string[] {
+    return this.getProofs().map(item => this.bufferToHex(item.data))
+  }
+
+  /**
   * getPositionalHexProof
   * @desc Returns the proof for a target leaf as hex strings and the position in binary (left == 0).
   * @param {Buffer} leaf - Target leaf
