@@ -10,6 +10,7 @@
 
 ### Properties
 
+* [complete](_src_merkletree_.options.md#optional-complete)
 * [duplicateOdd](_src_merkletree_.options.md#optional-duplicateodd)
 * [fillDefaultHash](_src_merkletree_.options.md#optional-filldefaulthash)
 * [hashLeaves](_src_merkletree_.options.md#optional-hashleaves)
@@ -19,6 +20,14 @@
 * [sortPairs](_src_merkletree_.options.md#optional-sortpairs)
 
 ## Properties
+
+### `Optional` complete
+
+• **complete**? : *boolean*
+
+If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs.
+
+___
 
 ### `Optional` duplicateOdd
 
@@ -64,7 +73,7 @@ ___
 
 • **sortLeaves**? : *boolean*
 
-If set to `true`, the leaves will be sorted.
+If set to `true`, the leaves will be sorted. Recommended for use of multiProofs.
 
 ___
 

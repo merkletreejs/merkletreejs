@@ -33,6 +33,7 @@
 - [Notes](#notes)
 - [Resources](#resources)
 - [Contributing](#contributing)
+- [Tip Jar](#tip-jar)
 - [License](#license)
 
 ## Install
@@ -73,8 +74,8 @@ console.log(tree.verify(proof, leaf, root)) // true
 const badLeaves = ['a', 'x', 'c'].map(x => SHA256(x))
 const badTree = new MerkleTree(badLeaves, SHA256)
 const badLeaf = SHA256('x')
-const badProof = tree.getProof(badLeaf)
-console.log(tree.verify(badProof, leaf, root)) // false
+const badProof = badTree.getProof(badLeaf)
+console.log(badTree.verify(badProof, badLeaf, root)) // false
 ```
 
 Print tree to console:
@@ -130,7 +131,10 @@ npm test
 - Q: How do you verify merkle [multiproofs](https://github.com/ethereum/eth2.0-specs/blob/dev/ssz/merkle-proofs.md#merkle-multiproofs) in Solidity?
   - A: Check out the example repo [merkletreejs-multiproof-solidity](https://github.com/miguelmota/merkletreejs-multiproof-solidity) on how to generate merkle multiproofs with this library and verify them in Solidity.
 
-- Q: Is there a CLI version?
+- Q: Is there an NFT whitelist example in Solidity?
+  - A: Check out the example repo [merkletreejs-nft-whitelist](https://github.com/miguelmota/merkletreejs-nft-whitelist) on how to generate merkle root of whitelisted accounts and merkle proofs with this library and verify them in Solidity.
+
+- Q: Is there a CLI version of this library?
 
   - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).
 
@@ -172,6 +176,16 @@ For contributions please create a new branch and submit a pull request for revie
 
 _Many thanks to all the [contributors](https://github.com/miguelmota/merkletreejs/graphs/contributors) that made this library better._
 
+## Tip Jar
+
+[![BTC Tip Jar](https://img.shields.io/badge/BTC-tip-yellow.svg?logo=bitcoin&style=flat)](https://www.blockchain.com/btc/address/3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf) `3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf`
+
+[![ETH Tip Jar](https://img.shields.io/badge/ETH-tip-blue.svg?logo=ethereum&style=flat)](https://etherscan.io/address/0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF) `0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF`
+
+Thank you for tips! 🙏
+
 ## License
 
-[MIT](LICENSE)
+Released under the [MIT](./LICENSE) license.
+
+© [Miguel Mota](https://github.com/miguelmota)
