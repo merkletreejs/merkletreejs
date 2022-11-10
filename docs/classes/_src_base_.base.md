@@ -18,20 +18,24 @@
 * [_isHexString](_src_base_.base.md#protected-_ishexstring)
 * [_log2](_src_base_.base.md#protected-_log2)
 * [_zip](_src_base_.base.md#protected-_zip)
+* [binarySearch](_src_base_.base.md#binarysearch)
 * [bufferToHex](_src_base_.base.md#buffertohex)
 * [bufferify](_src_base_.base.md#bufferify)
 * [bufferifyFn](_src_base_.base.md#bufferifyfn)
+* [linearSearch](_src_base_.base.md#linearsearch)
 * [print](_src_base_.base.md#print)
+* [binarySearch](_src_base_.base.md#static-binarysearch)
 * [bufferToHex](_src_base_.base.md#static-buffertohex)
 * [bufferify](_src_base_.base.md#static-bufferify)
 * [isHexString](_src_base_.base.md#static-ishexstring)
+* [linearSearch](_src_base_.base.md#static-linearsearch)
 * [print](_src_base_.base.md#static-print)
 
 ## Methods
 
 ### `Protected` _bufferIndexOf
 
-▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer): *number*
+▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
 
 bufferIndexOf
 
@@ -44,10 +48,11 @@ const index = tree.bufferIndexOf(haystack, needle)
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`array` | Buffer[] |
-`element` | Buffer |
+Name | Type | Default |
+------ | ------ | ------ |
+`array` | Buffer[] | - |
+`element` | Buffer | - |
+`isSorted` | boolean | false |
 
 **Returns:** *number*
 
@@ -121,6 +126,46 @@ Name | Type | Description |
 
 ___
 
+###  binarySearch
+
+▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+binarySearch
+
+**`desc`** Returns the first index of which given item is found in array using binary search.
+
+**`example`** 
+```js
+const index = tree.binarySearch(array, element, Buffer.compare)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **compareFunction**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
 ###  bufferToHex
 
 ▸ **bufferToHex**(`value`: Buffer, `withPrefix`: boolean): *string*
@@ -191,6 +236,46 @@ Name | Type |
 
 ___
 
+###  linearSearch
+
+▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+linearSearch
+
+**`desc`** Returns the first index of which given item is found in array using linear search.
+
+**`example`** 
+```js
+const index = tree.linearSearch(array, element, (a, b) => a === b)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **eqChecker**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
 ###  print
 
 ▸ **print**(): *void*
@@ -205,6 +290,46 @@ tree.print()
 ```
 
 **Returns:** *void*
+
+___
+
+### `Static` binarySearch
+
+▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+binarySearch
+
+**`desc`** Returns the first index of which given item is found in array using binary search.
+
+**`example`** 
+```js
+const index = MerkleTree.binarySearch(array, element, Buffer.compare)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **compareFunction**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
 
 ___
 
@@ -275,6 +400,46 @@ Name | Type |
 `v` | string |
 
 **Returns:** *boolean*
+
+___
+
+### `Static` linearSearch
+
+▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+linearSearch
+
+**`desc`** Returns the first index of which given item is found in array using linear search.
+
+**`example`** 
+```js
+const index = MerkleTree.linearSearch(array, element, (a, b) => a === b)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **eqChecker**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
 
 ___
 

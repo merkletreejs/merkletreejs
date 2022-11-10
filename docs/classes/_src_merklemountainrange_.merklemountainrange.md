@@ -34,6 +34,7 @@
 * [_log2](_src_merklemountainrange_.merklemountainrange.md#protected-_log2)
 * [_zip](_src_merklemountainrange_.merklemountainrange.md#protected-_zip)
 * [append](_src_merklemountainrange_.merklemountainrange.md#append)
+* [binarySearch](_src_merklemountainrange_.merklemountainrange.md#binarysearch)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#bufferify)
 * [bufferifyFn](_src_merklemountainrange_.merklemountainrange.md#bufferifyfn)
@@ -50,6 +51,7 @@
 * [hashLeaf](_src_merklemountainrange_.merklemountainrange.md#hashleaf)
 * [heightAt](_src_merklemountainrange_.merklemountainrange.md#heightat)
 * [isLeaf](_src_merklemountainrange_.merklemountainrange.md#isleaf)
+* [linearSearch](_src_merklemountainrange_.merklemountainrange.md#linearsearch)
 * [mountainHeight](_src_merklemountainrange_.merklemountainrange.md#mountainheight)
 * [numOfPeaks](_src_merklemountainrange_.merklemountainrange.md#numofpeaks)
 * [peakBagging](_src_merklemountainrange_.merklemountainrange.md#peakbagging)
@@ -59,9 +61,11 @@
 * [print](_src_merklemountainrange_.merklemountainrange.md#print)
 * [rollUp](_src_merklemountainrange_.merklemountainrange.md#rollup)
 * [verify](_src_merklemountainrange_.merklemountainrange.md#verify)
+* [binarySearch](_src_merklemountainrange_.merklemountainrange.md#static-binarysearch)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#static-buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#static-bufferify)
 * [isHexString](_src_merklemountainrange_.merklemountainrange.md#static-ishexstring)
+* [linearSearch](_src_merklemountainrange_.merklemountainrange.md#static-linearsearch)
 * [print](_src_merklemountainrange_.merklemountainrange.md#static-print)
 
 ## Constructors
@@ -134,7 +138,7 @@ ___
 
 ### `Protected` _bufferIndexOf
 
-▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer): *number*
+▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
 
 *Inherited from [Base](_src_base_.base.md).[_bufferIndexOf](_src_base_.base.md#protected-_bufferindexof)*
 
@@ -149,10 +153,11 @@ const index = tree.bufferIndexOf(haystack, needle)
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`array` | Buffer[] |
-`element` | Buffer |
+Name | Type | Default |
+------ | ------ | ------ |
+`array` | Buffer[] | - |
+`element` | Buffer | - |
+`isSorted` | boolean | false |
 
 **Returns:** *number*
 
@@ -246,6 +251,48 @@ Name | Type |
 `data` | Buffer &#124; string |
 
 **Returns:** *void*
+
+___
+
+###  binarySearch
+
+▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[binarySearch](_src_base_.base.md#static-binarysearch)*
+
+binarySearch
+
+**`desc`** Returns the first index of which given item is found in array using binary search.
+
+**`example`** 
+```js
+const index = tree.binarySearch(array, element, Buffer.compare)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **compareFunction**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
 
 ___
 
@@ -523,6 +570,48 @@ Name | Type |
 
 ___
 
+###  linearSearch
+
+▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[linearSearch](_src_base_.base.md#static-linearsearch)*
+
+linearSearch
+
+**`desc`** Returns the first index of which given item is found in array using linear search.
+
+**`example`** 
+```js
+const index = tree.linearSearch(array, element, (a, b) => a === b)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **eqChecker**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
 ###  mountainHeight
 
 ▸ **mountainHeight**(`size`: number): *number*
@@ -671,6 +760,48 @@ Name | Type |
 
 ___
 
+### `Static` binarySearch
+
+▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[binarySearch](_src_base_.base.md#static-binarysearch)*
+
+binarySearch
+
+**`desc`** Returns the first index of which given item is found in array using binary search.
+
+**`example`** 
+```js
+const index = MerkleTree.binarySearch(array, element, Buffer.compare)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **compareFunction**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
 ### `Static` bufferToHex
 
 ▸ **bufferToHex**(`value`: Buffer, `withPrefix`: boolean): *string*
@@ -744,6 +875,48 @@ Name | Type |
 `v` | string |
 
 **Returns:** *boolean*
+
+___
+
+### `Static` linearSearch
+
+▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[linearSearch](_src_base_.base.md#static-linearsearch)*
+
+linearSearch
+
+**`desc`** Returns the first index of which given item is found in array using linear search.
+
+**`example`** 
+```js
+const index = MerkleTree.linearSearch(array, element, (a, b) => a === b)
+```
+
+**Parameters:**
+
+▪ **array**: *Buffer[]*
+
+Array of items.
+
+▪ **element**: *Buffer*
+
+Item to find.
+
+▪ **eqChecker**: *function*
+
+▸ (`a`: unknown, `b`: unknown): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`a` | unknown |
+`b` | unknown |
+
+**Returns:** *number*
+
+- Index number
 
 ___
 
