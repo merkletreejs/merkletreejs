@@ -717,7 +717,7 @@ ___
 
 ###  getProof
 
-▸ **getProof**(`leaf`: Buffer | string, `index?`: number): *any[]*
+▸ **getProof**(`leaf`: Buffer | string, `index?`: number): *object[]*
 
 getProof
 
@@ -742,7 +742,7 @@ Name | Type | Description |
 `leaf` | Buffer &#124; string | Target leaf |
 `index?` | number | - |
 
-**Returns:** *any[]*
+**Returns:** *object[]*
 
 - Array of objects containing a position property of type string
 with values of 'left' or 'right' and a data property of type Buffer.
