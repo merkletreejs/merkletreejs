@@ -510,7 +510,7 @@ export class MerkleTree extends Base {
    *const proof = tree.getProof(leaves[2], 2)
    *```
    */
-  getProof (leaf: Buffer | string, index?: number):any[] {
+  getProof (leaf: Buffer | string, index?: number):{position: 'left' | 'right', data: Buffer}[] {
     if (typeof leaf === 'undefined') {
       throw new Error('leaf is required')
     }
