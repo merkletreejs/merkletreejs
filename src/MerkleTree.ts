@@ -588,17 +588,17 @@ export class MerkleTree extends Base {
    *const proofs = tree.getProofs()
    *```
    */
-   getProofs ():any[] {
-    let proof = [], proofs = [];
-  
-    this.getProofsDFS(this.layers.length - 1, 0, proof, proofs);
-  
+  getProofs ():any[] {
+    const proof = []; const proofs = []
+
+    this.getProofsDFS(this.layers.length - 1, 0, proof, proofs)
+
     return proofs
   }
 
   /**
    * getProofsDFS
-   * @desc Get all proofs through single traverse 
+   * @desc Get all proofs through single traverse
    * @param {Number} currentLayer - Current layer index in traverse.
    * @param {Number} index - Current tarvese node index in traverse.
    * @param {Object[]} proof - Proof chain for single leaf.
@@ -612,33 +612,33 @@ export class MerkleTree extends Base {
    *const proof = tree.getProofsDFS(layers, index, proof, proofs)
    *```
    */
-  getProofsDFS(currentLayer, index, proof, proofs):any[] {
-    const isRightNode = index % 2;
-    if (currentLayer == -1) {
-      if (!isRightNode) proofs.push([...proof].reverse());
-      return;
+  getProofsDFS (currentLayer, index, proof, proofs):any[] {
+    const isRightNode = index % 2
+    if (currentLayer === -1) {
+      if (!isRightNode) proofs.push([...proof].reverse())
+      return
     }
-    if(index >= this.layers[currentLayer].length) return;
-  
-    const layer = this.layers[currentLayer];
-    const pairIndex = isRightNode ? index - 1 : index + 1;
-  
-    let pushed = false;
+    if (index >= this.layers[currentLayer].length) return
+
+    const layer = this.layers[currentLayer]
+    const pairIndex = isRightNode ? index - 1 : index + 1
+
+    let pushed = false
     if (pairIndex < layer.length) {
-      pushed = true;
+      pushed = true
       proof.push({
         position: isRightNode ? 'left' : 'right',
-        data: layer[pairIndex],
-      });
+        data: layer[pairIndex]
+      })
     }
-  
-    let leftchildIndex = index * 2;
-    let rightchildIndex = index * 2 + 1;
-  
-    this.getProofsDFS(currentLayer - 1, leftchildIndex, proof, proofs);
-    this.getProofsDFS(currentLayer - 1, rightchildIndex, proof, proofs);
-  
-    if (pushed) proof.splice(proof.length - 1, 1);
+
+    const leftchildIndex = index * 2
+    const rightchildIndex = index * 2 + 1
+
+    this.getProofsDFS(currentLayer - 1, leftchildIndex, proof, proofs)
+    this.getProofsDFS(currentLayer - 1, rightchildIndex, proof, proofs)
+
+    if (pushed) proof.splice(proof.length - 1, 1)
   }
 
   /**
@@ -650,7 +650,7 @@ export class MerkleTree extends Base {
    *const proofs = tree.getHexProofs()
    *```
    */
-   getHexProofs ():string[] {
+  getHexProofs ():string[] {
     return this.getProofs().map(item => this.bufferToHex(item.data))
   }
 

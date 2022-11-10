@@ -36,6 +36,7 @@ Class reprensenting a Merkle Tree
 * [getHexLeaves](_src_merkletree_.merkletree.md#gethexleaves)
 * [getHexMultiProof](_src_merkletree_.merkletree.md#gethexmultiproof)
 * [getHexProof](_src_merkletree_.merkletree.md#gethexproof)
+* [getHexProofs](_src_merkletree_.merkletree.md#gethexproofs)
 * [getHexRoot](_src_merkletree_.merkletree.md#gethexroot)
 * [getLayerCount](_src_merkletree_.merkletree.md#getlayercount)
 * [getLayers](_src_merkletree_.merkletree.md#getlayers)
@@ -50,6 +51,8 @@ Class reprensenting a Merkle Tree
 * [getProof](_src_merkletree_.merkletree.md#getproof)
 * [getProofFlags](_src_merkletree_.merkletree.md#getproofflags)
 * [getProofIndices](_src_merkletree_.merkletree.md#getproofindices)
+* [getProofs](_src_merkletree_.merkletree.md#getproofs)
+* [getProofsDFS](_src_merkletree_.merkletree.md#getproofsdfs)
 * [getRoot](_src_merkletree_.merkletree.md#getroot)
 * [isUnevenTree](_src_merkletree_.merkletree.md#isuneventree)
 * [print](_src_merkletree_.merkletree.md#print)
@@ -468,6 +471,25 @@ Name | Type | Description |
 
 ___
 
+###  getHexProofs
+
+▸ **getHexProofs**(): *string[]*
+
+getHexProofs
+
+**`desc`** Returns the proofs for all leaves as hex strings.
+
+**`example`** 
+```js
+const proofs = tree.getHexProofs()
+```
+
+**Returns:** *string[]*
+
+- Proofs array as hex strings.
+
+___
+
 ###  getHexRoot
 
 ▸ **getHexRoot**(): *string*
@@ -780,6 +802,63 @@ Name | Type | Description |
 **Returns:** *number[]*
 
 - Proof indices
+
+___
+
+###  getProofs
+
+▸ **getProofs**(): *any[]*
+
+getProofs
+
+**`desc`** Returns the proofs for all leaves.
+
+**`example`** 
+```js
+const proofs = tree.getProofs()
+```
+
+**`example`** 
+```js
+const leaves = ['a', 'b', 'a'].map(value => keccak(value))
+const tree = new MerkleTree(leaves, keccak)
+const proofs = tree.getProofs()
+```
+
+**Returns:** *any[]*
+
+- Array of objects containing a position property of type string
+with values of 'left' or 'right' and a data property of type Buffer for all leaves.
+
+___
+
+###  getProofsDFS
+
+▸ **getProofsDFS**(`currentLayer`: any, `index`: any, `proof`: any, `proofs`: any): *any[]*
+
+getProofsDFS
+
+**`desc`** Get all proofs through single traverse
+
+**`example`** 
+```js
+const layers = tree.getLayers()
+const index = 0;
+let proof = [];
+let proofs = [];
+const proof = tree.getProofsDFS(layers, index, proof, proofs)
+```
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`currentLayer` | any | Current layer index in traverse. |
+`index` | any | Current tarvese node index in traverse. |
+`proof` | any | Proof chain for single leaf. |
+`proofs` | any | Proofs for all leaves |
+
+**Returns:** *any[]*
 
 ___
 
