@@ -20,3 +20,17 @@ test('bufferifyFn', t => {
   t.deepEqual(fn('0x123'), Buffer.from('123', 'hex'))
   t.deepEqual(fn('XYZ'), Buffer.from('XYZ'))
 })
+
+test('binarySearch', t => {
+  t.plan(3)
+
+  const base = new Base()
+  const compareFunction = (a, b) => {
+    if (a === b) return 0
+    else if (a < b) return -1
+    else return 1
+  }
+  t.equal(base.binarySearch([2, 2, 3, 3, 3, 4, 4, 4, 4], 3, compareFunction), 2)
+  t.equal(base.binarySearch([3, 3, 3, 3, 3, 4, 4, 4, 4], 3, compareFunction), 0)
+  t.equal(base.binarySearch([2, 2, 3, 3, 3, 4, 4, 4, 4], 1, compareFunction), -1)
+})
