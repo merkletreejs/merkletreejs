@@ -48,6 +48,7 @@ Class reprensenting a Merkle Tree
 * [getLeafIndex](_src_merkletree_.merkletree.md#getleafindex)
 * [getLeaves](_src_merkletree_.merkletree.md#getleaves)
 * [getMultiProof](_src_merkletree_.merkletree.md#getmultiproof)
+* [getOptions](_src_merkletree_.merkletree.md#getoptions)
 * [getPositionalHexProof](_src_merkletree_.merkletree.md#getpositionalhexproof)
 * [getProof](_src_merkletree_.merkletree.md#getproof)
 * [getProofFlags](_src_merkletree_.merkletree.md#getproofflags)
@@ -71,9 +72,11 @@ Class reprensenting a Merkle Tree
 * [linearSearch](_src_merkletree_.merkletree.md#static-linearsearch)
 * [marshalLeaves](_src_merkletree_.merkletree.md#static-marshalleaves)
 * [marshalProof](_src_merkletree_.merkletree.md#static-marshalproof)
+* [marshalTree](_src_merkletree_.merkletree.md#static-marshaltree)
 * [print](_src_merkletree_.merkletree.md#static-print)
 * [unmarshalLeaves](_src_merkletree_.merkletree.md#static-unmarshalleaves)
 * [unmarshalProof](_src_merkletree_.merkletree.md#static-unmarshalproof)
+* [unmarshalTree](_src_merkletree_.merkletree.md#static-unmarshaltree)
 * [verify](_src_merkletree_.merkletree.md#static-verify)
 
 ## Constructors
@@ -736,6 +739,30 @@ Name | Type | Description |
 
 ___
 
+###  getOptions
+
+▸ **getOptions**(): *object*
+
+**Returns:** *object*
+
+* **complete**: *boolean* = this.complete
+
+* **duplicateOdd**: *boolean* = this.duplicateOdd
+
+* **fillDefaultHash**: *string* = this.fillDefaultHash?.toString() ?? null
+
+* **hashLeaves**: *boolean* = this.hashLeaves
+
+* **isBitcoinTree**: *boolean* = this.isBitcoinTree
+
+* **sort**: *boolean* = this.sort
+
+* **sortLeaves**: *boolean* = this.sortLeaves
+
+* **sortPairs**: *boolean* = this.sortPairs
+
+___
+
 ###  getPositionalHexProof
 
 ▸ **getPositionalHexProof**(`leaf`: Buffer | string, `index?`: number): *(string | number)[][]*
@@ -1352,6 +1379,20 @@ Name | Type | Description |
 
 ___
 
+### `Static` marshalTree
+
+▸ **marshalTree**(`tree`: [MerkleTree](_src_merkletree_.merkletree.md)): *string*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`tree` | [MerkleTree](_src_merkletree_.merkletree.md) |
+
+**Returns:** *string*
+
+___
+
 ### `Static` print
 
 ▸ **print**(`tree`: any): *void*
@@ -1424,6 +1465,22 @@ Name | Type |
 **Returns:** *any[]*
 
 - Marshalled proof
+
+___
+
+### `Static` unmarshalTree
+
+▸ **unmarshalTree**(`jsonStr`: string | object, `hashFn`: any, `options`: [Options](../interfaces/_src_merkletree_.options.md)): *[MerkleTree](_src_merkletree_.merkletree.md)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`jsonStr` | string &#124; object | - |
+`hashFn` | any | SHA256 |
+`options` | [Options](../interfaces/_src_merkletree_.options.md) | {} |
+
+**Returns:** *[MerkleTree](_src_merkletree_.merkletree.md)*
 
 ___
 

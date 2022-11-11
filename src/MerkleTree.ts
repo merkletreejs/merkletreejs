@@ -112,6 +112,19 @@ export class MerkleTree extends Base {
     this.processLeaves(leaves)
   }
 
+  public getOptions() {
+    return {
+      complete: this.complete,
+      isBitcoinTree: this.isBitcoinTree,
+      hashLeaves: this.hashLeaves,
+      sortLeaves: this.sortLeaves,
+      sortPairs: this.sortPairs,
+      sort: this.sort,
+      fillDefaultHash: this.fillDefaultHash?.toString() ?? null,
+      duplicateOdd: this.duplicateOdd
+    }
+  }
+
   private processLeaves (leaves: TLeaf[]) {
     if (this.hashLeaves) {
       leaves = leaves.map(this.hashFn)
@@ -738,6 +751,39 @@ export class MerkleTree extends Base {
         throw new Error('Expected item to be of type string or object')
       }
     })
+  }
+
+  static marshalTree (tree: MerkleTree):string {
+    const root = tree.getHexRoot()
+    const leaves = tree.leaves.map(leaf => MerkleTree.bufferToHex(leaf))
+    const layers = tree.getHexLayers()
+    const options = tree.getOptions()
+
+    return JSON.stringify({
+      options,
+      root,
+      layers,
+      leaves,
+    }, null, 2)
+  }
+
+  static unmarshalTree (jsonStr: string | object, hashFn = SHA256, options: Options = {}):MerkleTree {
+    let parsed :any = null
+    if (typeof jsonStr === 'string') {
+      parsed = JSON.parse(jsonStr)
+    } else if (jsonStr instanceof Object) {
+      parsed = jsonStr
+    } else {
+      throw new Error('Expected type of string or object')
+    }
+
+    if (!parsed) {
+      throw new Error('could not parse json')
+    }
+
+    options = Object.assign({}, parsed.options || {}, options)
+
+    return new MerkleTree(parsed.leaves, hashFn, options)
   }
 
   /**

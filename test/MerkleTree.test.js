@@ -1046,6 +1046,112 @@ test('unmarshal proof', t => {
   t.equal(proof[1].data.toString('hex'), '43e061172b1177f25d0f156b2d2ed11728006fade8e167ff3d1b9dbc979a3358')
 })
 
+test('marshal tree', t => {
+  t.plan(7)
+
+  const leaves = ['a', 'b', 'c'].map(keccak256)
+  const tree = new MerkleTree(leaves, keccak256, { sort: true })
+  const jsonTree = MerkleTree.marshalTree(tree)
+  t.equal(typeof jsonTree, 'string')
+
+  const parsed = JSON.parse(jsonTree)
+  t.deepEqual(parsed.options, {
+    complete: false,
+    isBitcoinTree: false,
+    hashLeaves: false,
+    sortLeaves: true,
+    sortPairs: true,
+    sort: true,
+    fillDefaultHash: null,
+    duplicateOdd: false
+  })
+  t.equal(parsed.root, '0xc3b537cc8a2c6dcb3657718e1f3505ff751ff8c2eba2a70460df2cbee2b1413a')
+  t.equal(parsed.leaves.length, 3)
+  t.deepEqual(parsed.leaves, [
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2',
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
+  ])
+  t.equal(parsed.layers.length, 3)
+  t.deepEqual(parsed.layers, [
+    [
+      '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2',
+      '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+      '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
+    ],
+    [
+      '0x7dea550f679f3caab547cbbc5ee1a4c978c8c039b572ba00af1baa6481b88360',
+      '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510'
+    ],
+    [
+      '0xc3b537cc8a2c6dcb3657718e1f3505ff751ff8c2eba2a70460df2cbee2b1413a'
+    ]
+  ])
+})
+
+test('unmarshal tree', t => {
+  t.plan(4)
+
+  const json = `{
+    "options": {
+      "complete": false,
+      "isBitcoinTree": false,
+      "hashLeaves": false,
+      "sortLeaves": true,
+      "sortPairs": true,
+      "sort": true,
+      "fillDefaultHash": null,
+      "duplicateOdd": false
+    },
+    "root": "0xc3b537cc8a2c6dcb3657718e1f3505ff751ff8c2eba2a70460df2cbee2b1413a",
+    "layers": [
+      [
+        "0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2",
+        "0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb",
+        "0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"
+      ],
+      [
+        "0x7dea550f679f3caab547cbbc5ee1a4c978c8c039b572ba00af1baa6481b88360",
+        "0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"
+      ],
+      [
+        "0xc3b537cc8a2c6dcb3657718e1f3505ff751ff8c2eba2a70460df2cbee2b1413a"
+      ]
+    ],
+    "leaves": [
+      "0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2",
+      "0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb",
+      "0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510"
+    ]
+  }`
+
+  const parsed = JSON.parse(json)
+  const tree = MerkleTree.unmarshalTree(json, keccak256)
+
+  t.equal(tree.getHexRoot(), parsed.root)
+  t.deepEqual(tree.getOptions(), parsed.options)
+  t.deepEqual(tree.getHexLeaves(), parsed.leaves)
+  t.deepEqual(tree.getHexLayers(), parsed.layers)
+})
+
+test('getOptions', t => {
+  t.plan(1)
+
+  const leaves = ['a', 'b', 'c', 'd', 'e', 'f'].map(sha256)
+  const tree = new MerkleTree(leaves, sha256, { sortPairs: true, sortLeaves: true })
+
+  t.deepEqual(tree.getOptions(), {
+    complete: false,
+    isBitcoinTree: false,
+    hashLeaves: false,
+    sortLeaves: true,
+    sortPairs: true,
+    sort: false,
+    fillDefaultHash: null,
+    duplicateOdd: false
+  })
+})
+
 test('fillDefaultHashes', t => {
   t.plan(1)
 
