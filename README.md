@@ -142,9 +142,15 @@ npm test
 
 As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
 
-Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this.
+Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this. More info [here](https://bitcointalk.org/?topic=102395).
 
-More info [here](https://bitcointalk.org/?topic=102395).
+Please use the library [@openzeppelin/merkle-tree](https://github.com/OpenZeppelin/merkle-tree) if you're integrating with OpenZeppelin contracts or using multiproofs.
+
+There are known issues with multiproof implementation as pointed out in [issues](https://github.com/merkletreejs/merkletreejs/issues/63).
+
+### Disclaimer
+
+This library was created for my own purposes and is provided as-is. Use at your own risk.
 
 ## Resources
 
