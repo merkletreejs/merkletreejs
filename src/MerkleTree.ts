@@ -112,7 +112,7 @@ export class MerkleTree extends Base {
     this.processLeaves(leaves)
   }
 
-  public getOptions() {
+  public getOptions () {
     return {
       complete: this.complete,
       isBitcoinTree: this.isBitcoinTree,
@@ -763,7 +763,7 @@ export class MerkleTree extends Base {
       options,
       root,
       layers,
-      leaves,
+      leaves
     }, null, 2)
   }
 
