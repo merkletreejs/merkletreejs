@@ -1290,3 +1290,4 @@ test('complete option with incompatible options', t => {
     /option "complete" is incompatible with "duplicateOdd"/
   )
 })
+

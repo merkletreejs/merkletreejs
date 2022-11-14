@@ -33,7 +33,6 @@
 - [Notes](#notes)
 - [Resources](#resources)
 - [Contributing](#contributing)
-- [Tip Jar](#tip-jar)
 - [License](#license)
 
 ## Install
@@ -138,13 +137,21 @@ npm test
 
   - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).
 
+- Q: Is there a way to visualize the merkle trees in the browser?
+
+  - Yes, see [merkletree-viz](https://github.com/miguelmota/merkletree-viz).
+
 ## Notes
 
 As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
 
-Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this.
+Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this. More info [here](https://bitcointalk.org/?topic=102395).
 
-More info [here](https://bitcointalk.org/?topic=102395).
+Please use the library [`@openzeppelin/merkle-tree`](https://github.com/OpenZeppelin/merkle-tree) if you're integrating with OpenZeppelin contracts or using multiproofs. There are known issues with the current multiproof implementation as pointed out in [issues](https://github.com/merkletreejs/merkletreejs/issues/63).
+
+### Disclaimer
+
+This library was created for my own purposes and is provided as-is. Use at your own risk.
 
 ## Resources
 
@@ -179,14 +186,6 @@ Pull requests are welcome!
 For contributions please create a new branch and submit a pull request for review.
 
 _Many thanks to all the [contributors](https://github.com/miguelmota/merkletreejs/graphs/contributors) that made this library better._
-
-## Tip Jar
-
-[![BTC Tip Jar](https://img.shields.io/badge/BTC-tip-yellow.svg?logo=bitcoin&style=flat)](https://www.blockchain.com/btc/address/3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf) `3KdMW53vUMLPEC33xhHAUx4EFtvmXQF8Kf`
-
-[![ETH Tip Jar](https://img.shields.io/badge/ETH-tip-blue.svg?logo=ethereum&style=flat)](https://etherscan.io/address/0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF) `0x9ed3D6793a6b74d8c9A998f5C4b50a25947D53aF`
-
-Thank you for tips! 🙏
 
 ## License
 
