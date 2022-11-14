@@ -531,7 +531,13 @@ export class MerkleTree extends Base {
     const proof = []
 
     if (!Number.isInteger(index)) {
-      index = this._bufferIndexOf(this.leaves, leaf, this.sortLeaves)
+      index = -1
+
+      for (let i = 0; i < this.leaves.length; i++) {
+        if (Buffer.compare(leaf, this.leaves[i]) === 0) {
+          index = i
+        }
+      }
     }
 
     if (index <= -1) {
