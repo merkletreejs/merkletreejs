@@ -134,6 +134,10 @@ npm test
 
   - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).
 
+- Q: Is there a way to visualize the merkle trees in the browser?
+
+  - Yes, see [merkletree-viz](https://github.com/miguelmota/merkletree-viz).
+
 ## Notes
 
 As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
