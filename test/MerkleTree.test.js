@@ -109,8 +109,8 @@ test('sha256 - static verify', t => {
   const badProof = tree.getProof(badLeaf)
   const root = tree.getRoot()
 
-  t.equal(MerkleTree.verify(proof, leaf, root, sha256), true)
-  t.equal(MerkleTree.verify(badProof, leaf, root, sha256), false)
+  t.true(MerkleTree.verify(proof, leaf, root, sha256))
+  t.false(MerkleTree.verify(badProof, leaf, root, sha256))
 })
 
 test('sha256 verify with positional hex proof and no pairSort', t => {
@@ -529,7 +529,7 @@ test('sha256 getHexLeaves', t => {
   ])
 })
 
-test('crypto-js SHA3 leaves SHA256 hash algo', t => {
+test('crypto-js SHA3 leaves SHA256', t => {
   t.plan(2)
 
   const leaves = ['a', 'b', 'c', 'd'].map(SHA3)
@@ -545,7 +545,7 @@ test('crypto-js SHA3 leaves SHA256 hash algo', t => {
   t.true(verifications.every(Boolean))
 })
 
-test('crypto-js SHA3 1 leaf SHA256 hash algo', t => {
+test('crypto-js SHA3 1 leaf SHA256', t => {
   t.plan(4)
 
   const leaves = ['a'].map(SHA3)
@@ -1300,4 +1300,25 @@ test('simple bad proof', t => {
   const proof = tree.getHexProof(leaves[0])
   t.equal(proof.length, 1)
   t.equal(proof[0], '0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+})
+
+test.skip('1M leaves keccak256', t => {
+  t.plan(3)
+
+  const leaves = []
+  const max = 1000000
+  for (let i = 0; i < max; i++) {
+    leaves.push(keccak256(`${i}`))
+  }
+
+  console.time('1MLeavesConstructor')
+  const tree = new MerkleTree(leaves, keccak256, { sort: true })
+  console.timeEnd('1MLeavesConstructor')
+
+  console.time('1MLeavesProof')
+  const proof = tree.getHexProof(keccak256(`${max - 1}`))
+  console.timeEnd('1MLeavesProof')
+  t.equal(tree.getLeafCount(), max)
+  t.true(tree.verify(proof, keccak256(`${max - 1}`), tree.getRoot()))
+  t.false(tree.verify(proof, keccak256(`${max + 1}`), tree.getRoot()))
 })
