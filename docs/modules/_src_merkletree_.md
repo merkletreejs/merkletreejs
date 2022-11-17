@@ -76,4 +76,4 @@ ___
 
 ###  TValue
 
-Ƭ **TValue**: *Buffer | string | number | null | undefined*
+Ƭ **TValue**: *Buffer | BigInt | string | number | null | undefined*

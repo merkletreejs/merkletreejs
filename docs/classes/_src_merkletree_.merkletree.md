@@ -27,10 +27,12 @@ Class reprensenting a Merkle Tree
 * [_zip](_src_merkletree_.merkletree.md#protected-_zip)
 * [addLeaf](_src_merkletree_.merkletree.md#addleaf)
 * [addLeaves](_src_merkletree_.merkletree.md#addleaves)
+* [bigNumberify](_src_merkletree_.merkletree.md#bignumberify)
 * [binarySearch](_src_merkletree_.merkletree.md#binarysearch)
 * [bufferToHex](_src_merkletree_.merkletree.md#buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#bufferify)
 * [bufferifyFn](_src_merkletree_.merkletree.md#bufferifyfn)
+* [combineHashes](_src_merkletree_.merkletree.md#combinehashes)
 * [getDepth](_src_merkletree_.merkletree.md#getdepth)
 * [getHexLayers](_src_merkletree_.merkletree.md#gethexlayers)
 * [getHexLayersFlat](_src_merkletree_.merkletree.md#gethexlayersflat)
@@ -64,10 +66,12 @@ Class reprensenting a Merkle Tree
 * [verify](_src_merkletree_.merkletree.md#verify)
 * [verifyMultiProof](_src_merkletree_.merkletree.md#verifymultiproof)
 * [verifyMultiProofWithFlags](_src_merkletree_.merkletree.md#verifymultiproofwithflags)
+* [bigNumberify](_src_merkletree_.merkletree.md#static-bignumberify)
 * [binarySearch](_src_merkletree_.merkletree.md#static-binarysearch)
 * [bufferToHex](_src_merkletree_.merkletree.md#static-buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#static-bufferify)
 * [getMultiProof](_src_merkletree_.merkletree.md#static-getmultiproof)
+* [hexZeroPad](_src_merkletree_.merkletree.md#static-hexzeropad)
 * [isHexString](_src_merkletree_.merkletree.md#static-ishexstring)
 * [linearSearch](_src_merkletree_.merkletree.md#static-linearsearch)
 * [marshalLeaves](_src_merkletree_.merkletree.md#static-marshalleaves)
@@ -282,6 +286,22 @@ Name | Type | Default |
 
 ___
 
+###  bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
+
+___
+
 ###  binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
@@ -395,6 +415,20 @@ const fn = tree.bufferifyFn((value) => sha256(value))
 Name | Type |
 ------ | ------ |
 `f` | any |
+
+**Returns:** *any*
+
+___
+
+###  combineHashes
+
+▸ **combineHashes**(`hashes`: Buffer[]): *any*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`hashes` | Buffer[] |
 
 **Returns:** *any*
 
@@ -1141,6 +1175,22 @@ Name | Type |
 
 ___
 
+### `Static` bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
+
+___
+
 ### `Static` binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
@@ -1259,6 +1309,23 @@ Name | Type | Description |
 **Returns:** *Buffer[]*
 
 - Multiproofs
+
+___
+
+### `Static` hexZeroPad
+
+▸ **hexZeroPad**(`hexStr`: string, `length`: number): *string*
+
+*Inherited from [Base](_src_base_.base.md).[hexZeroPad](_src_base_.base.md#static-hexzeropad)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`hexStr` | string |
+`length` | number |
+
+**Returns:** *string*
 
 ___
 

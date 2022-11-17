@@ -1342,7 +1342,7 @@ test('poseidon hash', async t => {
 
   const leaves = [1, 2, 3, 4].map(x => poseidonHash([x]))
   const tree = new MerkleTree(leaves, poseidonHash, {
-    concatFn: (hashes) => hashes
+    concatenator: (hashes) => hashes
   })
   t.equal(tree.getHexRoot(), '0xd24e045226875e22b37ce607ea2af7a9fbb137ee128caa0ce3663615350245')
 

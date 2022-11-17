@@ -32,7 +32,7 @@ export interface Options {
   /** If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs. */
   complete?: boolean;
 
-  concatFn?: any
+  concatenator?: any
 }
 
 /**
@@ -42,7 +42,7 @@ export interface Options {
 export class MerkleTree extends Base {
   private duplicateOdd: boolean = false
   private hashFn: THashFn
-  private concatFn: any = Buffer.concat
+  private concatenator: any = Buffer.concat
   private hashLeaves: boolean = false
   private isBitcoinTree: boolean = false
   private leaves: TLeaf[] = []
@@ -111,8 +111,8 @@ export class MerkleTree extends Base {
 
     this.duplicateOdd = !!options.duplicateOdd
 
-    if (options.concatFn) {
-      this.concatFn = options.concatFn
+    if (options.concatenator) {
+      this.concatenator = options.concatenator
     }
 
     this.hashFn = this.bufferifyFn(hashFn)
@@ -1454,7 +1454,7 @@ export class MerkleTree extends Base {
 
   combineHashes (hashes: Buffer[]) {
     hashes = hashes.filter(x => x.byteLength > 0)
-    return this.concatFn(hashes)
+    return this.concatenator(hashes)
   }
 }
 

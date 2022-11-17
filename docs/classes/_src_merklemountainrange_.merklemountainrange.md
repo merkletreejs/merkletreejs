@@ -34,6 +34,7 @@
 * [_log2](_src_merklemountainrange_.merklemountainrange.md#protected-_log2)
 * [_zip](_src_merklemountainrange_.merklemountainrange.md#protected-_zip)
 * [append](_src_merklemountainrange_.merklemountainrange.md#append)
+* [bigNumberify](_src_merklemountainrange_.merklemountainrange.md#bignumberify)
 * [binarySearch](_src_merklemountainrange_.merklemountainrange.md#binarysearch)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#bufferify)
@@ -61,9 +62,11 @@
 * [print](_src_merklemountainrange_.merklemountainrange.md#print)
 * [rollUp](_src_merklemountainrange_.merklemountainrange.md#rollup)
 * [verify](_src_merklemountainrange_.merklemountainrange.md#verify)
+* [bigNumberify](_src_merklemountainrange_.merklemountainrange.md#static-bignumberify)
 * [binarySearch](_src_merklemountainrange_.merklemountainrange.md#static-binarysearch)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#static-buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#static-bufferify)
+* [hexZeroPad](_src_merklemountainrange_.merklemountainrange.md#static-hexzeropad)
 * [isHexString](_src_merklemountainrange_.merklemountainrange.md#static-ishexstring)
 * [linearSearch](_src_merklemountainrange_.merklemountainrange.md#static-linearsearch)
 * [print](_src_merklemountainrange_.merklemountainrange.md#static-print)
@@ -251,6 +254,22 @@ Name | Type |
 `data` | Buffer &#124; string |
 
 **Returns:** *void*
+
+___
+
+###  bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
 
 ___
 
@@ -760,6 +779,22 @@ Name | Type |
 
 ___
 
+### `Static` bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
+
+___
+
 ### `Static` binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
@@ -850,6 +885,23 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` hexZeroPad
+
+▸ **hexZeroPad**(`hexStr`: string, `length`: number): *string*
+
+*Inherited from [Base](_src_base_.base.md).[hexZeroPad](_src_base_.base.md#static-hexzeropad)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`hexStr` | string |
+`length` | number |
+
+**Returns:** *string*
 
 ___
 

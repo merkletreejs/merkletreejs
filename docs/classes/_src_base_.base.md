@@ -18,15 +18,18 @@
 * [_isHexString](_src_base_.base.md#protected-_ishexstring)
 * [_log2](_src_base_.base.md#protected-_log2)
 * [_zip](_src_base_.base.md#protected-_zip)
+* [bigNumberify](_src_base_.base.md#bignumberify)
 * [binarySearch](_src_base_.base.md#binarysearch)
 * [bufferToHex](_src_base_.base.md#buffertohex)
 * [bufferify](_src_base_.base.md#bufferify)
 * [bufferifyFn](_src_base_.base.md#bufferifyfn)
 * [linearSearch](_src_base_.base.md#linearsearch)
 * [print](_src_base_.base.md#print)
+* [bigNumberify](_src_base_.base.md#static-bignumberify)
 * [binarySearch](_src_base_.base.md#static-binarysearch)
 * [bufferToHex](_src_base_.base.md#static-buffertohex)
 * [bufferify](_src_base_.base.md#static-bufferify)
+* [hexZeroPad](_src_base_.base.md#static-hexzeropad)
 * [isHexString](_src_base_.base.md#static-ishexstring)
 * [linearSearch](_src_base_.base.md#static-linearsearch)
 * [print](_src_base_.base.md#static-print)
@@ -123,6 +126,20 @@ Name | Type | Description |
 `b` | any[] | second array |
 
 **Returns:** *any[][]*
+
+___
+
+###  bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
 
 ___
 
@@ -293,6 +310,20 @@ tree.print()
 
 ___
 
+### `Static` bigNumberify
+
+▸ **bigNumberify**(`value`: any): *BigInt*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+
+**Returns:** *BigInt*
+
+___
+
 ### `Static` binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
@@ -377,6 +408,21 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` hexZeroPad
+
+▸ **hexZeroPad**(`hexStr`: string, `length`: number): *string*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`hexStr` | string |
+`length` | number |
+
+**Returns:** *string*
 
 ___
 

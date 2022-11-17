@@ -11,6 +11,7 @@
 ### Properties
 
 * [complete](_src_merkletree_.options.md#optional-complete)
+* [concatenator](_src_merkletree_.options.md#optional-concatenator)
 * [duplicateOdd](_src_merkletree_.options.md#optional-duplicateodd)
 * [fillDefaultHash](_src_merkletree_.options.md#optional-filldefaulthash)
 * [hashLeaves](_src_merkletree_.options.md#optional-hashleaves)
@@ -26,6 +27,12 @@
 • **complete**? : *boolean*
 
 If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs.
+
+___
+
+### `Optional` concatenator
+
+• **concatenator**? : *any*
 
 ___
 
