@@ -7,7 +7,7 @@ import Base from './Base'
 // TODO: Clean up and DRY up code
 // Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and it's begging for a rewrite!
 
-type TValue = Buffer | string | number | null | undefined
+type TValue = Buffer | BigInt | string | number | null | undefined
 type THashFnResult = Buffer | string
 type THashFn = (value: TValue) => Buffer
 type TLeaf = Buffer
@@ -31,6 +31,8 @@ export interface Options {
   fillDefaultHash?: TFillDefaultHash | Buffer | string
   /** If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs. */
   complete?: boolean;
+
+  concatFn?: any
 }
 
 /**
@@ -40,6 +42,7 @@ export interface Options {
 export class MerkleTree extends Base {
   private duplicateOdd: boolean = false
   private hashFn: THashFn
+  private concatFn: any = Buffer.concat
   private hashLeaves: boolean = false
   private isBitcoinTree: boolean = false
   private leaves: TLeaf[] = []
@@ -108,6 +111,10 @@ export class MerkleTree extends Base {
 
     this.duplicateOdd = !!options.duplicateOdd
 
+    if (options.concatFn) {
+      this.concatFn = options.concatFn
+    }
+
     this.hashFn = this.bufferifyFn(hashFn)
     this.processLeaves(leaves)
   }
@@ -163,14 +170,13 @@ export class MerkleTree extends Base {
           break
         } else if (i + 1 === nodes.length) {
           if (nodes.length % 2 === 1) {
-            let data = nodes[nodes.length - 1]
+            const data = nodes[nodes.length - 1]
             let hash = data
 
             // is bitcoin tree
             if (this.isBitcoinTree) {
               // Bitcoin method of duplicating the odd ending nodes
-              data = Buffer.concat([reverse(data), reverse(data)])
-              hash = this.hashFn(data)
+              hash = this.hashFn(this.combineHashes([reverse(data), reverse(data)]))
               hash = reverse(this.hashFn(hash))
 
               this.layers[layerIndex].push(hash)
@@ -189,7 +195,6 @@ export class MerkleTree extends Base {
 
         const left = nodes[i]
         const right = i + 1 === nodes.length ? left : nodes[i + 1]
-        let data = null
         let combined = null
 
         if (this.isBitcoinTree) {
@@ -202,8 +207,7 @@ export class MerkleTree extends Base {
           combined.sort(Buffer.compare)
         }
 
-        data = Buffer.concat(combined)
-        let hash = this.hashFn(data)
+        let hash = this.hashFn(this.combineHashes(combined))
 
         // double hash if bitcoin tree
         if (this.isBitcoinTree) {
@@ -1126,21 +1130,21 @@ export class MerkleTree extends Base {
 
         buffers[isLeftNode ? 'unshift' : 'push'](reverse(data))
 
-        hash = this.hashFn(Buffer.concat(buffers))
+        hash = this.hashFn(this.combineHashes(buffers))
         hash = reverse(this.hashFn(hash))
       } else {
         if (this.sortPairs) {
           if (Buffer.compare(hash, data) === -1) {
             buffers.push(hash, data)
-            hash = this.hashFn(Buffer.concat(buffers))
+            hash = this.hashFn(this.combineHashes(buffers))
           } else {
             buffers.push(data, hash)
-            hash = this.hashFn(Buffer.concat(buffers))
+            hash = this.hashFn(this.combineHashes(buffers))
           }
         } else {
           buffers.push(hash)
           buffers[isLeftNode ? 'unshift' : 'push'](data)
-          hash = this.hashFn(Buffer.concat(buffers))
+          hash = this.hashFn(this.combineHashes(buffers))
         }
       }
     }
@@ -1199,7 +1203,7 @@ export class MerkleTree extends Base {
           pair = pair.sort(Buffer.compare)
         }
 
-        const hash = pair[1] ? this.hashFn(Buffer.concat(pair)) : pair[0]
+        const hash = pair[1] ? this.hashFn(this.combineHashes(pair)) : pair[0]
         tree[(index / 2) | 0] = hash
         indexqueue.push((index / 2) | 0)
       }
@@ -1227,7 +1231,7 @@ export class MerkleTree extends Base {
       const bufA: Buffer = proofFlag[i] ? (leafPos < leavesLen ? leaves[leafPos++] : hashes[hashPos++]) : proofs[proofPos++]
       const bufB : Buffer = leafPos < leavesLen ? leaves[leafPos++] : hashes[hashPos++]
       const buffers = [bufA, bufB].sort(Buffer.compare)
-      hashes[i] = this.hashFn(Buffer.concat(buffers))
+      hashes[i] = this.hashFn(this.combineHashes(buffers))
     }
 
     return Buffer.compare(hashes[totalHashes - 1], root) === 0
@@ -1438,7 +1442,7 @@ export class MerkleTree extends Base {
         const parentNodeTreeIndex = parentIndices[i]
         const bufA = currentLayer[i * 2]
         const bufB = currentLayer[i * 2 + 1]
-        const hash = bufB ? this.hashFn(Buffer.concat([bufA, bufB])) : bufA
+        const hash = bufB ? this.hashFn(this.combineHashes([bufA, bufB])) : bufA
         parentLayer.push([parentNodeTreeIndex, hash])
       }
 
@@ -1446,6 +1450,11 @@ export class MerkleTree extends Base {
     }
 
     return tree[tree.length - 1][0][1]
+  }
+
+  combineHashes (hashes: Buffer[]) {
+    hashes = hashes.filter(x => x.byteLength > 0)
+    return this.concatFn(hashes)
   }
 }
 

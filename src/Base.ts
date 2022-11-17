@@ -167,6 +167,8 @@ export class Base {
         return Buffer.from(value.replace(/^0x/, ''), 'hex')
       } else if (typeof value === 'string') {
         return Buffer.from(value)
+      } else if (typeof value === 'bigint') {
+        return Buffer.from(value.toString(16), 'hex')
       } else if (typeof value === 'number') {
         let s = value.toString()
         if (s.length % 2) {
@@ -179,6 +181,32 @@ export class Base {
     }
 
     return value
+  }
+
+  bigNumberify (value: any): BigInt {
+    return Base.bigNumberify(value)
+  }
+
+  static bigNumberify (value: any): BigInt {
+    if (typeof value === 'bigint') {
+      return value
+    }
+
+    if (typeof value === 'string') {
+      if (Base.isHexString(value)) {
+        return BigInt('0x' + value.replace('0x', '').toString())
+      }
+    }
+
+    if (Buffer.isBuffer(value)) {
+      return BigInt('0x' + value.toString('hex'))
+    }
+
+    if (typeof value === 'number') {
+      return BigInt(value)
+    }
+
+    throw new Error('cannot bigNumberify')
   }
 
   /**
@@ -279,6 +307,10 @@ export class Base {
 
       if (typeof v === 'string') {
         return Buffer.from(v)
+      }
+
+      if (typeof v === 'bigint') {
+        return Buffer.from(value.toString(16), 'hex')
       }
 
       if (ArrayBuffer.isView(v)) {

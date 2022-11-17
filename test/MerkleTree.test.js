@@ -9,6 +9,7 @@ const SHA256 = require('crypto-js/sha256')
 const SHA3 = require('crypto-js/sha3')
 const sha1 = require('sha1')
 const { keccak256: ethCryptoKeccak256 } = require('ethereum-cryptography/keccak')
+const { poseidon } = require('circomlibjs')
 
 const { MerkleTree } = require('../')
 
@@ -1321,4 +1322,28 @@ test.skip('1M leaves keccak256', t => {
   t.equal(tree.getLeafCount(), max)
   t.true(tree.verify(proof, keccak256(`${max - 1}`), tree.getRoot()))
   t.false(tree.verify(proof, keccak256(`${max + 1}`), tree.getRoot()))
+})
+
+test('poseidon hash', t => {
+  t.plan(4)
+
+  const _poseidon = (elements) => {
+    const bigInts = elements.map(MerkleTree.bigNumberify)
+    return Buffer.from(poseidon(bigInts).toString(16), 'hex')
+  }
+
+  const result1 = _poseidon([1, 2].map(MerkleTree.bufferify))
+  t.equal(result1.toString('hex'), '115cc0f5e7d690413df64c6b9662e9cf2a3617f2743245519e19607a4417189a')
+
+  const result2 = _poseidon([1, 2, 3, 4].map(MerkleTree.bufferify))
+  t.equal(result2.toString('hex'), '299c867db6c1fdd79dcefa40e4510b9837e60ebb1ce0663dbaa525df65250465')
+
+  const leaves = [1, 2, 3, 4].map(x => _poseidon([x]))
+  const tree = new MerkleTree(leaves, _poseidon, {
+    concatFn: (hashes) => hashes
+  })
+  t.equal(tree.getHexRoot(), '0xd24e045226875e22b37ce607ea2af7a9fbb137ee128caa0ce3663615350245')
+
+  const proof = tree.getProof(leaves[2])
+  t.true(tree.verify(proof, leaves[2], tree.getHexRoot()))
 })

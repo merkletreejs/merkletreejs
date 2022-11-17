@@ -2,13 +2,14 @@ const test = require('tape')
 const { Base } = require('../dist/Base')
 
 test('bufferify', t => {
-  t.plan(4)
+  t.plan(5)
 
   const base = new Base()
   t.deepEqual(base.bufferify(''), Buffer.alloc(0))
   t.deepEqual(base.bufferify('0x123'), Buffer.from('123', 'hex'))
   t.deepEqual(base.bufferify('123'), Buffer.from('123', 'hex'))
   t.deepEqual(base.bufferify(Buffer.from('123')), Buffer.from('123'))
+  t.deepEqual(base.bufferify(BigInt('0x123')), Buffer.from('123', 'hex'))
 })
 
 test('bufferifyFn', t => {
@@ -19,6 +20,15 @@ test('bufferifyFn', t => {
   t.deepEqual(fn('123'), Buffer.from('123', 'hex'))
   t.deepEqual(fn('0x123'), Buffer.from('123', 'hex'))
   t.deepEqual(fn('XYZ'), Buffer.from('XYZ'))
+})
+
+test('bigNumberify', t => {
+  t.plan(3)
+
+  const base = new Base()
+  t.deepEqual(base.bigNumberify(123), BigInt(123))
+  t.deepEqual(base.bigNumberify('0x123'), BigInt('0x123'))
+  t.deepEqual(base.bigNumberify(BigInt(123)), BigInt(123))
 })
 
 test('binarySearch', t => {
