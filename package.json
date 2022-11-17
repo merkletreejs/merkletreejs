@@ -54,6 +54,7 @@
     "@typescript-eslint/parser": "^3.0.2",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
+    "circomlibjs": "^0.1.7",
     "crypto": "0.0.3",
     "ethereum-cryptography": "^1.0.3",
     "ethereumjs-util": "^7.0.9",
@@ -88,6 +89,8 @@
     "plugins": [
       "@typescript-eslint/eslint-plugin"
     ],
-    "globals": ["BigInt"]
+    "globals": [
+      "BigInt"
+    ]
   }
 }

@@ -169,6 +169,8 @@ export class Base {
         return Buffer.from(value)
       } else if (typeof value === 'bigint') {
         return Buffer.from(value.toString(16), 'hex')
+      } else if (value instanceof Uint8Array) {
+        return Buffer.from(value.buffer)
       } else if (typeof value === 'number') {
         let s = value.toString()
         if (s.length % 2) {
@@ -193,13 +195,18 @@ export class Base {
     }
 
     if (typeof value === 'string') {
-      if (Base.isHexString(value)) {
+      if (value.startsWith('0x') && Base.isHexString(value)) {
         return BigInt('0x' + value.replace('0x', '').toString())
       }
+      return BigInt(value)
     }
 
     if (Buffer.isBuffer(value)) {
       return BigInt('0x' + value.toString('hex'))
+    }
+
+    if (value instanceof Uint8Array) {
+      return BigInt(value)
     }
 
     if (typeof value === 'number') {
@@ -367,6 +374,10 @@ export class Base {
    */
   protected _zip (a: any[], b: any[]): any[][] {
     return a.map((e, i) => [e, b[i]])
+  }
+
+  static hexZeroPad (hexStr: string, length: number) {
+    return '0x' + hexStr.replace('0x', '').padStart(length, '0')
   }
 }
 

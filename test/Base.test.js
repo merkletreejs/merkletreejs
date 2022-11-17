@@ -2,7 +2,7 @@ const test = require('tape')
 const { Base } = require('../dist/Base')
 
 test('bufferify', t => {
-  t.plan(5)
+  t.plan(6)
 
   const base = new Base()
   t.deepEqual(base.bufferify(''), Buffer.alloc(0))
@@ -10,25 +10,29 @@ test('bufferify', t => {
   t.deepEqual(base.bufferify('123'), Buffer.from('123', 'hex'))
   t.deepEqual(base.bufferify(Buffer.from('123')), Buffer.from('123'))
   t.deepEqual(base.bufferify(BigInt('0x123')), Buffer.from('123', 'hex'))
+  t.deepEqual(base.bufferify(new Uint8Array([123])), Buffer.from([123]))
 })
 
 test('bufferifyFn', t => {
-  t.plan(3)
+  t.plan(5)
 
   const base = new Base()
   const fn = base.bufferifyFn(value => value)
   t.deepEqual(fn('123'), Buffer.from('123', 'hex'))
   t.deepEqual(fn('0x123'), Buffer.from('123', 'hex'))
   t.deepEqual(fn('XYZ'), Buffer.from('XYZ'))
+  t.deepEqual(fn(BigInt('0x123')), Buffer.from('123', 'hex'))
+  t.deepEqual(fn(new Uint8Array([123])), Buffer.from([123]))
 })
 
 test('bigNumberify', t => {
-  t.plan(3)
+  t.plan(4)
 
   const base = new Base()
   t.deepEqual(base.bigNumberify(123), BigInt(123))
   t.deepEqual(base.bigNumberify('0x123'), BigInt('0x123'))
   t.deepEqual(base.bigNumberify(BigInt(123)), BigInt(123))
+  t.deepEqual(base.bigNumberify(new Uint8Array([123])), BigInt(123))
 })
 
 test('binarySearch', t => {
