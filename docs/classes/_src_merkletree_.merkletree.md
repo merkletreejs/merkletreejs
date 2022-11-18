@@ -32,7 +32,6 @@ Class reprensenting a Merkle Tree
 * [bufferToHex](_src_merkletree_.merkletree.md#buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#bufferify)
 * [bufferifyFn](_src_merkletree_.merkletree.md#bufferifyfn)
-* [combineHashes](_src_merkletree_.merkletree.md#combinehashes)
 * [getDepth](_src_merkletree_.merkletree.md#getdepth)
 * [getHexLayers](_src_merkletree_.merkletree.md#gethexlayers)
 * [getHexLayersFlat](_src_merkletree_.merkletree.md#gethexlayersflat)
@@ -415,20 +414,6 @@ const fn = tree.bufferifyFn((value) => sha256(value))
 Name | Type |
 ------ | ------ |
 `f` | any |
-
-**Returns:** *any*
-
-___
-
-###  combineHashes
-
-▸ **combineHashes**(`hashes`: Buffer[]): *any*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`hashes` | Buffer[] |
 
 **Returns:** *any*
 

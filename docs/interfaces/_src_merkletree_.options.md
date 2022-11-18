@@ -32,7 +32,17 @@ ___
 
 ### `Optional` concatenator
 
-• **concatenator**? : *any*
+• **concatenator**? : *function*
+
+#### Type declaration:
+
+▸ (`inputs`: Buffer[]): *Buffer | Buffer[] | BigInt[]*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`inputs` | Buffer[] |
 
 ___
 
