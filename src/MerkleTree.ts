@@ -1453,7 +1453,6 @@ export class MerkleTree extends Base {
   }
 
   combineHashes (hashes: Buffer[]) {
-    hashes = hashes.filter(x => x.byteLength > 0)
     return this.concatenator(hashes)
   }
 }
