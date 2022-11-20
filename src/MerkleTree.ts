@@ -5,7 +5,7 @@ import treeify from 'treeify'
 import Base from './Base'
 
 // TODO: Clean up and DRY up code
-// Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and it's begging for a rewrite!
+// Disclaimer: The multiproof code is unaudited and may possibly contain serious issues. It's in a hacky state as is and needs to be rewritten.
 
 type TValue = Buffer | BigInt | string | number | null | undefined
 type THashFnResult = Buffer | string
@@ -150,11 +150,11 @@ export class MerkleTree extends Base {
       }
     }
 
-    this.layers = [this.leaves]
-    this._createHashes(this.leaves)
+    this.createHashes(this.leaves)
   }
 
-  private _createHashes (nodes: any[]) {
+  private createHashes (nodes: any[]) {
+    this.layers = [nodes]
     while (nodes.length > 1) {
       const layerIndex = this.layers.length
 
@@ -273,7 +273,7 @@ export class MerkleTree extends Base {
         }
       }
 
-      return this.leaves.filter(leaf => this._bufferIndexOf(values, leaf, this.sortLeaves) !== -1)
+      return this.leaves.filter(leaf => this.bufferIndexOf(values, leaf, this.sortLeaves) !== -1)
     }
 
     return this.leaves
@@ -920,7 +920,7 @@ export class MerkleTree extends Base {
         els = els.sort(Buffer.compare)
       }
 
-      let ids = els.map((el) => this._bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      let ids = els.map((el) => this.bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
       if (!ids.every((idx) => idx !== -1)) {
         throw new Error('Element does not exist in Merkle tree')
       }
@@ -933,7 +933,7 @@ export class MerkleTree extends Base {
         const layer = this.layers[i]
         for (let j = 0; j < ids.length; j++) {
           const idx = ids[j]
-          const pairElement = this._getPairNode(layer, idx)
+          const pairElement = this.getPairNode(layer, idx)
 
           hashes.push(layer[idx])
           if (pairElement) {
@@ -950,7 +950,7 @@ export class MerkleTree extends Base {
       return proof.filter((value) => !hashes.includes(value))
     }
 
-    return this.getProofIndices(indices, this._log2((tree.length / 2) | 0)).map(index => tree[index])
+    return this.getProofIndices(indices, Math.log2((tree.length / 2) | 0)).map(index => tree[index])
   }
 
   private getMultiProofForUnevenTree (tree?: any[], indices?: any[]):Buffer[] {
@@ -1043,7 +1043,7 @@ export class MerkleTree extends Base {
     if (leaves.every(Number.isInteger)) {
       ids = [...leaves].sort((a, b) => a === b ? 0 : a > b ? 1 : -1) // Indices where passed
     } else {
-      ids = leaves.map((el) => this._bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
+      ids = leaves.map((el) => this.bufferIndexOf(this.leaves, el, this.sortLeaves)).sort((a, b) => a === b ? 0 : a > b ? 1 : -1)
     }
 
     if (!ids.every((idx: number) => idx !== -1)) {
@@ -1059,7 +1059,7 @@ export class MerkleTree extends Base {
       ids = ids.reduce((ids, idx) => {
         const skipped = tested.includes(layer[idx])
         if (!skipped) {
-          const pairElement = this._getPairNode(layer, idx)
+          const pairElement = this.getPairNode(layer, idx)
           const proofUsed = _proofs.includes(layer[idx]) || _proofs.includes(pairElement)
           pairElement && flags.push(!proofUsed)
           tested.push(layer[idx])
@@ -1186,10 +1186,10 @@ export class MerkleTree extends Base {
     proof = (proof as any[]).map(leaf => this.bufferify(leaf))
 
     const tree = {}
-    for (const [index, leaf] of this._zip(proofIndices, proofLeaves)) {
+    for (const [index, leaf] of this.zip(proofIndices, proofLeaves)) {
       tree[(2 ** depth) + index] = leaf
     }
-    for (const [index, proofitem] of this._zip(this.getProofIndices(proofIndices, depth), proof)) {
+    for (const [index, proofitem] of this.zip(this.getProofIndices(proofIndices, depth), proof)) {
       tree[index] = proofitem
     }
     let indexqueue = Object.keys(tree).map(value => +value).sort((a, b) => a - b)
@@ -1360,7 +1360,7 @@ export class MerkleTree extends Base {
    *const node = tree.getPairNode(layer, index)
    *```
    */
-  private _getPairNode (layer: Buffer[], idx: number):Buffer {
+  private getPairNode (layer: Buffer[], idx: number):Buffer {
     const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1
 
     if (pairIdx < layer.length) {
@@ -1379,7 +1379,7 @@ export class MerkleTree extends Base {
    *console.log(tree.toTreeString())
    *```
    */
-  protected _toTreeString ():string {
+  protected toTreeString ():string {
     const obj = this.getLayersAsObject()
     return treeify.asTree(obj, true)
   }
@@ -1393,7 +1393,7 @@ export class MerkleTree extends Base {
    *```
    */
   toString ():string {
-    return this._toTreeString()
+    return this.toTreeString()
   }
 
   isUnevenTree (treeLayers?: any[]) {
@@ -1406,7 +1406,7 @@ export class MerkleTree extends Base {
   }
 
   private calculateRootForUnevenTree (leafIndices: number[], leafHashes: any[], totalLeavesCount: number, proofHashes: any[]) {
-    const leafTuples = this._zip(leafIndices, leafHashes).sort(([indexA], [indexB]) => indexA - indexB)
+    const leafTuples = this.zip(leafIndices, leafHashes).sort(([indexA], [indexB]) => indexA - indexB)
     const leafTupleIndices = leafTuples.map(([index]) => index)
     const proofIndices = this.getProofIndicesForUnevenTree(leafTupleIndices, totalLeavesCount)
 
@@ -1416,7 +1416,7 @@ export class MerkleTree extends Base {
       const indices = proofIndices[i]
       const sliceStart = nextSliceStart
       nextSliceStart += indices.length
-      proofTuplesByLayers[i] = this._zip(indices, proofHashes.slice(sliceStart, nextSliceStart))
+      proofTuplesByLayers[i] = this.zip(indices, proofHashes.slice(sliceStart, nextSliceStart))
     }
 
     const tree = [leafTuples]

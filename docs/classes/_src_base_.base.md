@@ -6,6 +6,8 @@
 
 * **Base**
 
+  ↳ [IncrementalMerkleTree](_src_incrementalmerkletree_.incrementalmerkletree.md)
+
   ↳ [MerkleMountainRange](_src_merklemountainrange_.merklemountainrange.md)
 
   ↳ [MerkleTree](_src_merkletree_.merkletree.md)
@@ -14,17 +16,17 @@
 
 ### Methods
 
-* [_bufferIndexOf](_src_base_.base.md#protected-_bufferindexof)
-* [_isHexString](_src_base_.base.md#protected-_ishexstring)
-* [_log2](_src_base_.base.md#protected-_log2)
-* [_zip](_src_base_.base.md#protected-_zip)
 * [bigNumberify](_src_base_.base.md#bignumberify)
 * [binarySearch](_src_base_.base.md#binarysearch)
+* [bufferIndexOf](_src_base_.base.md#protected-bufferindexof)
 * [bufferToHex](_src_base_.base.md#buffertohex)
 * [bufferify](_src_base_.base.md#bufferify)
 * [bufferifyFn](_src_base_.base.md#bufferifyfn)
+* [isHexString](_src_base_.base.md#protected-ishexstring)
 * [linearSearch](_src_base_.base.md#linearsearch)
+* [log2](_src_base_.base.md#protected-log2)
 * [print](_src_base_.base.md#print)
+* [zip](_src_base_.base.md#protected-zip)
 * [bigNumberify](_src_base_.base.md#static-bignumberify)
 * [binarySearch](_src_base_.base.md#static-binarysearch)
 * [bufferToHex](_src_base_.base.md#static-buffertohex)
@@ -35,99 +37,6 @@
 * [print](_src_base_.base.md#static-print)
 
 ## Methods
-
-### `Protected` _bufferIndexOf
-
-▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
-
-bufferIndexOf
-
-**`desc`** Returns the first index of which given buffer is found in array.
-
-**`example`** 
-```js
-const index = tree.bufferIndexOf(haystack, needle)
-```
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`array` | Buffer[] | - |
-`element` | Buffer | - |
-`isSorted` | boolean | false |
-
-**Returns:** *number*
-
-- Index number
-
-___
-
-### `Protected` _isHexString
-
-▸ **_isHexString**(`value`: string): *boolean*
-
-isHexString
-
-**`desc`** Returns true if value is a hex string.
-
-**`example`** 
-```js
-console.log(MerkleTree.isHexString('0x1234'))
-```
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | string |
-
-**Returns:** *boolean*
-
-___
-
-### `Protected` _log2
-
-▸ **_log2**(`n`: number): *number*
-
-log2
-
-**`desc`** Returns the log2 of number.
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`n` | number |
-
-**Returns:** *number*
-
-___
-
-### `Protected` _zip
-
-▸ **_zip**(`a`: any[], `b`: any[]): *any[][]*
-
-zip
-
-**`desc`** Returns true if value is a hex string.
-
-**`example`** 
-```js
-const zipped = tree.zip(['a', 'b'],['A', 'B'])
-console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
-```
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`a` | any[] | first array |
-`b` | any[] | second array |
-
-**Returns:** *any[][]*
-
-___
 
 ###  bigNumberify
 
@@ -176,6 +85,33 @@ Name | Type |
 ------ | ------ |
 `a` | unknown |
 `b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
+### `Protected` bufferIndexOf
+
+▸ **bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
+
+bufferIndexOf
+
+**`desc`** Returns the first index of which given buffer is found in array.
+
+**`example`** 
+```js
+const index = tree.bufferIndexOf(haystack, needle)
+```
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`array` | Buffer[] | - |
+`element` | Buffer | - |
+`isSorted` | boolean | false |
 
 **Returns:** *number*
 
@@ -253,6 +189,29 @@ Name | Type |
 
 ___
 
+### `Protected` isHexString
+
+▸ **isHexString**(`value`: string): *boolean*
+
+isHexString
+
+**`desc`** Returns true if value is a hex string.
+
+**`example`** 
+```js
+console.log(MerkleTree.isHexString('0x1234'))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | string |
+
+**Returns:** *boolean*
+
+___
+
 ###  linearSearch
 
 ▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
@@ -293,6 +252,24 @@ Name | Type |
 
 ___
 
+### `Protected` log2
+
+▸ **log2**(`n`: number): *number*
+
+log2
+
+**`desc`** Returns the log2 of number.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`n` | number |
+
+**Returns:** *number*
+
+___
+
 ###  print
 
 ▸ **print**(): *void*
@@ -307,6 +284,31 @@ tree.print()
 ```
 
 **Returns:** *void*
+
+___
+
+### `Protected` zip
+
+▸ **zip**(`a`: any[], `b`: any[]): *any[][]*
+
+zip
+
+**`desc`** Returns true if value is a hex string.
+
+**`example`** 
+```js
+const zipped = tree.zip(['a', 'b'],['A', 'B'])
+console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
+```
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`a` | any[] | first array |
+`b` | any[] | second array |
+
+**Returns:** *any[][]*
 
 ___
 

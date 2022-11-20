@@ -1327,10 +1327,10 @@ test.skip('1M leaves keccak256', t => {
 test('poseidon hash', async t => {
   t.plan(4)
 
-  const _poseidon = await buildPoseidon()
+  const poseidon = await buildPoseidon()
   const poseidonHash = (inputs) => {
-    const hash = _poseidon(inputs.map(MerkleTree.bigNumberify))
-    const bn = MerkleTree.bigNumberify(_poseidon.F.toString(hash))
+    const hash = poseidon(inputs.map(MerkleTree.bigNumberify))
+    const bn = MerkleTree.bigNumberify(poseidon.F.toString(hash))
     return MerkleTree.bufferify(bn)
   }
 

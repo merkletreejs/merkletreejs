@@ -6,9 +6,16 @@
 
 ### References
 
+* [IncrementalMerkleTree](_src_index_.md#incrementalmerkletree)
 * [MerkleMountainRange](_src_index_.md#merklemountainrange)
 
 ## References
+
+###  IncrementalMerkleTree
+
+• **IncrementalMerkleTree**:
+
+___
 
 ###  MerkleMountainRange
 

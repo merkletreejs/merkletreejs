@@ -20,15 +20,11 @@ Class reprensenting a Merkle Tree
 
 ### Methods
 
-* [_bufferIndexOf](_src_merkletree_.merkletree.md#protected-_bufferindexof)
-* [_isHexString](_src_merkletree_.merkletree.md#protected-_ishexstring)
-* [_log2](_src_merkletree_.merkletree.md#protected-_log2)
-* [_toTreeString](_src_merkletree_.merkletree.md#protected-_totreestring)
-* [_zip](_src_merkletree_.merkletree.md#protected-_zip)
 * [addLeaf](_src_merkletree_.merkletree.md#addleaf)
 * [addLeaves](_src_merkletree_.merkletree.md#addleaves)
 * [bigNumberify](_src_merkletree_.merkletree.md#bignumberify)
 * [binarySearch](_src_merkletree_.merkletree.md#binarysearch)
+* [bufferIndexOf](_src_merkletree_.merkletree.md#protected-bufferindexof)
 * [bufferToHex](_src_merkletree_.merkletree.md#buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#bufferify)
 * [bufferifyFn](_src_merkletree_.merkletree.md#bufferifyfn)
@@ -57,14 +53,18 @@ Class reprensenting a Merkle Tree
 * [getProofs](_src_merkletree_.merkletree.md#getproofs)
 * [getProofsDFS](_src_merkletree_.merkletree.md#getproofsdfs)
 * [getRoot](_src_merkletree_.merkletree.md#getroot)
+* [isHexString](_src_merkletree_.merkletree.md#protected-ishexstring)
 * [isUnevenTree](_src_merkletree_.merkletree.md#isuneventree)
 * [linearSearch](_src_merkletree_.merkletree.md#linearsearch)
+* [log2](_src_merkletree_.merkletree.md#protected-log2)
 * [print](_src_merkletree_.merkletree.md#print)
 * [resetTree](_src_merkletree_.merkletree.md#resettree)
 * [toString](_src_merkletree_.merkletree.md#tostring)
+* [toTreeString](_src_merkletree_.merkletree.md#protected-totreestring)
 * [verify](_src_merkletree_.merkletree.md#verify)
 * [verifyMultiProof](_src_merkletree_.merkletree.md#verifymultiproof)
 * [verifyMultiProofWithFlags](_src_merkletree_.merkletree.md#verifymultiproofwithflags)
+* [zip](_src_merkletree_.merkletree.md#protected-zip)
 * [bigNumberify](_src_merkletree_.merkletree.md#static-bignumberify)
 * [binarySearch](_src_merkletree_.merkletree.md#static-binarysearch)
 * [bufferToHex](_src_merkletree_.merkletree.md#static-buffertohex)
@@ -118,124 +118,6 @@ Name | Type | Default | Description |
 **Returns:** *[MerkleTree](_src_merkletree_.merkletree.md)*
 
 ## Methods
-
-### `Protected` _bufferIndexOf
-
-▸ **_bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
-
-*Inherited from [Base](_src_base_.base.md).[_bufferIndexOf](_src_base_.base.md#protected-_bufferindexof)*
-
-bufferIndexOf
-
-**`desc`** Returns the first index of which given buffer is found in array.
-
-**`example`** 
-```js
-const index = tree.bufferIndexOf(haystack, needle)
-```
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`array` | Buffer[] | - |
-`element` | Buffer | - |
-`isSorted` | boolean | false |
-
-**Returns:** *number*
-
-- Index number
-
-___
-
-### `Protected` _isHexString
-
-▸ **_isHexString**(`value`: string): *boolean*
-
-*Inherited from [Base](_src_base_.base.md).[_isHexString](_src_base_.base.md#protected-_ishexstring)*
-
-isHexString
-
-**`desc`** Returns true if value is a hex string.
-
-**`example`** 
-```js
-console.log(MerkleTree.isHexString('0x1234'))
-```
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | string |
-
-**Returns:** *boolean*
-
-___
-
-### `Protected` _log2
-
-▸ **_log2**(`n`: number): *number*
-
-*Inherited from [Base](_src_base_.base.md).[_log2](_src_base_.base.md#protected-_log2)*
-
-log2
-
-**`desc`** Returns the log2 of number.
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`n` | number |
-
-**Returns:** *number*
-
-___
-
-### `Protected` _toTreeString
-
-▸ **_toTreeString**(): *string*
-
-toTreeString
-
-**`desc`** Returns a visual representation of the merkle tree as a string.
-
-**`example`** 
-```js
-console.log(tree.toTreeString())
-```
-
-**Returns:** *string*
-
-___
-
-### `Protected` _zip
-
-▸ **_zip**(`a`: any[], `b`: any[]): *any[][]*
-
-*Inherited from [Base](_src_base_.base.md).[_zip](_src_base_.base.md#protected-_zip)*
-
-zip
-
-**`desc`** Returns true if value is a hex string.
-
-**`example`** 
-```js
-const zipped = tree.zip(['a', 'b'],['A', 'B'])
-console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
-```
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`a` | any[] | first array |
-`b` | any[] | second array |
-
-**Returns:** *any[][]*
-
-___
 
 ###  addLeaf
 
@@ -336,6 +218,35 @@ Name | Type |
 ------ | ------ |
 `a` | unknown |
 `b` | unknown |
+
+**Returns:** *number*
+
+- Index number
+
+___
+
+### `Protected` bufferIndexOf
+
+▸ **bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
+
+*Inherited from [Base](_src_base_.base.md).[bufferIndexOf](_src_base_.base.md#protected-bufferindexof)*
+
+bufferIndexOf
+
+**`desc`** Returns the first index of which given buffer is found in array.
+
+**`example`** 
+```js
+const index = tree.bufferIndexOf(haystack, needle)
+```
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`array` | Buffer[] | - |
+`element` | Buffer | - |
+`isSorted` | boolean | false |
 
 **Returns:** *number*
 
@@ -972,6 +883,31 @@ const root = tree.getRoot()
 
 ___
 
+### `Protected` isHexString
+
+▸ **isHexString**(`value`: string): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[isHexString](_src_base_.base.md#static-ishexstring)*
+
+isHexString
+
+**`desc`** Returns true if value is a hex string.
+
+**`example`** 
+```js
+console.log(MerkleTree.isHexString('0x1234'))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | string |
+
+**Returns:** *boolean*
+
+___
+
 ###  isUnevenTree
 
 ▸ **isUnevenTree**(`treeLayers?`: any[]): *boolean*
@@ -1028,6 +964,26 @@ Name | Type |
 
 ___
 
+### `Protected` log2
+
+▸ **log2**(`n`: number): *number*
+
+*Inherited from [Base](_src_base_.base.md).[log2](_src_base_.base.md#protected-log2)*
+
+log2
+
+**`desc`** Returns the log2 of number.
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`n` | number |
+
+**Returns:** *number*
+
+___
+
 ###  print
 
 ▸ **print**(): *void*
@@ -1075,6 +1031,23 @@ toString
 **`example`** 
 ```js
 console.log(tree.toString())
+```
+
+**Returns:** *string*
+
+___
+
+### `Protected` toTreeString
+
+▸ **toTreeString**(): *string*
+
+toTreeString
+
+**`desc`** Returns a visual representation of the merkle tree as a string.
+
+**`example`** 
+```js
+console.log(tree.toTreeString())
 ```
 
 **Returns:** *string*
@@ -1157,6 +1130,33 @@ Name | Type |
 `proofFlag` | boolean[] |
 
 **Returns:** *boolean*
+
+___
+
+### `Protected` zip
+
+▸ **zip**(`a`: any[], `b`: any[]): *any[][]*
+
+*Inherited from [Base](_src_base_.base.md).[zip](_src_base_.base.md#protected-zip)*
+
+zip
+
+**`desc`** Returns true if value is a hex string.
+
+**`example`** 
+```js
+const zipped = tree.zip(['a', 'b'],['A', 'B'])
+console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
+```
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`a` | any[] | first array |
+`b` | any[] | second array |
+
+**Returns:** *any[][]*
 
 ___
 

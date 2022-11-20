@@ -26,7 +26,7 @@ export class Base {
    *const index = tree.bufferIndexOf(haystack, needle)
    *```
    */
-  protected _bufferIndexOf (
+  protected bufferIndexOf (
     array: Buffer[],
     element: Buffer,
     isSorted: boolean = false
@@ -308,7 +308,7 @@ export class Base {
         return v
       }
 
-      if (this._isHexString(v)) {
+      if (this.isHexString(v)) {
         return Buffer.from(v.replace('0x', ''), 'hex')
       }
 
@@ -345,7 +345,7 @@ export class Base {
    *console.log(MerkleTree.isHexString('0x1234'))
    *```
    */
-  protected _isHexString (value: string): boolean {
+  protected isHexString (value: string): boolean {
     return Base.isHexString(value)
   }
 
@@ -355,8 +355,8 @@ export class Base {
    * @param {Number} value
    * @return {Number}
    */
-  protected _log2 (n: number): number {
-    return n === 1 ? 0 : 1 + this._log2((n / 2) | 0)
+  protected log2 (n: number): number {
+    return n === 1 ? 0 : 1 + this.log2((n / 2) | 0)
   }
 
   /**
@@ -372,7 +372,7 @@ export class Base {
    *console.log(zipped) // [ [ 'a', 'A' ], [ 'b', 'B' ] ]
    *```
    */
-  protected _zip (a: any[], b: any[]): any[][] {
+  protected zip (a: any[], b: any[]): any[][] {
     return a.map((e, i) => [e, b[i]])
   }
 

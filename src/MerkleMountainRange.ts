@@ -305,7 +305,7 @@ export class MerkleMountainRange extends Base {
 
     // find the mountain where the target index belongs to
     let cursor = 0
-    let targetPeak
+    let targetPeak : number
 
     const peakIndexes = this.getPeakIndexes(width)
     for (let i = 0; i < peakIndexes.length; i++) {
@@ -341,7 +341,7 @@ export class MerkleMountainRange extends Base {
     }
 
     // calculate the summit hash climbing up again
-    let node
+    let node : any
     while (height < path.length) {
       // move cursor
       cursor = path[height]
@@ -487,6 +487,10 @@ export class MerkleMountainRange extends Base {
 
     return this.hashes[index]
   }
+}
+
+if (typeof window !== 'undefined') {
+  ;(window as any).MerkleMountainRange = MerkleMountainRange
 }
 
 export default MerkleMountainRange
