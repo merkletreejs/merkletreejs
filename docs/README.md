@@ -102,11 +102,11 @@ Output:
 
 ▾ Visualization of Merkle Tree Proof
 
-<img src="https://user-images.githubusercontent.com/168240/43616387-27ec860a-9671-11e8-9f3f-0b871a6581a6.png" alt="Merkle Tree Proof" width="420">
+<img src="https://user-images.githubusercontent.com/168240/204968384-dbd16f5b-415c-4cc6-b993-5bbd7599ec8b.png" alt="Merkle Tree Proof" width="420">
 
 ▾ Visualization of Invalid Merkle Tree Proofs
 
-<img src="https://user-images.githubusercontent.com/168240/43616398-33e20584-9671-11e8-9f62-9f48ce412898.png" alt="Merkle Tree Proof" width="420">
+<img src="https://user-images.githubusercontent.com/168240/204968414-fefedb52-d27f-4b14-bf70-e3f96a50b6a3.png" alt="Merkle Tree Proof" width="420">
 
 ▾ Visualization of Bitcoin Merkle Tree
 

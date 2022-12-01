@@ -47,6 +47,8 @@ Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
 <script src="https://cdn.jsdelivr.net/npm/merkletreejs@latest/merkletree.js"></script>
 ```
 
+The exported classes will be available on `window` object, e.g. `window.MerkleTree`
+
 ## Example
 
 [https://lab.miguelmota.com/merkletreejs](https://lab.miguelmota.com/merkletreejs)
