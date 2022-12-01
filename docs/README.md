@@ -133,6 +133,10 @@ npm test
 - Q: Is there an NFT whitelist example in Solidity?
   - A: Check out the example repo [merkletreejs-nft-whitelist](https://github.com/miguelmota/merkletreejs-nft-whitelist) on how to generate merkle root of whitelisted accounts and merkle proofs with this library and verify them in Solidity.
 
+- Q: What other types of merkle trees are supported?
+
+  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, and `IncrementalMerkleTree` implemenation classes available.
+
 - Q: Is there a CLI version of this library?
 
   - Yes, see [merkletreejs-cli](https://github.com/miguelmota/merkletreejs-cli).

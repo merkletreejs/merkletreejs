@@ -4,7 +4,7 @@ const { MerkleSumTree, Leaf } = require('../dist/MerkleSumTree')
 
 const sha256 = (data) => crypto.createHash('sha256').update(data).digest()
 
-test('MerkleSumTree', t => {
+test('MerkleSumTree - sha256', t => {
   t.plan(4)
 
   const treeSize = 2n ** 64n
