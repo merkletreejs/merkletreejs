@@ -39,6 +39,18 @@ From [NPM](https://www.npmjs.com/package/merkletreejs):
 npm install merkletreejs
 ```
 
+Import as ES6 module
+
+```js
+import { MerkleTree } from 'merkletreejs'
+```
+
+Import as CommonJs
+
+```js
+const { MerkleTree } = require('merkletreejs')
+```
+
 ### CDN
 
 Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
