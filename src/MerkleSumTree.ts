@@ -159,3 +159,9 @@ export class MerkleSumTree extends Base {
     return curr.size === root.size && curr.hashed.toString('hex') === root.hashed.toString('hex')
   }
 }
+
+if (typeof window !== 'undefined') {
+  ;(window as any).MerkleSumTree = MerkleSumTree
+}
+
+export default MerkleSumTree
