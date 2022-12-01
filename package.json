@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
