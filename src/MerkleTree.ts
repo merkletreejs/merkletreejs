@@ -401,20 +401,20 @@ export class MerkleTree extends Base {
    *const layers = tree.getLayers()
    *```
    */
-  getLayers ():Buffer[] {
+  getLayers ():Buffer[][] {
     return this.layers
   }
 
   /**
    * getHexLayers
    * @desc Returns multi-dimensional array of all layers of Merkle Tree, including leaves and root as hex strings.
-   * @return {String[]}
+   * @return {String[][]}
    * @example
    *```js
    *const layers = tree.getHexLayers()
    *```
    */
-  getHexLayers ():string[] {
+  getHexLayers ():string[][] {
     return this.layers.reduce((acc: string[][], item: Buffer[]) => {
       if (Array.isArray(item)) {
         acc.push(item.map(layer => this.bufferToHex(layer)))
