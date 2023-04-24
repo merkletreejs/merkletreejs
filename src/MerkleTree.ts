@@ -393,7 +393,7 @@ export class MerkleTree extends Base {
   /**
    * getLayers
    * @desc Returns multi-dimensional array of all layers of Merkle Tree, including leaves and root.
-   * @return {Buffer[]}
+   * @return {Buffer[][]}
    * @example
    *```js
    *const layers = tree.getLayers()
