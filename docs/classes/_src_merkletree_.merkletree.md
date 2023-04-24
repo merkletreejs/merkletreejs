@@ -349,7 +349,7 @@ ___
 
 ###  getHexLayers
 
-▸ **getHexLayers**(): *string[]*
+▸ **getHexLayers**(): *string[][]*
 
 getHexLayers
 
@@ -360,7 +360,7 @@ getHexLayers
 const layers = tree.getHexLayers()
 ```
 
-**Returns:** *string[]*
+**Returns:** *string[][]*
 
 ___
 
@@ -506,7 +506,7 @@ ___
 
 ###  getLayers
 
-▸ **getLayers**(): *Buffer[]*
+▸ **getLayers**(): *Buffer[][]*
 
 getLayers
 
@@ -517,7 +517,7 @@ getLayers
 const layers = tree.getLayers()
 ```
 
-**Returns:** *Buffer[]*
+**Returns:** *Buffer[][]*
 
 ___
 

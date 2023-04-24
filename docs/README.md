@@ -43,6 +43,18 @@ From [NPM](https://www.npmjs.com/package/merkletreejs):
 npm install merkletreejs
 ```
 
+Import as ES6 module
+
+```js
+import { MerkleTree } from 'merkletreejs'
+```
+
+Import as CommonJs
+
+```js
+const { MerkleTree } = require('merkletreejs')
+```
+
 ### CDN
 
 Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
@@ -50,6 +62,8 @@ Available on [jsDelivr](https://www.jsdelivr.com/) CDN:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/merkletreejs@latest/merkletree.js"></script>
 ```
+
+The exported classes will be available on `window` object, e.g. `window.MerkleTree`
 
 ## Example
 
