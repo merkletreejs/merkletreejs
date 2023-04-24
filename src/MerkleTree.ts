@@ -143,10 +143,8 @@ export class MerkleTree extends Base {
     }
 
     if (this.fillDefaultHash) {
-      for (let i = 0; i < Math.pow(2, Math.ceil(Math.log2(this.leaves.length))); i++) {
-        if (i >= this.leaves.length) {
-          this.leaves.push(this.bufferify(this.fillDefaultHash(i, this.hashFn)))
-        }
+      for (let i = this.leaves.length; i < Math.pow(2, Math.ceil(Math.log2(this.leaves.length))); i++) {
+        this.leaves.push(this.bufferify(this.fillDefaultHash(i, this.hashFn)))
       }
     }
 
