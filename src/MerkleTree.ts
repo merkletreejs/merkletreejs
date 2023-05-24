@@ -277,6 +277,12 @@ export class MerkleTree extends Base {
     return this.leaves
   }
 
+  removeLeaf(index: number): Buffer {
+    const result = this.leaves.splice(index, 1)
+    this.processLeaves(this.leaves) 
+    return result[0]
+  }
+
   /**
    * getLeaf
    * @desc Returns the leaf at the given index.
