@@ -283,6 +283,12 @@ export class MerkleTree extends Base {
     return result[0]
   }
 
+  updateLeaf(index: number, value: Buffer, shouldHash: boolean = false): void {
+    if (shouldHash) value = this.hashFn(value)
+    this.leaves[index] = value
+    this.processLeaves(this.leaves)
+  }
+
   /**
    * getLeaf
    * @desc Returns the leaf at the given index.

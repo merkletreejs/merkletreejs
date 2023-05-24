@@ -1240,7 +1240,7 @@ test('addLeaves', t => {
   t.equal(tree.getHexRoot(), '0xb9a721d82428976e0d500f97646bf273ec1dd9c2104b9328873a94fc3897aec6')
 })
 
-test.only('removeLeaf', t => {
+test('removeLeaf', t => {
   t.plan(6)
   const leaves = ['c', 'a', 'b'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
@@ -1251,6 +1251,21 @@ test.only('removeLeaf', t => {
   t.equal(tree.getLeafCount(), 2)
   tree.addLeaf(keccak256('c'))
   t.equal(tree.getLeafCount(), 3)
+
+  t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
+  t.deepEqual(tree.getHexLeaves(), [
+    '0x3ac225168df54212a25c1c01fd35bebfea408fdac2e31ddd6f80a4bbf9a5f1cb',
+    '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
+    '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
+  ])
+})
+
+test('removeLeaf', t => {
+  t.plan(2)
+  const leaves = ['a', 'b', 'd'].map(keccak256)
+  const tree = new MerkleTree(leaves, sha256)
+
+  tree.updateLeaf(2, keccak256('c'))
 
   t.equal(tree.getHexRoot(), '0x311d2e46f49b15fff8b746b74ad57f2cc9e0d9939fda94387141a2d3fdf187ae')
   t.deepEqual(tree.getHexLeaves(), [
