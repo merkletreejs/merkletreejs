@@ -278,12 +278,14 @@ export class MerkleTree extends Base {
   }
 
   removeLeaf(index: number): Buffer {
+    if (!this.isValidIdx(index)) this.invalidIdxErr(index) 
     const result = this.leaves.splice(index, 1)
     this.processLeaves(this.leaves) 
     return result[0]
   }
 
   updateLeaf(index: number, value: Buffer, shouldHash: boolean = false): void {
+    if (!this.isValidIdx(index)) this.invalidIdxErr(index)
     if (shouldHash) value = this.hashFn(value)
     this.leaves[index] = value
     this.processLeaves(this.leaves)
@@ -1413,6 +1415,14 @@ export class MerkleTree extends Base {
 
   private isPowOf2 (v: number) {
     return v && !(v & (v - 1))
+  }
+
+  private invalidIdxErr(idx: number): void {
+    throw new Error(`"${idx}" is not a valid leaf index. Expected to be [0, ${this.getLeafCount() - 1}]`)
+  }
+
+  private isValidIdx(idx): boolean {
+    return idx >= 0 && idx < this.getLeafCount()
   }
 
   private calculateRootForUnevenTree (leafIndices: number[], leafHashes: any[], totalLeavesCount: number, proofHashes: any[]) {

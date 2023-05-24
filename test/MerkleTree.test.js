@@ -1260,7 +1260,14 @@ test('removeLeaf', t => {
   ])
 })
 
-test('removeLeaf', t => {
+test('removeLeaf - invalid index error', (t) => {
+  t.plan(1)
+  const leaves = ['c', 'a', 'b'].map(keccak256)
+  const tree = new MerkleTree(leaves, sha256)
+  t.throws(() => tree.removeLeaf(10), /"10" is not a valid leaf index. Expected to be \[0, 2\]/)
+})
+
+test('updateLeaf', t => {
   t.plan(2)
   const leaves = ['a', 'b', 'd'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
@@ -1273,6 +1280,16 @@ test('removeLeaf', t => {
     '0xb5553de315e0edf504d9150af82dafa5c4667fa618ed0a6f19c69b41166c5510',
     '0x0b42b6393c1f53060fe3ddbfcd7aadcca894465a5a438f69c87d790b2299b9b2'
   ])
+})
+
+test('updateLeaf - invalid index error', (t) => {
+  t.plan(1)
+  const leaves = ['a', 'b', 'c'].map(keccak256)
+  const tree = new MerkleTree(leaves, sha256)
+  t.throws(
+    () => tree.updateLeaf(4, keccak256('d')),
+    /"4" is not a valid leaf index. Expected to be \[0, 2\]/
+  )
 })
 
 test('resetTree', t => {
