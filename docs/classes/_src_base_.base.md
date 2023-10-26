@@ -8,11 +8,11 @@
 
   ↳ [IncrementalMerkleTree](_src_incrementalmerkletree_.incrementalmerkletree.md)
 
+  ↳ [MerkleTree](_src_merkletree_.merkletree.md)
+
   ↳ [MerkleMountainRange](_src_merklemountainrange_.merklemountainrange.md)
 
   ↳ [MerkleSumTree](_src_merklesumtree_.merklesumtree.md)
-
-  ↳ [MerkleTree](_src_merkletree_.merkletree.md)
 
 ## Index
 
