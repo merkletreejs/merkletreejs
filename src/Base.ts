@@ -170,7 +170,7 @@ export class Base {
       } else if (typeof value === 'bigint') {
         return Buffer.from(value.toString(16), 'hex')
       } else if (value instanceof Uint8Array) {
-        return Buffer.from(value.buffer)
+        return Buffer.from(value.buffer, value.byteOffset, value.byteLength)
       } else if (typeof value === 'number') {
         let s = value.toString()
         if (s.length % 2) {
