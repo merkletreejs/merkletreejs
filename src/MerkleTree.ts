@@ -42,7 +42,7 @@ export interface Options {
 export class MerkleTree extends Base {
   private duplicateOdd: boolean = false
   private hashFn: THashFn
-  private concatenator: any = Buffer.concat
+  private concatenator: any
   private hashLeaves: boolean = false
   private isBitcoinTree: boolean = false
   private leaves: TLeaf[] = []
@@ -113,6 +113,8 @@ export class MerkleTree extends Base {
 
     if (options.concatenator) {
       this.concatenator = options.concatenator
+    }else{
+      this.concatenator = Buffer.concat
     }
 
     this.hashFn = this.bufferifyFn(hashFn)
