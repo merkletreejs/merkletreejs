@@ -317,7 +317,7 @@ export class Base {
       }
 
       if (typeof v === 'bigint') {
-        return Buffer.from(value.toString(16), 'hex')
+        return Buffer.from(v.toString(16), 'hex')
       }
 
       if (ArrayBuffer.isView(v)) {
