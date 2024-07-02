@@ -33,13 +33,28 @@ test('bufferifyFn', t => {
 })
 
 test('bigNumberify', t => {
-  t.plan(4)
+  t.plan(8)
 
   const base = new Base()
   t.deepEqual(base.bigNumberify(123), BigInt(123))
+  t.deepEqual(base.bigNumberify(''), BigInt(0))
+  t.deepEqual(base.bigNumberify(0), BigInt(0))
+  t.deepEqual(base.bigNumberify('0x'), BigInt(0))
+  t.deepEqual(base.bigNumberify('0x0'), BigInt(0))
   t.deepEqual(base.bigNumberify('0x123'), BigInt('0x123'))
   t.deepEqual(base.bigNumberify(BigInt(123)), BigInt(123))
   t.deepEqual(base.bigNumberify(new Uint8Array([123])), BigInt(123))
+})
+
+test('bufferToHex', t => {
+  t.plan(5)
+
+  const base = new Base()
+  t.deepEqual(base.bufferToHex(Buffer.alloc(0)), '0x')
+  t.deepEqual(base.bufferToHex(Buffer.from('')), '0x')
+  t.deepEqual(base.bufferToHex(Buffer.from('x')), '0x78')
+  t.deepEqual(base.bufferToHex(''), '0x')
+  t.deepEqual(base.bufferToHex(0), '0x')
 })
 
 test('binarySearch', t => {

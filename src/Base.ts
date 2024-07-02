@@ -201,7 +201,7 @@ export class Base {
       if (value.startsWith('0x') && Base.isHexString(value)) {
         // Remove '0x' and ensure even-length hex string
         const hexString = value.replace('0x', '')
-        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+        const paddedHexString = hexString.length % 2 ? '0' + hexString : (hexString || '0')
         return BigInt('0x' + paddedHexString)
       }
       return BigInt(value)
@@ -210,14 +210,14 @@ export class Base {
     if (Buffer.isBuffer(value)) {
       // Convert buffer to hex string and ensure even-length hex string
       const hexString = value.toString('hex')
-      const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+      const paddedHexString = hexString.length % 2 ? '0' + hexString : (hexString || '0')
       return BigInt('0x' + paddedHexString)
     }
 
     if (value instanceof Uint8Array) {
       // Convert Uint8Array to hex string and ensure even-length hex string
       const hexString = Buffer.from(value).toString('hex')
-      const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+      const paddedHexString = hexString.length % 2 ? '0' + hexString : (hexString || '0')
       return BigInt('0x' + paddedHexString)
     }
 
