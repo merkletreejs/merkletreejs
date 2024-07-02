@@ -164,11 +164,14 @@ export class Base {
       if (typeof value === 'object' && value.words) {
         return Buffer.from(value.toString(CryptoJS.enc.Hex), 'hex')
       } else if (Base.isHexString(value)) {
-        return Buffer.from(value.replace(/^0x/, ''), 'hex')
+        const hexString = value.replace('0x', '')
+        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+        return Buffer.from(paddedHexString, 'hex')
       } else if (typeof value === 'string') {
         return Buffer.from(value)
       } else if (typeof value === 'bigint') {
-        return Buffer.from(value.toString(16), 'hex')
+        const hexString = value.toString(16).length % 2 ? '0' + value.toString(16) : value.toString(16)
+        return Buffer.from(hexString, 'hex')
       } else if (value instanceof Uint8Array) {
         return Buffer.from(value.buffer)
       } else if (typeof value === 'number') {
@@ -196,17 +199,26 @@ export class Base {
 
     if (typeof value === 'string') {
       if (value.startsWith('0x') && Base.isHexString(value)) {
-        return BigInt('0x' + value.replace('0x', '').toString())
+        // Remove '0x' and ensure even-length hex string
+        const hexString = value.replace('0x', '')
+        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+        return BigInt('0x' + paddedHexString)
       }
       return BigInt(value)
     }
 
     if (Buffer.isBuffer(value)) {
-      return BigInt('0x' + value.toString('hex'))
+      // Convert buffer to hex string and ensure even-length hex string
+      const hexString = value.toString('hex')
+      const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+      return BigInt('0x' + paddedHexString)
     }
 
     if (value instanceof Uint8Array) {
-      return BigInt(value)
+      // Convert Uint8Array to hex string and ensure even-length hex string
+      const hexString = Buffer.from(value).toString('hex')
+      const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+      return BigInt('0x' + paddedHexString)
     }
 
     if (typeof value === 'number') {
@@ -309,7 +321,9 @@ export class Base {
       }
 
       if (this.isHexString(v)) {
-        return Buffer.from(v.replace('0x', ''), 'hex')
+        const hexString = v.replace('0x', '')
+        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+        return Buffer.from(paddedHexString, 'hex')
       }
 
       if (typeof v === 'string') {
@@ -317,7 +331,8 @@ export class Base {
       }
 
       if (typeof v === 'bigint') {
-        return Buffer.from(v.toString(16).length % 2 ? '0' + v.toString(16) : v.toString(16), 'hex')
+        const hexString = v.toString(16).length % 2 ? '0' + v.toString(16) : v.toString(16)
+        return Buffer.from(hexString, 'hex')
       }
 
       if (ArrayBuffer.isView(v)) {

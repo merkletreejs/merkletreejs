@@ -117,6 +117,10 @@ export class MerkleTree extends Base {
       this.concatenator = Buffer.concat
     }
 
+    if (typeof hashFn !== 'function') {
+      throw new Error('hashFn must be a function')
+    }
+
     this.hashFn = this.bufferifyFn(hashFn)
     this.processLeaves(leaves)
   }

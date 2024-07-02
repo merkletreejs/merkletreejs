@@ -115,11 +115,11 @@ test('poseidon - 2 depth 2 arity', async t => {
     {
       '23a9e944fc7d734b6ef70b73c9ecc9ae97051b709c29f41339b039b701e99d93': {
         '20f63b3f6cf280e6a4a488a825d7fdc948ee0a02a2714a532f6d0e747bbfbf22': {
-          d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd: null,
+          '0d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd4': null,
           '131d73cf6b30079aca0dff6a561cd0ee50b540879abe379a25a06b24bde2bebd': null
         },
         '23144c1e7794f62515c2ccbaee3076d2e40b673fcba5da8a6457387e054068e0': {
-          d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd: null,
+          '0d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd4': null,
           '15e36f4ff92e2211fa8ed9f7af707f6c8c0f1442252a85150d2b8d2038890dfc': null
         }
       }
@@ -128,10 +128,10 @@ test('poseidon - 2 depth 2 arity', async t => {
   t.equal(tree.toString(),
 `└─ 23a9e944fc7d734b6ef70b73c9ecc9ae97051b709c29f41339b039b701e99d93
    ├─ 20f63b3f6cf280e6a4a488a825d7fdc948ee0a02a2714a532f6d0e747bbfbf22
-   │  ├─ d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd
+   │  ├─ 0d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd4
    │  └─ 131d73cf6b30079aca0dff6a561cd0ee50b540879abe379a25a06b24bde2bebd
    └─ 23144c1e7794f62515c2ccbaee3076d2e40b673fcba5da8a6457387e054068e0
-      ├─ d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd
+      ├─ 0d4e4d24b890fe6799be4cf57ad13078ec0fbaa9fe91423ba8bbd0c2d7043bd4
       └─ 15e36f4ff92e2211fa8ed9f7af707f6c8c0f1442252a85150d2b8d2038890dfc
 `)
 })
@@ -161,7 +161,7 @@ test('poseidon - 2 depth 3 arity', async t => {
   tree.insert(poseidon([BigInt(6)]))
   tree.insert(poseidon([BigInt(7)]))
   tree.insert(poseidon([BigInt(8)]))
-  t.equal(tree.getHexRoot(), '0xe38e8da4dd7c981fb9e47ca06a88447d3111a3796e2ed8ecc0c80c341b945a')
+  t.equal(tree.getHexRoot(), '0x0e38e8da4dd7c981fb9e47ca06a88447d3111a3796e2ed8ecc0c80c341b945a1')
 })
 
 test('poseidon - proof', async t => {

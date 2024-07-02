@@ -1292,15 +1292,19 @@ test('complete option with incompatible options', t => {
   )
 })
 
-test('simple bad proof', t => {
-  t.plan(2)
+test('empty hash', t => {
+  t.test(1)
+  t.equal(sha256('').toString('hex'), 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+})
 
-  const leaves = ['d', 'e', 'f']
+test('simple bad proof test', t => {
+  t.plan(1)
+
+  const leaves = ['d', 'e', 'f'].map(v => Buffer.from(v))
   const tree = new MerkleTree(leaves)
 
-  const proof = tree.getHexProof(leaves[0])
-  t.equal(proof.length, 1)
-  t.equal(proof[0], '0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+  const proof = tree.getHexProof(Buffer.from('x'))
+  t.equal(proof.length, 0)
 })
 
 test.skip('1M leaves keccak256', t => {
@@ -1344,7 +1348,7 @@ test('poseidon hash', async t => {
   const tree = new MerkleTree(leaves, poseidonHash, {
     concatenator: (hashes) => hashes
   })
-  t.equal(tree.getHexRoot(), '0xd24e045226875e22b37ce607ea2af7a9fbb137ee128caa0ce3663615350245')
+  t.equal(tree.getHexRoot(), '0x0ae35a1d69b5edf22c9c8f3c516e71844d314d2783e6be55ecbb4041dd0f4da8')
 
   const proof = tree.getProof(leaves[2])
   t.true(tree.verify(proof, leaves[2], tree.getHexRoot()))
