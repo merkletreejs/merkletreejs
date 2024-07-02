@@ -113,7 +113,7 @@ export class MerkleTree extends Base {
 
     if (options.concatenator) {
       this.concatenator = options.concatenator
-    }else{
+    } else {
       this.concatenator = Buffer.concat
     }
 
@@ -283,15 +283,21 @@ export class MerkleTree extends Base {
     return this.leaves
   }
 
-  removeLeaf(index: number): Buffer {
-    if (!this.isValidIdx(index)) this.invalidIdxErr(index) 
+  removeLeaf (index: number): Buffer {
+    if (!this.isValidLeafIndex(index)) {
+      throw new Error(`"${index}" is not a valid leaf index. Expected to be [0, ${this.getLeafCount() - 1}]`)
+    }
+
     const result = this.leaves.splice(index, 1)
-    this.processLeaves(this.leaves) 
+    this.processLeaves(this.leaves)
     return result[0]
   }
 
-  updateLeaf(index: number, value: Buffer, shouldHash: boolean = false): void {
-    if (!this.isValidIdx(index)) this.invalidIdxErr(index)
+  updateLeaf (index: number, value: Buffer, shouldHash: boolean = false): void {
+    if (!this.isValidLeafIndex(index)) {
+      throw new Error(`"${index}" is not a valid leaf index. Expected to be [0, ${this.getLeafCount() - 1}]`)
+    }
+
     if (shouldHash) value = this.hashFn(value)
     this.leaves[index] = value
     this.processLeaves(this.leaves)
@@ -1423,11 +1429,7 @@ export class MerkleTree extends Base {
     return v && !(v & (v - 1))
   }
 
-  private invalidIdxErr(idx: number): void {
-    throw new Error(`"${idx}" is not a valid leaf index. Expected to be [0, ${this.getLeafCount() - 1}]`)
-  }
-
-  private isValidIdx(idx): boolean {
+  isValidLeafIndex (idx: number): boolean {
     return idx >= 0 && idx < this.getLeafCount()
   }
 

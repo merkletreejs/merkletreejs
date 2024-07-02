@@ -1242,6 +1242,7 @@ test('addLeaves', t => {
 
 test('removeLeaf', t => {
   t.plan(6)
+
   const leaves = ['c', 'a', 'b'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
 
@@ -1262,6 +1263,7 @@ test('removeLeaf', t => {
 
 test('removeLeaf - invalid index error', (t) => {
   t.plan(1)
+
   const leaves = ['c', 'a', 'b'].map(keccak256)
   const tree = new MerkleTree(leaves, sha256)
   t.throws(() => tree.removeLeaf(10), /"10" is not a valid leaf index. Expected to be \[0, 2\]/)

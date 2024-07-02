@@ -14,7 +14,7 @@ test('bufferify', t => {
   t.deepEqual(base.bufferify(BigInt('0x123')), Buffer.from('0123', 'hex'))
   t.deepEqual(base.bufferify(BigInt('0x1234')), Buffer.from('1234', 'hex'))
   t.deepEqual(base.bufferify(new Uint8Array([123])), Buffer.from([123]))
-  t.deepEqual(base.bufferify(new Uint8Array((new Uint8Array([0,123])).buffer, 1, 1)), Buffer.from([123]))
+  t.deepEqual(base.bufferify(new Uint8Array((new Uint8Array([0, 123])).buffer, 1, 1)), Buffer.from([123]))
 })
 
 test('bufferifyFn', t => {
