@@ -32,6 +32,7 @@
 * [append](_src_merklemountainrange_.merklemountainrange.md#append)
 * [bigNumberify](_src_merklemountainrange_.merklemountainrange.md#bignumberify)
 * [binarySearch](_src_merklemountainrange_.merklemountainrange.md#binarysearch)
+* [bufferArrayIncludes](_src_merklemountainrange_.merklemountainrange.md#bufferarrayincludes)
 * [bufferIndexOf](_src_merklemountainrange_.merklemountainrange.md#protected-bufferindexof)
 * [bufferToHex](_src_merklemountainrange_.merklemountainrange.md#buffertohex)
 * [bufferify](_src_merklemountainrange_.merklemountainrange.md#bufferify)
@@ -211,6 +212,23 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
+
+___
+
+###  bufferArrayIncludes
+
+▸ **bufferArrayIncludes**(`bufferArray`: Buffer[], `targetBuffer`: Buffer): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`bufferArray` | Buffer[] |
+`targetBuffer` | Buffer |
+
+**Returns:** *boolean*
 
 ___
 

@@ -44,7 +44,7 @@
     "merklesumtree",
     "incrementalmerkletree",
     "merklepatriciatree",
-    "radixtree"
+    "merkleradixtree"
   ],
   "author": {
     "name": "Miguel Mota",

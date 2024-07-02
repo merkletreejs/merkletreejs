@@ -8,6 +8,7 @@
 
 * [IncrementalMerkleTree](_src_index_.md#incrementalmerkletree)
 * [MerkleMountainRange](_src_index_.md#merklemountainrange)
+* [MerkleRadixTree](_src_index_.md#merkleradixtree)
 * [MerkleSumTree](_src_index_.md#merklesumtree)
 
 ## References
@@ -21,6 +22,12 @@ ___
 ###  MerkleMountainRange
 
 • **MerkleMountainRange**:
+
+___
+
+###  MerkleRadixTree
+
+• **MerkleRadixTree**:
 
 ___
 

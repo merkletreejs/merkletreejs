@@ -1,51 +1,84 @@
-[merkletreejs](../README.md) › [Globals](../globals.md) › ["src/Base"](../modules/_src_base_.md) › [Base](_src_base_.base.md)
+[merkletreejs](../README.md) › [Globals](../globals.md) › ["src/MerkleRadixTree"](../modules/_src_merkleradixtree_.md) › [MerkleRadixTree](_src_merkleradixtree_.merkleradixtree.md)
 
-# Class: Base
+# Class: MerkleRadixTree
 
 ## Hierarchy
 
-* **Base**
+* [Base](_src_base_.base.md)
 
-  ↳ [IncrementalMerkleTree](_src_incrementalmerkletree_.incrementalmerkletree.md)
-
-  ↳ [MerkleMountainRange](_src_merklemountainrange_.merklemountainrange.md)
-
-  ↳ [MerkleRadixTree](_src_merkleradixtree_.merkleradixtree.md)
-
-  ↳ [MerkleSumTree](_src_merklesumtree_.merklesumtree.md)
-
-  ↳ [MerkleTree](_src_merkletree_.merkletree.md)
+  ↳ **MerkleRadixTree**
 
 ## Index
 
+### Constructors
+
+* [constructor](_src_merkleradixtree_.merkleradixtree.md#constructor)
+
+### Properties
+
+* [hashFn](_src_merkleradixtree_.merkleradixtree.md#hashfn)
+* [root](_src_merkleradixtree_.merkleradixtree.md#root)
+
 ### Methods
 
-* [bigNumberify](_src_base_.base.md#bignumberify)
-* [binarySearch](_src_base_.base.md#binarysearch)
-* [bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)
-* [bufferIndexOf](_src_base_.base.md#protected-bufferindexof)
-* [bufferToHex](_src_base_.base.md#buffertohex)
-* [bufferify](_src_base_.base.md#bufferify)
-* [bufferifyFn](_src_base_.base.md#bufferifyfn)
-* [isHexString](_src_base_.base.md#protected-ishexstring)
-* [linearSearch](_src_base_.base.md#linearsearch)
-* [log2](_src_base_.base.md#protected-log2)
-* [print](_src_base_.base.md#print)
-* [zip](_src_base_.base.md#protected-zip)
-* [bigNumberify](_src_base_.base.md#static-bignumberify)
-* [binarySearch](_src_base_.base.md#static-binarysearch)
-* [bufferToHex](_src_base_.base.md#static-buffertohex)
-* [bufferify](_src_base_.base.md#static-bufferify)
-* [hexZeroPad](_src_base_.base.md#static-hexzeropad)
-* [isHexString](_src_base_.base.md#static-ishexstring)
-* [linearSearch](_src_base_.base.md#static-linearsearch)
-* [print](_src_base_.base.md#static-print)
+* [bigNumberify](_src_merkleradixtree_.merkleradixtree.md#bignumberify)
+* [binarySearch](_src_merkleradixtree_.merkleradixtree.md#binarysearch)
+* [bufferArrayIncludes](_src_merkleradixtree_.merkleradixtree.md#bufferarrayincludes)
+* [bufferIndexOf](_src_merkleradixtree_.merkleradixtree.md#protected-bufferindexof)
+* [bufferToHex](_src_merkleradixtree_.merkleradixtree.md#buffertohex)
+* [bufferify](_src_merkleradixtree_.merkleradixtree.md#bufferify)
+* [bufferifyFn](_src_merkleradixtree_.merkleradixtree.md#bufferifyfn)
+* [generateProof](_src_merkleradixtree_.merkleradixtree.md#generateproof)
+* [insert](_src_merkleradixtree_.merkleradixtree.md#insert)
+* [isHexString](_src_merkleradixtree_.merkleradixtree.md#protected-ishexstring)
+* [linearSearch](_src_merkleradixtree_.merkleradixtree.md#linearsearch)
+* [log2](_src_merkleradixtree_.merkleradixtree.md#protected-log2)
+* [lookup](_src_merkleradixtree_.merkleradixtree.md#lookup)
+* [print](_src_merkleradixtree_.merkleradixtree.md#print)
+* [verifyProof](_src_merkleradixtree_.merkleradixtree.md#verifyproof)
+* [zip](_src_merkleradixtree_.merkleradixtree.md#protected-zip)
+* [bigNumberify](_src_merkleradixtree_.merkleradixtree.md#static-bignumberify)
+* [binarySearch](_src_merkleradixtree_.merkleradixtree.md#static-binarysearch)
+* [bufferToHex](_src_merkleradixtree_.merkleradixtree.md#static-buffertohex)
+* [bufferify](_src_merkleradixtree_.merkleradixtree.md#static-bufferify)
+* [hexZeroPad](_src_merkleradixtree_.merkleradixtree.md#static-hexzeropad)
+* [isHexString](_src_merkleradixtree_.merkleradixtree.md#static-ishexstring)
+* [linearSearch](_src_merkleradixtree_.merkleradixtree.md#static-linearsearch)
+* [print](_src_merkleradixtree_.merkleradixtree.md#static-print)
+
+## Constructors
+
+###  constructor
+
+\+ **new MerkleRadixTree**(`hashFn`: [THashFn](../modules/_src_merkleradixtree_.md#thashfn)): *[MerkleRadixTree](_src_merkleradixtree_.merkleradixtree.md)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`hashFn` | [THashFn](../modules/_src_merkleradixtree_.md#thashfn) |
+
+**Returns:** *[MerkleRadixTree](_src_merkleradixtree_.merkleradixtree.md)*
+
+## Properties
+
+###  hashFn
+
+• **hashFn**: *[THashFn](../modules/_src_merkleradixtree_.md#thashfn)*
+
+___
+
+###  root
+
+• **root**: *[MerkleRadixNode](_src_merkleradixtree_.merkleradixnode.md)*
 
 ## Methods
 
 ###  bigNumberify
 
 ▸ **bigNumberify**(`value`: any): *BigInt*
+
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
 
 **Parameters:**
 
@@ -60,6 +93,8 @@ ___
 ###  binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[binarySearch](_src_base_.base.md#static-binarysearch)*
 
 binarySearch
 
@@ -101,6 +136,8 @@ ___
 
 ▸ **bufferArrayIncludes**(`bufferArray`: Buffer[], `targetBuffer`: Buffer): *boolean*
 
+*Inherited from [Base](_src_base_.base.md).[bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)*
+
 **Parameters:**
 
 Name | Type |
@@ -115,6 +152,8 @@ ___
 ### `Protected` bufferIndexOf
 
 ▸ **bufferIndexOf**(`array`: Buffer[], `element`: Buffer, `isSorted`: boolean): *number*
+
+*Inherited from [Base](_src_base_.base.md).[bufferIndexOf](_src_base_.base.md#protected-bufferindexof)*
 
 bufferIndexOf
 
@@ -143,6 +182,8 @@ ___
 
 ▸ **bufferToHex**(`value`: Buffer, `withPrefix`: boolean): *string*
 
+*Inherited from [Base](_src_base_.base.md).[bufferToHex](_src_base_.base.md#buffertohex)*
+
 bufferToHex
 
 **`desc`** Returns a hex string with 0x prefix for given buffer.
@@ -167,6 +208,8 @@ ___
 
 ▸ **bufferify**(`value`: any): *Buffer*
 
+*Inherited from [Base](_src_base_.base.md).[bufferify](_src_base_.base.md#static-bufferify)*
+
 bufferify
 
 **`desc`** Returns a buffer type for the given value.
@@ -190,6 +233,8 @@ ___
 
 ▸ **bufferifyFn**(`f`: any): *any*
 
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#bufferifyfn)*
+
 bufferifyFn
 
 **`desc`** Returns a function that will bufferify the return value.
@@ -209,9 +254,40 @@ Name | Type |
 
 ___
 
+###  generateProof
+
+▸ **generateProof**(`key`: string): *any[]*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`key` | string |
+
+**Returns:** *any[]*
+
+___
+
+###  insert
+
+▸ **insert**(`key`: string, `value`: [TValue](../modules/_src_merkleradixtree_.md#tvalue)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`key` | string |
+`value` | [TValue](../modules/_src_merkleradixtree_.md#tvalue) |
+
+**Returns:** *void*
+
+___
+
 ### `Protected` isHexString
 
 ▸ **isHexString**(`value`: string): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[isHexString](_src_base_.base.md#static-ishexstring)*
 
 isHexString
 
@@ -235,6 +311,8 @@ ___
 ###  linearSearch
 
 ▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[linearSearch](_src_base_.base.md#static-linearsearch)*
 
 linearSearch
 
@@ -276,6 +354,8 @@ ___
 
 ▸ **log2**(`n`: number): *number*
 
+*Inherited from [Base](_src_base_.base.md).[log2](_src_base_.base.md#protected-log2)*
+
 log2
 
 **`desc`** Returns the log2 of number.
@@ -290,9 +370,25 @@ Name | Type |
 
 ___
 
+###  lookup
+
+▸ **lookup**(`key`: string): *string | number | Buffer‹› | BigInt*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`key` | string |
+
+**Returns:** *string | number | Buffer‹› | BigInt*
+
+___
+
 ###  print
 
 ▸ **print**(): *void*
+
+*Inherited from [Base](_src_base_.base.md).[print](_src_base_.base.md#print)*
 
 print
 
@@ -307,9 +403,26 @@ tree.print()
 
 ___
 
+###  verifyProof
+
+▸ **verifyProof**(`proof`: [ProofItem](../modules/_src_merkleradixtree_.md#proofitem)[], `rootHash`: Buffer): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`proof` | [ProofItem](../modules/_src_merkleradixtree_.md#proofitem)[] |
+`rootHash` | Buffer |
+
+**Returns:** *boolean*
+
+___
+
 ### `Protected` zip
 
 ▸ **zip**(`a`: any[], `b`: any[]): *any[][]*
+
+*Inherited from [Base](_src_base_.base.md).[zip](_src_base_.base.md#protected-zip)*
 
 zip
 
@@ -336,6 +449,8 @@ ___
 
 ▸ **bigNumberify**(`value`: any): *BigInt*
 
+*Inherited from [Base](_src_base_.base.md).[bigNumberify](_src_base_.base.md#bignumberify)*
+
 **Parameters:**
 
 Name | Type |
@@ -349,6 +464,8 @@ ___
 ### `Static` binarySearch
 
 ▸ **binarySearch**(`array`: Buffer[], `element`: Buffer, `compareFunction`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[binarySearch](_src_base_.base.md#static-binarysearch)*
 
 binarySearch
 
@@ -390,6 +507,8 @@ ___
 
 ▸ **bufferToHex**(`value`: Buffer, `withPrefix`: boolean): *string*
 
+*Inherited from [Base](_src_base_.base.md).[bufferToHex](_src_base_.base.md#buffertohex)*
+
 bufferToHex
 
 **`desc`** Returns a hex string with 0x prefix for given buffer.
@@ -414,6 +533,8 @@ ___
 
 ▸ **bufferify**(`value`: any): *Buffer*
 
+*Inherited from [Base](_src_base_.base.md).[bufferify](_src_base_.base.md#static-bufferify)*
+
 bufferify
 
 **`desc`** Returns a buffer type for the given value.
@@ -437,6 +558,8 @@ ___
 
 ▸ **hexZeroPad**(`hexStr`: string, `length`: number): *string*
 
+*Inherited from [Base](_src_base_.base.md).[hexZeroPad](_src_base_.base.md#static-hexzeropad)*
+
 **Parameters:**
 
 Name | Type |
@@ -451,6 +574,8 @@ ___
 ### `Static` isHexString
 
 ▸ **isHexString**(`v`: string): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[isHexString](_src_base_.base.md#static-ishexstring)*
 
 isHexString
 
@@ -474,6 +599,8 @@ ___
 ### `Static` linearSearch
 
 ▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
+
+*Inherited from [Base](_src_base_.base.md).[linearSearch](_src_base_.base.md#static-linearsearch)*
 
 linearSearch
 
@@ -514,6 +641,8 @@ ___
 ### `Static` print
 
 ▸ **print**(`tree`: any): *void*
+
+*Inherited from [Base](_src_base_.base.md).[print](_src_base_.base.md#print)*
 
 print
 

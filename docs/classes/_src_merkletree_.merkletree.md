@@ -24,6 +24,7 @@ Class reprensenting a Merkle Tree
 * [addLeaves](_src_merkletree_.merkletree.md#addleaves)
 * [bigNumberify](_src_merkletree_.merkletree.md#bignumberify)
 * [binarySearch](_src_merkletree_.merkletree.md#binarysearch)
+* [bufferArrayIncludes](_src_merkletree_.merkletree.md#bufferarrayincludes)
 * [bufferIndexOf](_src_merkletree_.merkletree.md#protected-bufferindexof)
 * [bufferToHex](_src_merkletree_.merkletree.md#buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#bufferify)
@@ -55,12 +56,15 @@ Class reprensenting a Merkle Tree
 * [getRoot](_src_merkletree_.merkletree.md#getroot)
 * [isHexString](_src_merkletree_.merkletree.md#protected-ishexstring)
 * [isUnevenTree](_src_merkletree_.merkletree.md#isuneventree)
+* [isValidLeafIndex](_src_merkletree_.merkletree.md#isvalidleafindex)
 * [linearSearch](_src_merkletree_.merkletree.md#linearsearch)
 * [log2](_src_merkletree_.merkletree.md#protected-log2)
 * [print](_src_merkletree_.merkletree.md#print)
+* [removeLeaf](_src_merkletree_.merkletree.md#removeleaf)
 * [resetTree](_src_merkletree_.merkletree.md#resettree)
 * [toString](_src_merkletree_.merkletree.md#tostring)
 * [toTreeString](_src_merkletree_.merkletree.md#protected-totreestring)
+* [updateLeaf](_src_merkletree_.merkletree.md#updateleaf)
 * [verify](_src_merkletree_.merkletree.md#verify)
 * [verifyMultiProof](_src_merkletree_.merkletree.md#verifymultiproof)
 * [verifyMultiProofWithFlags](_src_merkletree_.merkletree.md#verifymultiproofwithflags)
@@ -222,6 +226,23 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
+
+___
+
+###  bufferArrayIncludes
+
+▸ **bufferArrayIncludes**(`bufferArray`: Buffer[], `targetBuffer`: Buffer): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`bufferArray` | Buffer[] |
+`targetBuffer` | Buffer |
+
+**Returns:** *boolean*
 
 ___
 
@@ -922,6 +943,20 @@ Name | Type |
 
 ___
 
+###  isValidLeafIndex
+
+▸ **isValidLeafIndex**(`idx`: number): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`idx` | number |
+
+**Returns:** *boolean*
+
+___
+
 ###  linearSearch
 
 ▸ **linearSearch**(`array`: Buffer[], `element`: Buffer, `eqChecker`: function): *number*
@@ -1003,6 +1038,20 @@ tree.print()
 
 ___
 
+###  removeLeaf
+
+▸ **removeLeaf**(`index`: number): *Buffer*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`index` | number |
+
+**Returns:** *Buffer*
+
+___
+
 ###  resetTree
 
 ▸ **resetTree**(): *void*
@@ -1051,6 +1100,22 @@ console.log(tree.toTreeString())
 ```
 
 **Returns:** *string*
+
+___
+
+###  updateLeaf
+
+▸ **updateLeaf**(`index`: number, `value`: Buffer, `shouldHash`: boolean): *void*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`index` | number | - |
+`value` | Buffer | - |
+`shouldHash` | boolean | false |
+
+**Returns:** *void*
 
 ___
 

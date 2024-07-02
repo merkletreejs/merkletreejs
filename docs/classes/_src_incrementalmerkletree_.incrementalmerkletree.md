@@ -18,6 +18,7 @@
 
 * [bigNumberify](_src_incrementalmerkletree_.incrementalmerkletree.md#bignumberify)
 * [binarySearch](_src_incrementalmerkletree_.incrementalmerkletree.md#binarysearch)
+* [bufferArrayIncludes](_src_incrementalmerkletree_.incrementalmerkletree.md#bufferarrayincludes)
 * [bufferIndexOf](_src_incrementalmerkletree_.incrementalmerkletree.md#protected-bufferindexof)
 * [bufferToHex](_src_incrementalmerkletree_.incrementalmerkletree.md#buffertohex)
 * [bufferify](_src_incrementalmerkletree_.incrementalmerkletree.md#bufferify)
@@ -127,6 +128,23 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
+
+___
+
+###  bufferArrayIncludes
+
+▸ **bufferArrayIncludes**(`bufferArray`: Buffer[], `targetBuffer`: Buffer): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`bufferArray` | Buffer[] |
+`targetBuffer` | Buffer |
+
+**Returns:** *boolean*
 
 ___
 

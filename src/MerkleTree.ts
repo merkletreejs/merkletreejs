@@ -1074,7 +1074,7 @@ export class MerkleTree extends Base {
       throw new Error('Element does not exist in Merkle tree')
     }
 
-    const _proofs: Buffer[] = (proofs as any[]).map(item => this.bufferify(item))
+    const proofBufs: Buffer[] = (proofs as any[]).map(item => this.bufferify(item))
 
     const tested = []
     const flags = []
@@ -1084,7 +1084,7 @@ export class MerkleTree extends Base {
         const skipped = tested.includes(layer[idx])
         if (!skipped) {
           const pairElement = this.getPairNode(layer, idx)
-          const proofUsed = _proofs.includes(layer[idx]) || _proofs.includes(pairElement)
+          const proofUsed = this.bufferArrayIncludes(proofBufs, layer[idx]) || this.bufferArrayIncludes(proofBufs, pairElement)
           pairElement && flags.push(!proofUsed)
           tested.push(layer[idx])
           tested.push(pairElement)
@@ -1384,7 +1384,7 @@ export class MerkleTree extends Base {
    *const node = tree.getPairNode(layer, index)
    *```
    */
-  private getPairNode (layer: Buffer[], idx: number):Buffer {
+  private getPairNode (layer: Buffer[], idx: number):Buffer | null {
     const pairIdx = idx % 2 === 0 ? idx + 1 : idx - 1
 
     if (pairIdx < layer.length) {

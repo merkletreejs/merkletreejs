@@ -70,3 +70,13 @@ test('binarySearch', t => {
   t.equal(base.binarySearch([3, 3, 3, 3, 3, 4, 4, 4, 4], 3, compareFunction), 0)
   t.equal(base.binarySearch([2, 2, 3, 3, 3, 4, 4, 4, 4], 1, compareFunction), -1)
 })
+
+test('bufferArrayIncludes', t => {
+  t.plan(4)
+
+  const base = new Base()
+  t.equal(base.bufferArrayIncludes([Buffer.from('123'), Buffer.from('456')], Buffer.from('123')), true)
+  t.equal(base.bufferArrayIncludes([Buffer.from('123'), Buffer.from('456')], Buffer.from('789')), false)
+  t.equal(base.bufferArrayIncludes([Buffer.from('123'), Buffer.from('456')], null), false)
+  t.equal(base.bufferArrayIncludes([Buffer.from('123'), Buffer.alloc(0)], null), true)
+})

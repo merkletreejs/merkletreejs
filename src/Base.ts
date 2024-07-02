@@ -394,6 +394,10 @@ export class Base {
   static hexZeroPad (hexStr: string, length: number) {
     return '0x' + hexStr.replace('0x', '').padStart(length, '0')
   }
+
+  bufferArrayIncludes (bufferArray: Buffer[], targetBuffer: Buffer): boolean {
+    return bufferArray.some(buffer => buffer.equals(targetBuffer ?? Buffer.alloc(0)))
+  }
 }
 
 export default Base

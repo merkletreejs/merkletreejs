@@ -149,7 +149,11 @@ npm test
 
 - Q: What other types of merkle trees are supported?
 
-  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, and `IncrementalMerkleTree` implemenation classes available.
+  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implemenation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
+
+- Q: How do I hash a JSON object?
+
+- See [`https://www.npmjs.com/package/json-stable-stringify`](https://www.npmjs.com/package/json-stable-stringify) for deterministic stringifying of JSON objects.
 
 - Q: Is there a CLI version of this library?
 
@@ -157,7 +161,7 @@ npm test
 
 - Q: Is there a way to visualize the merkle trees in the browser?
 
-  - Yes, see [merkletree-viz](https://github.com/miguelmota/merkletree-viz).
+  - Yes, see [example ui](https://lab.miguelmota.com/merkletreejs) and [merkletree-viz](https://github.com/miguelmota/merkletree-viz).
 
 ## Notes
 

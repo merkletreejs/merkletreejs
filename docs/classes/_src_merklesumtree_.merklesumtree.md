@@ -25,6 +25,7 @@
 
 * [bigNumberify](_src_merklesumtree_.merklesumtree.md#bignumberify)
 * [binarySearch](_src_merklesumtree_.merklesumtree.md#binarysearch)
+* [bufferArrayIncludes](_src_merklesumtree_.merklesumtree.md#bufferarrayincludes)
 * [bufferIndexOf](_src_merklesumtree_.merklesumtree.md#protected-bufferindexof)
 * [bufferToHex](_src_merklesumtree_.merklesumtree.md#buffertohex)
 * [bufferify](_src_merklesumtree_.merklesumtree.md#bufferify)
@@ -144,6 +145,23 @@ Name | Type |
 **Returns:** *number*
 
 - Index number
+
+___
+
+###  bufferArrayIncludes
+
+▸ **bufferArrayIncludes**(`bufferArray`: Buffer[], `targetBuffer`: Buffer): *boolean*
+
+*Inherited from [Base](_src_base_.base.md).[bufferArrayIncludes](_src_base_.base.md#bufferarrayincludes)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`bufferArray` | Buffer[] |
+`targetBuffer` | Buffer |
+
+**Returns:** *boolean*
 
 ___
 
