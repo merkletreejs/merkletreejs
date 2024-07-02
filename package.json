@@ -26,12 +26,25 @@
   "keywords": [
     "merkle",
     "tree",
+    "trie",
     "hash",
+    "leaves",
     "algorithm",
     "crypto",
     "bitcoin",
     "ethereum",
-    "proof"
+    "generate",
+    "proof",
+    "structure",
+    "json",
+    "radix",
+    "patricia",
+    "merkletree",
+    "merklemountainrange",
+    "merklesumtree",
+    "incrementalmerkletree",
+    "merklepatriciatree",
+    "radixtree"
   ],
   "author": {
     "name": "Miguel Mota",
