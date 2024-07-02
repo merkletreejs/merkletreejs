@@ -173,7 +173,7 @@ export class Base {
         const hexString = value.toString(16).length % 2 ? '0' + value.toString(16) : value.toString(16)
         return Buffer.from(hexString, 'hex')
       } else if (value instanceof Uint8Array) {
-        return Buffer.from(value.buffer)
+        return Buffer.from(value.buffer, value.byteOffset, value.byteLength)
       } else if (typeof value === 'number') {
         let s = value.toString()
         if (s.length % 2) {
