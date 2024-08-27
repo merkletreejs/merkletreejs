@@ -58,7 +58,7 @@ ___
 
 • **fillDefaultHash**? : *[TFillDefaultHash](../modules/_src_merkletree_.md#tfilldefaulthash) | Buffer | string*
 
-If defined, the resulting hash of this function will be used to fill in odd numbered layers.
+If defined, the resulting hash of this function will be used to fill in odd-numbered layers.
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **isBitcoinTree**? : *boolean*
 
-If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
+If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin-constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again.
 
 ___
 
