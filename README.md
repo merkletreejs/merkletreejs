@@ -146,7 +146,7 @@ npm test
 
 - Q: What other types of merkle trees are supported?
 
-  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implemenation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
+  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implementation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
 
 - Q: How do I hash a JSON object?
 
@@ -162,7 +162,7 @@ npm test
 
 ## Notes
 
-As is, this implemenation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
+As is, this implementation is vulnerable to a [second pre-image attack](https://en.wikipedia.org/wiki/Merkle_tree#Second_preimage_attack). Use a difference hashing function for leaves and nodes, so that `H(x) != H'(x)`.
 
 Also, as is, this implementation is vulnerable to a forgery attack for an unbalanced tree, where the last leaf node can be duplicated to create an artificial balanced tree, resulting in the same Merkle root hash. Do not accept unbalanced tree to prevent this. More info [here](https://bitcointalk.org/?topic=102395).
 
