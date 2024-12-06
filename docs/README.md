@@ -149,7 +149,7 @@ npm test
 
 - Q: What other types of merkle trees are supported?
 
-  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implemenation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
+  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implementation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
 
 - Q: How do I hash a JSON object?
 
