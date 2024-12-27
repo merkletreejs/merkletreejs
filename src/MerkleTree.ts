@@ -19,7 +19,7 @@ export interface Options {
   duplicateOdd?: boolean
   /** If set to `true`, the leaves will hashed using the set hashing algorithms. */
   hashLeaves?: boolean
-  /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
+  /** If set to `true`, constructs the Merkle Tree using the [Bitcoin Merkle Tree implementation](http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html). Enable it when you need to replicate Bitcoin-constructed Merkle Trees. In Bitcoin Merkle Trees, single nodes are combined with themselves, and each output hash is hashed again. */
   isBitcoinTree?: boolean
   /** If set to `true`, the leaves will be sorted. Recommended for use of multiProofs. */
   sortLeaves?: boolean
@@ -27,7 +27,7 @@ export interface Options {
   sortPairs?: boolean
   /** If set to `true`, the leaves and hashing pairs will be sorted. */
   sort?: boolean
-  /** If defined, the resulting hash of this function will be used to fill in odd numbered layers. */
+  /** If defined, the resulting hash of this function will be used to fill in odd-numbered layers. */
   fillDefaultHash?: TFillDefaultHash | Buffer | string
   /** If set to `true`, the resulting tree will be a complete tree. Recommended for use of multiProofs. */
   complete?: boolean;
