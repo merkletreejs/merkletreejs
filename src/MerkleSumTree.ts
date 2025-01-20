@@ -51,7 +51,7 @@ export class ProofStep {
 
   constructor (bucket: Bucket, right: boolean) {
     this.bucket = bucket
-    this.right = right // whether the bucket hash should be appeded on the right side in this step (default is left
+    this.right = right // whether the bucket hash should be appended on the right side in this step (default is left
   }
 }
 
@@ -139,7 +139,7 @@ export class MerkleSumTree extends Base {
     return total
   }
 
-  // validates the suppplied proof for a specified leaf according to the root bucket
+  // validates the supplied proof for a specified leaf according to the root bucket
   verifyProof (root: Bucket, leaf: Leaf, proof: ProofStep[]) {
     const rng = [this.sum(proof.filter(x => !x.right).map(x => x.bucket.size)), BigInt(root.size) - this.sum(proof.filter(x => x.right).map(x => x.bucket.size))]
     if (!(rng[0] === leaf.rng[0] && rng[1] === leaf.rng[1])) {
