@@ -48,7 +48,7 @@ import { MerkleTree } from 'merkletreejs'
 Import as path import
 
 ```js
-import { MerkleTree } from 'merkletreejs/MerkleTreeJs'
+import { MerkleTree } from 'merkletreejs/MerkleTree'
 ```
 
 Import as CommonJs
@@ -152,7 +152,20 @@ npm test
 
 - Q: What other types of merkle trees are supported?
 
-  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, `MerkleRadixTree`, and `UnifiedBinaryTree` (EIP-7864) implementation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
+  - Besides standard `MerkleTree`, there's these implementation classes available:
+    - `MerkleMountainRange`
+    - `MerkleSumTree`
+    - `IncrementalMerkleTree`
+    - `MerkleRadixTree`
+    - `UnifiedBinaryTree` (EIP-7864)
+
+    Example import of other classes:
+
+    ```js
+    import { MerkleMountainRange } from 'merkletreejs/MerkleMountainRange'
+    ```
+
+    Note: For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
 
 - Q: How do I hash a JSON object?
 
