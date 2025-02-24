@@ -49,6 +49,12 @@ Import as ES6 module
 import { MerkleTree } from 'merkletreejs'
 ```
 
+Import as path import
+
+```js
+import { MerkleTree } from 'merkletreejs/MerkleTreeJs'
+```
+
 Import as CommonJs
 
 ```js
@@ -149,7 +155,7 @@ npm test
 
 - Q: What other types of merkle trees are supported?
 
-  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, and `MerkleRadixTree` implementation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
+  - Besides standard `MerkleTree`, there's also `MerkleMountainRange`, `MerkleSumTree`, `IncrementalMerkleTree`, `MerkleRadixTree`, and `UnifiedBinaryTree` (EIP-7864) implementation classes available. For Merkle Patricia Tree, see [`@ethereumjs/trie`](https://www.npmjs.com/package/@ethereumjs/trie).
 
 - Q: How do I hash a JSON object?
 
@@ -200,6 +206,8 @@ This library was created for my own purposes and is provided as-is. Use at your 
 - [What is complete binary tree?](https://xlinux.nist.gov/dads/HTML/completeBinaryTree.html)
 
 - [What is perfect binary tree?](https://xlinux.nist.gov/dads/HTML/perfectBinaryTree.html)
+
+- [EIP-7864: Ethereum state using a unified binary tree](https://eips.ethereum.org/EIPS/eip-7864)
 
 ## Contributing
 

@@ -43,6 +43,7 @@
 * [binarySearch](_src_merklesumtree_.merklesumtree.md#static-binarysearch)
 * [bufferToHex](_src_merklesumtree_.merklesumtree.md#static-buffertohex)
 * [bufferify](_src_merklesumtree_.merklesumtree.md#static-bufferify)
+* [bufferifyFn](_src_merklesumtree_.merklesumtree.md#static-bufferifyfn)
 * [checkConsecutive](_src_merklesumtree_.merklesumtree.md#static-checkconsecutive)
 * [hexZeroPad](_src_merklesumtree_.merklesumtree.md#static-hexzeropad)
 * [isHexString](_src_merklesumtree_.merklesumtree.md#static-ishexstring)
@@ -249,7 +250,7 @@ ___
 
 ▸ **bufferifyFn**(`f`: any): *any*
 
-*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#bufferifyfn)*
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
 
 bufferifyFn
 
@@ -567,6 +568,31 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = MerkleTree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

@@ -36,6 +36,7 @@
 * [binarySearch](_src_base_.base.md#static-binarysearch)
 * [bufferToHex](_src_base_.base.md#static-buffertohex)
 * [bufferify](_src_base_.base.md#static-bufferify)
+* [bufferifyFn](_src_base_.base.md#static-bufferifyfn)
 * [hexZeroPad](_src_base_.base.md#static-hexzeropad)
 * [isHexString](_src_base_.base.md#static-ishexstring)
 * [linearSearch](_src_base_.base.md#static-linearsearch)
@@ -430,6 +431,29 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = MerkleTree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

@@ -4,6 +4,38 @@
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./MerkleTree": {
+      "import": "./dist/MerkleTree.js",
+      "require": "./dist/MerkleTree.js",
+      "types": "./dist/MerkleTree.d.ts"
+    },
+    "./UnifiedBinaryTree": {
+      "import": "./dist/UnifiedBinaryTree.js",
+      "require": "./dist/UnifiedBinaryTree.js",
+      "types": "./dist/UnifiedBinaryTree.d.ts"
+    },
+    "./MerkleRadixTree": {
+      "import": "./dist/MerkleRadixTree.js",
+      "require": "./dist/MerkleRadixTree.js",
+      "types": "./dist/MerkleRadixTree.d.ts"
+    },
+    "./IncrementalMerkleTree": {
+      "import": "./dist/IncrementalMerkleTree.js",
+      "require": "./dist/IncrementalMerkleTree.js",
+      "types": "./dist/IncrementalMerkleTree.d.ts"
+    },
+    "./MerkleMountainRange": {
+      "import": "./dist/MerkleMountainRange.js",
+      "require": "./dist/MerkleMountainRange.js",
+      "types": "./dist/MerkleMountainRange.d.ts"
+    }
+  },
   "files": [
     "dist",
     "merkletree.js"

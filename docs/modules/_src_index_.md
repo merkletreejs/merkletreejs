@@ -10,6 +10,7 @@
 * [MerkleMountainRange](_src_index_.md#merklemountainrange)
 * [MerkleRadixTree](_src_index_.md#merkleradixtree)
 * [MerkleSumTree](_src_index_.md#merklesumtree)
+* [UnifiedBinaryTree](_src_index_.md#unifiedbinarytree)
 
 ## References
 
@@ -34,3 +35,9 @@ ___
 ###  MerkleSumTree
 
 • **MerkleSumTree**:
+
+___
+
+###  UnifiedBinaryTree
+
+• **UnifiedBinaryTree**:

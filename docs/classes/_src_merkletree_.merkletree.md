@@ -73,6 +73,7 @@ Class reprensenting a Merkle Tree
 * [binarySearch](_src_merkletree_.merkletree.md#static-binarysearch)
 * [bufferToHex](_src_merkletree_.merkletree.md#static-buffertohex)
 * [bufferify](_src_merkletree_.merkletree.md#static-bufferify)
+* [bufferifyFn](_src_merkletree_.merkletree.md#static-bufferifyfn)
 * [getMultiProof](_src_merkletree_.merkletree.md#static-getmultiproof)
 * [hexZeroPad](_src_merkletree_.merkletree.md#static-hexzeropad)
 * [isHexString](_src_merkletree_.merkletree.md#static-ishexstring)
@@ -330,7 +331,7 @@ ___
 
 ▸ **bufferifyFn**(`f`: any): *any*
 
-*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#bufferifyfn)*
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
 
 bufferifyFn
 
@@ -1331,6 +1332,31 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = MerkleTree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

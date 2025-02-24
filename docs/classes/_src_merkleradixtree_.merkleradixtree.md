@@ -41,6 +41,7 @@
 * [binarySearch](_src_merkleradixtree_.merkleradixtree.md#static-binarysearch)
 * [bufferToHex](_src_merkleradixtree_.merkleradixtree.md#static-buffertohex)
 * [bufferify](_src_merkleradixtree_.merkleradixtree.md#static-bufferify)
+* [bufferifyFn](_src_merkleradixtree_.merkleradixtree.md#static-bufferifyfn)
 * [hexZeroPad](_src_merkleradixtree_.merkleradixtree.md#static-hexzeropad)
 * [isHexString](_src_merkleradixtree_.merkleradixtree.md#static-ishexstring)
 * [linearSearch](_src_merkleradixtree_.merkleradixtree.md#static-linearsearch)
@@ -233,7 +234,7 @@ ___
 
 ▸ **bufferifyFn**(`f`: any): *any*
 
-*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#bufferifyfn)*
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
 
 bufferifyFn
 
@@ -551,6 +552,31 @@ Name | Type |
 `value` | any |
 
 **Returns:** *Buffer*
+
+___
+
+### `Static` bufferifyFn
+
+▸ **bufferifyFn**(`f`: any): *any*
+
+*Inherited from [Base](_src_base_.base.md).[bufferifyFn](_src_base_.base.md#static-bufferifyfn)*
+
+bufferifyFn
+
+**`desc`** Returns a function that will bufferify the return value.
+
+**`example`** 
+```js
+const fn = MerkleTree.bufferifyFn((value) => sha256(value))
+```
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`f` | any |
+
+**Returns:** *any*
 
 ___
 

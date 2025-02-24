@@ -45,6 +45,12 @@ Import as ES6 module
 import { MerkleTree } from 'merkletreejs'
 ```
 
+Import as path import
+
+```js
+import { MerkleTree } from 'merkletreejs/MerkleTreeJs'
+```
+
 Import as CommonJs
 
 ```js
