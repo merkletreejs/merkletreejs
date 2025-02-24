@@ -188,6 +188,57 @@ export class Base {
     return value
   }
 
+  /**
+   * bufferifyFn
+   * @desc Returns a function that will bufferify the return value.
+   * @param {Function}
+   * @return {Function}
+   *
+   * @example
+   * ```js
+   *const fn = MerkleTree.bufferifyFn((value) => sha256(value))
+   *```
+   */
+  static bufferifyFn (f: any): any {
+    if (typeof f !== 'function') {
+      throw new Error(`bufferifyFn expects a function, received: ${typeof f}`)
+    }
+
+    return (value: any): Buffer => {
+      const v = f(value)
+      if (Buffer.isBuffer(v)) {
+        return v
+      }
+
+      if (Base.isHexString(v)) {
+        const hexString = v.replace('0x', '')
+        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
+        return Buffer.from(paddedHexString, 'hex')
+      }
+
+      if (typeof v === 'string') {
+        return Buffer.from(v)
+      }
+
+      if (typeof v === 'bigint') {
+        const hexString = v.toString(16).length % 2 ? '0' + v.toString(16) : v.toString(16)
+        return Buffer.from(hexString, 'hex')
+      }
+
+      if (ArrayBuffer.isView(v)) {
+        return Buffer.from(v.buffer, v.byteOffset, v.byteLength)
+      }
+
+      // crypto-js support
+      return Buffer.from(
+        f(CryptoJS.enc.Hex.parse(value.toString('hex'))).toString(
+          CryptoJS.enc.Hex
+        ),
+        'hex'
+      )
+    }
+  }
+
   bigNumberify (value: any): BigInt {
     return Base.bigNumberify(value)
   }
@@ -314,39 +365,7 @@ export class Base {
    *```
    */
   bufferifyFn (f: any): any {
-    return (value: any): Buffer => {
-      const v = f(value)
-      if (Buffer.isBuffer(v)) {
-        return v
-      }
-
-      if (this.isHexString(v)) {
-        const hexString = v.replace('0x', '')
-        const paddedHexString = hexString.length % 2 ? '0' + hexString : hexString
-        return Buffer.from(paddedHexString, 'hex')
-      }
-
-      if (typeof v === 'string') {
-        return Buffer.from(v)
-      }
-
-      if (typeof v === 'bigint') {
-        const hexString = v.toString(16).length % 2 ? '0' + v.toString(16) : v.toString(16)
-        return Buffer.from(hexString, 'hex')
-      }
-
-      if (ArrayBuffer.isView(v)) {
-        return Buffer.from(v.buffer, v.byteOffset, v.byteLength)
-      }
-
-      // crypto-js support
-      return Buffer.from(
-        f(CryptoJS.enc.Hex.parse(value.toString('hex'))).toString(
-          CryptoJS.enc.Hex
-        ),
-        'hex'
-      )
-    }
+    return Base.bufferifyFn(f)
   }
 
   /**

@@ -4,4 +4,5 @@ export { MerkleMountainRange } from './MerkleMountainRange'
 export { IncrementalMerkleTree } from './IncrementalMerkleTree'
 export { MerkleSumTree } from './MerkleSumTree'
 export { MerkleRadixTree } from './MerkleRadixTree'
+export { UnifiedBinaryTree } from './UnifiedBinaryTree'
 export default MerkleTree
