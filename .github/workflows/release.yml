@@ -56,9 +56,9 @@ jobs:
         run: |
           if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
             echo "DRY RUN: Would publish to npm"
-            npm publish --dry-run
+            npm publish --provenance --publish-branch=master --access=public --dry-run
           else
-            npm publish
+            npm publish --provenance --publish-branch=master --access=public
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
