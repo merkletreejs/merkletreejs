@@ -1,6 +1,6 @@
 {
   "name": "merkletreejs",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Construct Merkle Trees and verify proofs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -53,7 +53,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miguelmota/merkletreejs"
+    "url": "https://github.com/merkletreejs/merkletreejs"
   },
   "keywords": [
     "merkle",
@@ -89,12 +89,12 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/miguelmota/merkletreejs/blob/master/LICENSE"
+    "url": "https://github.com/merkletreejs/merkletreejs/blob/master/LICENSE"
   },
   "bugs": {
-    "url": "https://github.com/miguelmota/merkletreejs/issues"
+    "url": "https://github.com/merkletreejs/merkletreejs/issues"
   },
-  "homepage": "https://github.com/miguelmota/merkletreejs",
+  "homepage": "https://github.com/merkletreejs/merkletreejs",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
