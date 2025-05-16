@@ -230,6 +230,6 @@ _Many thanks to all the [contributors](https://github.com/miguelmota/merkletreej
 
 ## License
 
-Released under the [MIT](./LICENSE) license.
+Released under the [MIT](../LICENSE) license.
 
 © [Miguel Mota](https://github.com/miguelmota)
