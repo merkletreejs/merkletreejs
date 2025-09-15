@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes">
+  <meta name="description" content="A library to construct Merkle Trees and verify proofs in JavaScript">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <title>MerkleTree.js - library to construct Merkle Trees and verify proofs in JavaScript</title>
     <style>
       * {
@@ -14,6 +16,7 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         font-size: 14px;
         color: #222;
+        line-height: 1.6;
       }
       .container {
         max-width: 700px;
@@ -54,9 +57,100 @@
         text-transform: uppercase;
         text-decoration: none;
       }
+      
+      /* Documentation Styles */
+      .documentation {
+        max-width: 900px;
+        margin: 4em auto;
+        padding: 0 2em;
+        text-align: left;
+      }
+      .doc-title {
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 1em;
+        color: #333;
+      }
+      .doc-section {
+        margin-bottom: 3em;
+      }
+      .doc-section h1 {
+        font-size: 2em;
+        margin-bottom: 0.5em;
+        color: #333;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.3em;
+      }
+      .doc-section h2 {
+        font-size: 1.5em;
+        margin: 1.5em 0 0.5em 0;
+        color: #444;
+      }
+      .doc-section h3 {
+        font-size: 1.2em;
+        margin: 1em 0 0.5em 0;
+        color: #555;
+      }
+      .doc-section h4 {
+        font-size: 1.1em;
+        margin: 0.8em 0 0.3em 0;
+        color: #666;
+        font-family: 'Monaco', 'Menlo', monospace;
+        background: #f8f8f8;
+        padding: 0.2em 0.5em;
+        border-radius: 3px;
+      }
+      .doc-section ul {
+        margin: 0.5em 0 1em 1.5em;
+      }
+      .doc-section li {
+        margin: 0.3em 0;
+      }
+      pre {
+        background: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1em;
+        overflow-x: auto;
+        margin: 1em 0;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 13px;
+      }
+      code {
+        background: #f0f0f0;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 13px;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1em;
+        margin: 1em 0;
+      }
+      .feature-item {
+        background: #f9f9f9;
+        padding: 1em;
+        border-radius: 5px;
+        border-left: 4px solid #333;
+      }
+      .feature-item strong {
+        color: #333;
+      }
       @media (max-width: 500px) {
         body {
           font-size: 12px;
+        }
+        .documentation {
+          padding: 0 1em;
+        }
+        .feature-list {
+          grid-template-columns: 1fr;
         }
       }
       @media (max-width: 300px) {
@@ -69,8 +163,8 @@
 <body>
   <div class="container">
     <div>
-      <a href="https://github.com/miguelmota/merkletreejs">
-        <img class="logo" src="https://user-images.githubusercontent.com/168240/83951171-85f48c80-a7e4-11ea-896e-529c28ffa18e.png" alt="MerkleTree.js" />
+      <a href="https://github.com/merkletreejs/merkletreejs">
+        <img class="logo" src="https://user-images.githubusercontent.com/168240/83951171-85f48c80-a7e4-11ea-896e-529c28ffa18e.png" alt="MerkleTreeJS" />
       </a>
     </div>
     <div class="tagline">
@@ -78,8 +172,628 @@
     </div>
 
     <div class="actions">
-      <a class="button" href="https://github.com/miguelmota/merkletreejs">View on Github ›</a>
+      <a class="button" href="https://github.com/merkletreejs/merkletreejs">View on Github ›</a>
     </div>
   </div>
+
+  <div class="documentation">
+    <h1 class="doc-title">Documentation</h1>
+    
+    <div class="doc-section">
+      <h1>MerkleTree Class Documentation</h1>
+      
+      <p>A comprehensive implementation of a Merkle Tree data structure for creating tamper-proof data structures and generating cryptographic proofs. This is the core class of the merkletreejs library.</p>
+
+      <h2>Features</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <strong>Standard Merkle Tree</strong>: Classic binary tree implementation
+        </div>
+        <div class="feature-item">
+          <strong>Multiple Hash Functions</strong>: Support for SHA256, keccak256, and custom hash functions
+        </div>
+        <div class="feature-item">
+          <strong>Proof Generation</strong>: Generate and verify inclusion proofs
+        </div>
+        <div class="feature-item">
+          <strong>Multi-Proofs</strong>: Generate and verify proofs for multiple leaves simultaneously
+        </div>
+        <div class="feature-item">
+          <strong>Bitcoin Compatibility</strong>: Support for Bitcoin-style Merkle trees
+        </div>
+        <div class="feature-item">
+          <strong>Serialization</strong>: Marshal/unmarshal trees and proofs to/from JSON
+        </div>
+        <div class="feature-item">
+          <strong>Flexible Options</strong>: Configurable sorting, duplicate handling, and tree completion
+        </div>
+        <div class="feature-item">
+          <strong>Type Safety</strong>: Full TypeScript support with proper type definitions
+        </div>
+      </div>
+
+      <h2>Installation</h2>
+      <pre><code>npm install merkletreejs</code></pre>
+
+      <h2>Quick Start</h2>
+      <pre><code>import { MerkleTree } from 'merkletreejs'
+import SHA256 from 'crypto-js/sha256'
+
+// Create leaves (typically hashed data)
+const leaves = ['a', 'b', 'c', 'd'].map(x => SHA256(x))
+
+// Create tree
+const tree = new MerkleTree(leaves, SHA256)
+
+// Get root
+const root = tree.getRoot()
+const hexRoot = tree.getHexRoot()
+
+// Generate proof
+const leaf = SHA256('b')
+const proof = tree.getProof(leaf)
+
+// Verify proof
+const verified = tree.verify(proof, leaf, root)
+console.log('Proof verified:', verified) // true</code></pre>
+
+      <h2>Constructor</h2>
+      <h3><code>new MerkleTree(leaves, hashFunction?, options?)</code></h3>
+      <p>Creates a new Merkle tree instance.</p>
+      
+      <p><strong>Parameters:</strong></p>
+      <ul>
+        <li><code>leaves</code> (Buffer[]): Array of leaf nodes (should be pre-hashed)</li>
+        <li><code>hashFunction</code> (Function): Hash function to use (defaults to SHA256)</li>
+        <li><code>options</code> (Options): Configuration options</li>
+      </ul>
+
+      <pre><code>const tree = new MerkleTree(leaves, SHA256, {
+  sortPairs: true,
+  duplicateOdd: false
+})</code></pre>
+
+      <h2>Options</h2>
+      <pre><code>interface Options {
+  duplicateOdd?: boolean        // Duplicate odd nodes (default: false)
+  hashLeaves?: boolean          // Hash leaves before adding (default: false)
+  isBitcoinTree?: boolean       // Use Bitcoin-style tree (default: false)
+  sortLeaves?: boolean          // Sort leaves (default: false)
+  sortPairs?: boolean           // Sort pairs (default: false)
+  sort?: boolean                // Sort leaves and pairs (default: false)
+  fillDefaultHash?: Function    // Fill function for odd layers
+  complete?: boolean            // Create complete tree (default: false)
+  concatenator?: Function       // Custom concatenation function
+}</code></pre>
+
+      <h2>Core Methods</h2>
+
+      <h3>Tree Information</h3>
+      
+      <h4><code>getRoot()</code></h4>
+      <p>Returns the Merkle root as a Buffer.</p>
+      <pre><code>const root = tree.getRoot()</code></pre>
+
+      <h4><code>getHexRoot()</code></h4>
+      <p>Returns the Merkle root as a hex string with '0x' prefix.</p>
+      <pre><code>const hexRoot = tree.getHexRoot()</code></pre>
+
+      <h4><code>getLeaves(values?)</code></h4>
+      <p>Returns array of leaves. Optionally filter by specific values.</p>
+      <pre><code>const allLeaves = tree.getLeaves()
+const filteredLeaves = tree.getLeaves([specificHash1, specificHash2])</code></pre>
+
+      <h4><code>getHexLeaves()</code></h4>
+      <p>Returns array of leaves as hex strings.</p>
+      <pre><code>const hexLeaves = tree.getHexLeaves()</code></pre>
+
+      <h4><code>getLeafCount()</code></h4>
+      <p>Returns the total number of leaves.</p>
+      <pre><code>const count = tree.getLeafCount()</code></pre>
+
+      <h4><code>getDepth()</code></h4>
+      <p>Returns the tree depth (number of layers).</p>
+      <pre><code>const depth = tree.getDepth()</code></pre>
+
+      <h3>Leaf Operations</h3>
+
+      <h4><code>getLeaf(index)</code></h4>
+      <p>Gets a leaf by index.</p>
+      <pre><code>const leaf = tree.getLeaf(0)</code></pre>
+
+             <h4><code>getHexLeaf(index)</code></h4>
+       <p>Gets a leaf by index as hex string.</p>
+       <pre><code>const hexLeaf = tree.getHexLeaf(0)</code></pre>
+
+       <h4><code>getLeafIndex(leaf)</code></h4>
+       <p>Gets the index of a leaf (-1 if not found).</p>
+       <pre><code>const index = tree.getLeafIndex(leafHash)</code></pre>
+
+      <h4><code>addLeaf(leaf, shouldHash?)</code></h4>
+      <p>Adds a single leaf to the tree.</p>
+      <pre><code>tree.addLeaf(newLeafHash)
+tree.addLeaf('raw data', true) // Hash before adding</code></pre>
+
+             <h4><code>updateLeaf(index, value, shouldHash?)</code></h4>
+       <p>Updates a leaf at specific index.</p>
+       <pre><code>tree.updateLeaf(1, newHash)
+tree.updateLeaf(1, 'new data', true) // Hash before updating</code></pre>
+
+       <h4><code>addLeaves(leaves, shouldHash?)</code></h4>
+       <p>Adds multiple leaves to the tree.</p>
+       <pre><code>tree.addLeaves([hash1, hash2, hash3])
+tree.addLeaves(['data1', 'data2'], true) // Hash before adding</code></pre>
+
+       <h4><code>removeLeaf(index)</code></h4>
+       <p>Removes a leaf by index.</p>
+       <pre><code>const removedLeaf = tree.removeLeaf(2)</code></pre>
+
+      <h3>Proof Operations</h3>
+
+      <h4><code>getProof(leaf, index?)</code></h4>
+      <p>Generates a proof for a leaf.</p>
+      <pre><code>const proof = tree.getProof(leafHash)
+// For duplicate leaves, specify index
+const proof = tree.getProof(leafHash, 2)</code></pre>
+
+      <h4><code>verify(proof, targetNode, root)</code></h4>
+      <p>Verifies a proof against a root.</p>
+      <pre><code>const isValid = tree.verify(proof, leafHash, root)</code></pre>
+
+             <h4><code>getHexProof(leaf, index?)</code></h4>
+       <p>Generates a proof as hex strings.</p>
+       <pre><code>const hexProof = tree.getHexProof(leafHash)</code></pre>
+
+       <h4><code>getPositionalHexProof(leaf, index?)</code></h4>
+       <p>Generates a proof with positional information.</p>
+       <pre><code>const positionalProof = tree.getPositionalHexProof(leafHash)
+// Returns: [[position, hash], [position, hash], ...]</code></pre>
+
+       <h4><code>getProofs()</code></h4>
+       <p>Gets proofs for all leaves.</p>
+       <pre><code>const allProofs = tree.getProofs()</code></pre>
+
+       <h4><code>getHexProofs()</code></h4>
+       <p>Gets proofs for all leaves as hex strings.</p>
+       <pre><code>const allHexProofs = tree.getHexProofs()</code></pre>
+
+       <h4><code>getMultiProof(indices)</code></h4>
+       <p>Generates a multi-proof for multiple leaves.</p>
+       <pre><code>const multiProof = tree.getMultiProof([0, 2, 4])</code></pre>
+
+       <h4><code>getHexMultiProof(tree, indices)</code></h4>
+       <p>Generates a multi-proof as hex strings.</p>
+       <pre><code>const hexMultiProof = tree.getHexMultiProof(flatTree, [0, 2, 4])</code></pre>
+
+       <h4><code>verifyMultiProof(root, proofIndices, proofLeaves, leavesCount, proof)</code></h4>
+       <p>Verifies a multi-proof.</p>
+       <pre><code>const isValid = tree.verifyMultiProof(
+  root, 
+  [0, 2, 4], 
+  [leaf0, leaf2, leaf4], 
+  totalLeaves, 
+  multiProof
+)</code></pre>
+
+       <h4><code>verifyMultiProofWithFlags(root, leaves, proofs, proofFlag)</code></h4>
+       <p>Verifies a multi-proof using boolean flags.</p>
+       <pre><code>const isValid = tree.verifyMultiProofWithFlags(root, leaves, proofs, flags)</code></pre>
+
+       <h4><code>getProofFlags(leaves, proofs)</code></h4>
+       <p>Gets boolean flags for multi-proof verification.</p>
+       <pre><code>const flags = tree.getProofFlags([leaf0, leaf2], multiProof)</code></pre>
+
+       <h3>Layer Operations</h3>
+
+       <h4><code>getLayers()</code></h4>
+       <p>Gets all tree layers as 2D array of Buffers.</p>
+       <pre><code>const layers = tree.getLayers()</code></pre>
+
+       <h4><code>getHexLayers()</code></h4>
+       <p>Gets all tree layers as 2D array of hex strings.</p>
+       <pre><code>const hexLayers = tree.getHexLayers()</code></pre>
+
+       <h4><code>getLayersFlat()</code></h4>
+       <p>Gets all tree layers as flat array.</p>
+       <pre><code>const flatLayers = tree.getLayersFlat()</code></pre>
+
+       <h4><code>getHexLayersFlat()</code></h4>
+       <p>Gets all tree layers as flat array of hex strings.</p>
+       <pre><code>const hexFlatLayers = tree.getHexLayersFlat()</code></pre>
+
+       <h4><code>getLayerCount()</code></h4>
+       <p>Returns the total number of layers.</p>
+       <pre><code>const layerCount = tree.getLayerCount()</code></pre>
+
+       <h4><code>getLayersAsObject()</code></h4>
+       <p>Returns layers as nested objects for visualization.</p>
+       <pre><code>const layersObj = tree.getLayersAsObject()</code></pre>
+
+       <h3>Serialization</h3>
+
+       <h4><code>static marshalLeaves(leaves)</code></h4>
+       <p>Converts leaves to JSON string.</p>
+       <pre><code>const jsonLeaves = MerkleTree.marshalLeaves(leaves)</code></pre>
+
+       <h4><code>static unmarshalLeaves(jsonStr)</code></h4>
+       <p>Converts JSON string back to leaves.</p>
+       <pre><code>const leaves = MerkleTree.unmarshalLeaves(jsonLeaves)</code></pre>
+
+       <h4><code>static marshalProof(proof)</code></h4>
+       <p>Converts proof to JSON string.</p>
+       <pre><code>const jsonProof = MerkleTree.marshalProof(proof)</code></pre>
+
+       <h4><code>static unmarshalProof(jsonStr)</code></h4>
+       <p>Converts JSON string back to proof.</p>
+       <pre><code>const proof = MerkleTree.unmarshalProof(jsonProof)</code></pre>
+
+       <h4><code>static marshalTree(tree)</code></h4>
+       <p>Converts entire tree to JSON string.</p>
+       <pre><code>const jsonTree = MerkleTree.marshalTree(tree)</code></pre>
+
+       <h4><code>static unmarshalTree(jsonStr, hashFn?, options?)</code></h4>
+       <p>Recreates tree from JSON string.</p>
+       <pre><code>const tree = MerkleTree.unmarshalTree(jsonTree, SHA256)</code></pre>
+
+       <h3>Utility Methods</h3>
+
+       <h4><code>resetTree()</code></h4>
+       <p>Clears all leaves and layers.</p>
+       <pre><code>tree.resetTree()</code></pre>
+
+       <h4><code>toString()</code></h4>
+       <p>Returns visual representation of the tree.</p>
+       <pre><code>console.log(tree.toString())</code></pre>
+
+       <h4><code>getOptions()</code></h4>
+       <p>Returns current tree options.</p>
+       <pre><code>const options = tree.getOptions()</code></pre>
+
+       <h3>Advanced Methods</h3>
+
+       <h4><code>getProofIndices(treeIndices, depth)</code></h4>
+       <p>Returns the proof indices for given tree indices.</p>
+       <pre><code>const proofIndices = tree.getProofIndices([2,5,6], 4)</code></pre>
+
+       <h3>Static Methods</h3>
+
+       <h4><code>MerkleTree.verify(proof, targetNode, root, hashFn?, options?)</code></h4>
+       <p>Static method to verify a proof without tree instance.</p>
+       <pre><code>const isValid = MerkleTree.verify(proof, leaf, root, SHA256)</code></pre>
+
+       <h4><code>MerkleTree.getMultiProof(tree, indices)</code></h4>
+       <p>Static method to generate multi-proof from flat tree.</p>
+       <pre><code>const multiProof = MerkleTree.getMultiProof(flatTree, [0, 2, 4])</code></pre>
+
+      <h2>Examples</h2>
+
+      <h3>Basic Usage</h3>
+      <pre><code>import { MerkleTree } from 'merkletreejs'
+import SHA256 from 'crypto-js/sha256'
+
+// Prepare data
+const leaves = ['alice', 'bob', 'charlie', 'dave'].map(x => SHA256(x))
+
+// Create tree
+const tree = new MerkleTree(leaves, SHA256)
+
+// Get root
+const root = tree.getHexRoot()
+console.log('Root:', root)
+
+// Generate and verify proof
+const leaf = SHA256('bob')
+const proof = tree.getProof(leaf)
+const verified = tree.verify(proof, leaf, tree.getRoot())
+console.log('Proof verified:', verified)</code></pre>
+
+      <h3>Bitcoin-Style Tree</h3>
+      <pre><code>const tree = new MerkleTree(leaves, SHA256, {
+  isBitcoinTree: true
+})</code></pre>
+
+      <h3>Multi-Proof Example</h3>
+      <pre><code>const tree = new MerkleTree(leaves, SHA256, { complete: true })
+const indices = [0, 2, 4]
+const multiProof = tree.getMultiProof(indices)
+const proofLeaves = indices.map(i => leaves[i])
+
+const verified = tree.verifyMultiProof(
+  tree.getRoot(),
+  indices,
+  proofLeaves,
+  leaves.length,
+  multiProof
+)</code></pre>
+    </div>
+
+    <div class="doc-section">
+      <h1>Functional API for MerkleTreeJS</h1>
+      
+      <p>A functional programming interface for merkletreejs that provides an intuitive, viem-inspired API for working with Merkle trees. This wrapper makes it easy to create, manipulate, and verify Merkle trees with a clean, functional interface.</p>
+
+      <h2>Features</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <strong>Functional API</strong>: Intuitive, functional interface inspired by viem
+        </div>
+        <div class="feature-item">
+          <strong>Type Safety</strong>: Full TypeScript support with proper type definitions
+        </div>
+        <div class="feature-item">
+          <strong>Flexible Input</strong>: Accepts strings, buffers, objects, and numbers as leaves
+        </div>
+        <div class="feature-item">
+          <strong>Multiple Hash Functions</strong>: Built-in support for SHA256 (default), keccak256, and custom hash functions
+        </div>
+        <div class="feature-item">
+          <strong>Proof Generation</strong>: Easy proof creation and verification
+        </div>
+        <div class="feature-item">
+          <strong>Tree Manipulation</strong>: Add, remove, and update leaves
+        </div>
+        <div class="feature-item">
+          <strong>Serialization</strong>: Marshal/unmarshal trees and proofs to JSON
+        </div>
+        <div class="feature-item">
+          <strong>Advanced Options</strong>: Support for Bitcoin-style trees, sorted trees, and complete trees
+        </div>
+      </div>
+
+      <h2>Quick Start</h2>
+      <pre><code>import { createMerkleTree, getHexRoot, getProof, verifyProof } from 'merkletreejs'
+
+// Create a simple Merkle tree
+const leaves = ['a', 'b', 'c', 'd']
+const tree = createMerkleTree(leaves)
+const root = getHexRoot(tree)
+
+// Generate and verify a proof
+const proof = getProof(tree, 'b')
+const isValid = verifyProof(proof, 'b', root)
+console.log('Proof valid:', isValid) // true</code></pre>
+
+      <h2>API Reference</h2>
+
+      <h3>Core Functions</h3>
+
+      <h4><code>createMerkleTree(leaves, hashFn?, options?)</code></h4>
+      <p>Creates a Merkle tree from an array of leaves. Uses SHA256 as the default hash function.</p>
+      <pre><code>const tree = createMerkleTree(['a', 'b', 'c'])
+// Using custom hash function
+const customHashFn = (data) => {
+  const crypto = require('crypto')
+  return crypto.createHash('sha256').update(data).digest()
+}
+const treeWithOptions = createMerkleTree(leaves, customHashFn, { sort: true })</code></pre>
+
+      <h4><code>getHexRoot(tree)</code></h4>
+      <p>Gets the root hash as a hex string.</p>
+      <pre><code>const root = getHexRoot(tree)</code></pre>
+
+      <h4><code>getProof(tree, leaf, index?)</code></h4>
+      <p>Gets a proof for a specific leaf.</p>
+      <pre><code>const proof = getProof(tree, 'targetLeaf')</code></pre>
+
+             <h4><code>verifyProof(proof, leaf, root, hashFn?, options?)</code></h4>
+       <p>Verifies a proof against a root and target leaf.</p>
+       <pre><code>const isValid = verifyProof(proof, 'targetLeaf', root)</code></pre>
+
+       <h4><code>getHexProof(tree, leaf, index?)</code></h4>
+       <p>Gets a proof as hex strings.</p>
+       <pre><code>const hexProof = getHexProof(tree, 'targetLeaf')</code></pre>
+
+       <h4><code>getMultiProof(tree, indices)</code></h4>
+       <p>Gets a multiproof for multiple indices.</p>
+       <pre><code>const multiProof = getMultiProof(tree, [0, 2, 4])</code></pre>
+
+       <h4><code>getHexMultiProof(tree, indices)</code></h4>
+       <p>Gets a multiproof as hex strings.</p>
+       <pre><code>const hexMultiProof = getHexMultiProof(tree, [0, 2, 4])</code></pre>
+
+       <h4><code>verifyMultiProof(root, proofIndices, proofLeaves, leavesCount, proof, hashFn?, options?)</code></h4>
+       <p>Verifies a multiproof.</p>
+       <pre><code>const isValid = verifyMultiProof(root, [0, 2], [leaf0, leaf2], 5, proof)</code></pre>
+
+       <h4><code>getProofs(tree)</code></h4>
+       <p>Gets proofs for all leaves.</p>
+       <pre><code>const allProofs = getProofs(tree)</code></pre>
+
+       <h4><code>getHexProofs(tree)</code></h4>
+       <p>Gets proofs for all leaves as hex strings.</p>
+       <pre><code>const allHexProofs = getHexProofs(tree)</code></pre>
+
+      <h3>Tree Manipulation</h3>
+
+      <h4><code>addLeaf(tree, leaf, options?)</code></h4>
+      <p>Adds a single leaf to the tree.</p>
+      <pre><code>const updatedTree = addLeaf(tree, 'newLeaf')
+const updatedTreeWithHash = addLeaf(tree, 'newLeaf', { shouldHash: true })</code></pre>
+
+             <h4><code>updateLeaf(tree, index, value, options?)</code></h4>
+       <p>Updates a leaf at a specific index.</p>
+       <pre><code>updateLeaf(tree, 0, 'newValue')
+updateLeaf(tree, 0, 'newValue', { shouldHash: true })</code></pre>
+
+       <h4><code>addLeaves(tree, leaves, options?)</code></h4>
+       <p>Adds multiple leaves to the tree.</p>
+       <pre><code>const updatedTree = addLeaves(tree, ['leaf1', 'leaf2'])
+const updatedTreeWithHash = addLeaves(tree, ['leaf1', 'leaf2'], { shouldHash: true })</code></pre>
+
+       <h4><code>removeLeaf(tree, index)</code></h4>
+       <p>Removes a leaf by index.</p>
+       <pre><code>const removedLeaf = removeLeaf(tree, 0)</code></pre>
+
+       <h3>Tree Information</h3>
+
+       <h4><code>getRoot(tree)</code></h4>
+       <p>Gets the root hash as a Buffer.</p>
+       <pre><code>const rootBuffer = getRoot(tree)</code></pre>
+
+       <h4><code>getLeaves(tree)</code></h4>
+       <p>Gets all leaves as Buffers.</p>
+       <pre><code>const leaves = getLeaves(tree)</code></pre>
+
+       <h4><code>getHexLeaves(tree)</code></h4>
+       <p>Gets all leaves as hex strings.</p>
+       <pre><code>const hexLeaves = getHexLeaves(tree)</code></pre>
+
+       <h4><code>getLeafCount(tree)</code></h4>
+       <p>Gets the number of leaves.</p>
+       <pre><code>const count = getLeafCount(tree)</code></pre>
+
+       <h4><code>getLeaf(tree, index)</code></h4>
+       <p>Gets a specific leaf by index.</p>
+       <pre><code>const leaf = getLeaf(tree, 0)</code></pre>
+
+       <h4><code>getHexLeaf(tree, index)</code></h4>
+       <p>Gets a specific leaf by index as a hex string.</p>
+       <pre><code>const hexLeaf = getHexLeaf(tree, 0)</code></pre>
+
+       <h4><code>getLeafIndex(tree, leaf)</code></h4>
+       <p>Gets the index of a specific leaf.</p>
+       <pre><code>const index = getLeafIndex(tree, 'targetLeaf')</code></pre>
+
+       <h4><code>getDepth(tree)</code></h4>
+       <p>Gets the tree depth (number of layers).</p>
+       <pre><code>const depth = getDepth(tree)</code></pre>
+
+       <h4><code>getLayers(tree)</code></h4>
+       <p>Gets all tree layers as 2D array of Buffers.</p>
+       <pre><code>const layers = getLayers(tree)</code></pre>
+
+       <h4><code>getHexLayers(tree)</code></h4>
+       <p>Gets all tree layers as 2D array of hex strings.</p>
+       <pre><code>const hexLayers = getHexLayers(tree)</code></pre>
+
+       <h4><code>getLayersFlat(tree)</code></h4>
+       <p>Gets all tree layers as flat array.</p>
+       <pre><code>const flatLayers = getLayersFlat(tree)</code></pre>
+
+       <h4><code>getHexLayersFlat(tree)</code></h4>
+       <p>Gets all tree layers as flat array of hex strings.</p>
+       <pre><code>const hexFlatLayers = getHexLayersFlat(tree)</code></pre>
+
+       <h3>Serialization</h3>
+
+       <h4><code>marshalTree(tree)</code></h4>
+       <p>Converts a tree to JSON string.</p>
+       <pre><code>const json = marshalTree(tree)</code></pre>
+
+       <h4><code>unmarshalTree(jsonStr, hashFn?, options?)</code></h4>
+       <p>Creates a tree from JSON string.</p>
+       <pre><code>const tree = unmarshalTree(jsonStr)</code></pre>
+
+       <h4><code>marshalProof(proof)</code></h4>
+       <p>Converts a proof to JSON string.</p>
+       <pre><code>const proofJson = marshalProof(proof)</code></pre>
+
+       <h4><code>unmarshalProof(jsonStr)</code></h4>
+       <p>Creates a proof from JSON string.</p>
+       <pre><code>const proof = unmarshalProof(proofJson)</code></pre>
+
+       <h4><code>marshalLeaves(leaves)</code></h4>
+       <p>Converts leaves to JSON string.</p>
+       <pre><code>const jsonLeaves = marshalLeaves(leaves)</code></pre>
+
+       <h4><code>unmarshalLeaves(jsonStr)</code></h4>
+       <p>Creates leaves from JSON string.</p>
+       <pre><code>const leaves = unmarshalLeaves(jsonLeaves)</code></pre>
+
+       <h3>Utility Methods</h3>
+
+       <h4><code>resetTree(tree)</code></h4>
+       <p>Clears all leaves and layers from the tree.</p>
+       <pre><code>resetTree(tree)</code></pre>
+
+       <h4><code>getOptions(tree)</code></h4>
+       <p>Gets the current tree options.</p>
+       <pre><code>const options = getOptions(tree)</code></pre>
+
+       <h4><code>treeToString(tree)</code></h4>
+       <p>Returns visual representation of the tree.</p>
+       <pre><code>const treeString = treeToString(tree)
+console.log(treeString)</code></pre>
+
+      <h2>Hash Functions</h2>
+      <p>The functional API uses <strong>SHA256</strong> as the default hash function. You can specify a custom hash function as the second parameter:</p>
+      <pre><code>import { createMerkleTree } from 'merkletreejs'
+
+// Default SHA256
+const tree = createMerkleTree(['a', 'b', 'c'])
+
+// Custom keccak256
+const keccakTree = createMerkleTree(['a', 'b', 'c'], (data) => {
+  const keccak256 = require('keccak256')
+  return keccak256(Buffer.from(String(data)))
+})
+
+// Custom SHA1
+const sha1Tree = createMerkleTree(['a', 'b', 'c'], (data) => {
+  const crypto = require('crypto')
+  return crypto.createHash('sha1').update(data).digest()
+})</code></pre>
+
+      <h2>Examples</h2>
+
+      <h3>Basic Usage</h3>
+      <pre><code>import { createMerkleTree, getHexRoot, getProof, verifyProof } from 'merkletreejs'
+
+// Create tree
+const leaves = ['a', 'b', 'c', 'd']
+const tree = createMerkleTree(leaves)
+const root = getHexRoot(tree)
+
+// Generate proof
+const proof = getProof(tree, 'b')
+
+// Verify proof
+const isValid = verifyProof(proof, 'b', root)
+console.log('Valid:', isValid) // true</code></pre>
+
+      <h3>Comparison with Original API</h3>
+      
+      <h4>Original MerkleTreeJS</h4>
+      <pre><code>const tree = new MerkleTree(leaves, hashFn, options)
+const root = tree.getHexRoot()
+const proof = tree.getProof(leaf)
+const isValid = tree.verify(proof, leaf, root)</code></pre>
+
+      <h4>Functional API</h4>
+      <pre><code>const tree = createMerkleTree(leaves, hashFn, options)
+const root = getHexRoot(tree)
+const proof = getProof(tree, leaf)
+const isValid = verifyProof(proof, leaf, root)</code></pre>
+
+           </div>
+
+         <div class="doc-section">
+       <h2>Additional Merkle Tree Implementations</h2>
+       <p>Besides the standard <a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-MerkleTree.md">MerkleTree</a>, there are specialized implementation classes available:</p>
+       <ul>
+         <li><a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-MerkleMountainRange.md">MerkleMountainRange</a> - Append-only structure for blockchain applications</li>
+         <li><a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-MerkleSumTree.md">MerkleSumTree</a> - Range-based proofs and sum verification</li>
+         <li><a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-IncrementalMerkleTree.md">IncrementalMerkleTree</a> - Fixed-depth tree for voting and ZK applications</li>
+         <li><a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-MerkleRadixTree.md">MerkleRadixTree</a> - Space-efficient prefix compression for key-value storage</li>
+         <li><a href="https://github.com/merkletreejs/merkletreejs/blob/master/README-UnifiedBinaryTree.md">UnifiedBinaryTree</a> (EIP-7864) - Ethereum-style key-value storage</li>
+       </ul>
+       
+       <h2>Browser Support</h2>
+       <p>The MerkleTree library works in both Node.js and browser environments. For browser usage, ensure you have appropriate polyfills for Buffer operations.</p>
+
+       <h2>TypeScript Support</h2>
+       <p>Full TypeScript support with comprehensive type definitions for all methods and options.</p>
+
+       <h2>Contributing</h2>
+       <p>This library is designed to provide comprehensive Merkle tree functionality for JavaScript applications. Feel free to contribute improvements or additional features!</p>
+     </div>
+  </div>
+
+  <footer style="background: #f8f8f8; border-top: 1px solid #ddd; margin-top: 4em; padding: 2em 0; text-align: center; color: #666; font-size: 14px;">
+    <div style="max-width: 900px; margin: 0 auto; padding: 0 2em;">
+      <p>Released under the MIT license.</p>
+      <p>© <a href="https://github.com/miguelmota" style="color: #333; text-decoration: none;">Miguel Mota</a></p>
+    </div>
+  </footer>
 </body>
 </html>
