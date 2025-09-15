@@ -102,5 +102,13 @@ tmp
 .VimballRecord
 .netrwhist
 
+# Build directories #
+#####################
+build
+dist
+
 # Debug files to ignore #
 example.js
+merkletree.js
+*.txt
+*.secrets
