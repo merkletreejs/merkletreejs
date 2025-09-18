@@ -346,7 +346,7 @@ export class MerkleMountainRange extends Base {
       // move cursor
       cursor = path[height]
       if (height === 0) {
-        // cusor is on the leaf
+        // cursor is on the leaf
         node = this.hashLeaf(cursor, this.hashFn(value))
       } else if (cursor - 1 === path[height - 1]) {
         // cursor is on a parent and a siblings is on the left
